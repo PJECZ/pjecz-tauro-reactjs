@@ -14,12 +14,10 @@ export const button_blue_ligth_small: CSSProperties = {
     backgroundColor: '#003366',
     color: '#ffffff',
     textAlign: 'center',
-    height: 40, borderRadius: 2,
+    height: 40, 
+    borderRadius: 2,
     fontSize: 15,
-    fontWeight: 'bold',
-    margin: '0 auto',
-    marginTop: 5,
-    marginBottom: 5,
+    fontWeight: 'bold',  
 }
 
 export const button_green_small: CSSProperties = {

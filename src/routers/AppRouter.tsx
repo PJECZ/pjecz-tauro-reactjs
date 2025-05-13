@@ -18,11 +18,6 @@ import { SistemaTurnosRoutes } from "./SistemaTurnosRoutes"
 import { PantallaPage } from "../pages/comun/PantallaPage"
 import { PantallaUnidadPage } from "../pages/comun/PantallaUnidadPage"
 
-import { VentanillaAtenderTurnoPage } from "../pages/comun/VentanillaAtenderTurnoPage"
-import { VentanillaSeleccionarPage } from "../pages/comun/VentanillaSeleccionarPage"
-import { VentanillaTomarTurnoPage } from "../pages/comun/VentanillaTomarTurnoPage"
-import { VentanillaCrearTurnoPage } from "../pages/comun/VentanillaCrearTurnoPage"
-
 export const AppRouter = () => {
 
     const dispatch = useDispatch();
@@ -68,15 +63,7 @@ export const AppRouter = () => {
 
                 <Route path="/pantalla" element={ <PublicRoute token={ token.current } children={ <PantallaPage /> } /> } />   
 
-                <Route path="/pantalla/:id" element={ <PublicRoute token={ token.current } children={ <PantallaUnidadPage /> } /> } />   
-
-                <Route path="/ventanilla/tomar" element={ <PublicRoute token={ token.current } children={ <VentanillaTomarTurnoPage /> } /> } />   
-
-                <Route path="/ventanilla/atender" element={ <PublicRoute token={ token.current } children={ <VentanillaAtenderTurnoPage /> } /> } />   
-
-                <Route path="/ventanilla/crear" element={ <PublicRoute token={ token.current } children={ <VentanillaCrearTurnoPage /> } /> } />   
-
-                <Route path="/ventanilla/seleccionar" element={ <PublicRoute token={ token.current } children={ <VentanillaSeleccionarPage /> } /> } />   
+                <Route path="/pantalla/:id" element={ <PublicRoute token={ token.current } children={ <PantallaUnidadPage /> } /> } />                
 
                 <Route path="/*" element={ <PrivateRoute token={ token.current } children={ <SistemaTurnosRoutes /> } /> } />       
             

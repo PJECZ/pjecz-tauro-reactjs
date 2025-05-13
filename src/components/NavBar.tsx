@@ -1,19 +1,23 @@
 
 import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
+
 import { useEffect, useState } from 'react';
 
 export const NavBar = () => {
-    const [currentTime, setCurrentTime] = useState(new Date());
+
+    const [currentTime, setCurrentTime] = useState( new Date() );
 
     useEffect(() => {
+
        const interval = setInterval(() => {
-           setCurrentTime(new Date());
-       }, 1000); // Actualizar cada 1 segundo
 
-       return () => clearInterval(interval); // Limpiar el intervalo al desmontar el componente
-    }, []); // El segundo parámetro vacío asegura que useEffect se ejecute solo una vez al montar el componente
+            setCurrentTime( new Date() );
 
-    const formattedTime = currentTime.toLocaleTimeString();
+       }, 1000);
+       
+       return () => clearInterval(interval); 
+
+    }, []); 
 
     return (
        
@@ -53,12 +57,14 @@ export const NavBar = () => {
                     <Box sx={{ display: 'flex' }}>
                                                 
                         <Typography variant="h3" color="textSecondary">
+
                             <img 
-                                style={{ width: 50, height: 50, marginRight: 10 }}
+                                style={{ width: 40, height: 40, marginRight: 10, marginTop: 5 }}
                                 src={ process.env.PUBLIC_URL + "/assets/reloj.png"}
                                 alt='clock'
                             />
-                            {formattedTime}
+
+                            { currentTime.toLocaleTimeString() }
                         </Typography>
 
                     </Box>                  

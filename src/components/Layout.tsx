@@ -1,14 +1,15 @@
 
 import { Box, Container } from "@mui/material";
 
-import { Footer } from "./Footer";
 import { NavBar } from "./NavBar";
+import { Footer } from "./Footer";
 
 interface Props {
-    children?: React.ReactNode;
+    children?:  React.ReactNode;
+    footer?:    boolean;
 }
 
-export const Layout = ( { children } : Props ) => {
+export const Layout = ( { children, footer = false } : Props ) => {
     
     return (
 
@@ -25,7 +26,8 @@ export const Layout = ( { children } : Props ) => {
                
             </Container>
 
-            <Footer />
+            { footer && <Footer /> }
+
         </>      
        
     )
