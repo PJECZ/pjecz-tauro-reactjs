@@ -11,7 +11,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import '../../css/Login.css';
 
-import { login } from '../../store/slices/AuthSlice';
+import { login, stateProps } from '../../store/slices/AuthSlice';
 
 import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
 
@@ -55,11 +55,13 @@ export const LoginPage = () => {
 
             setLoading( true );        
 
-            const data = {
-                nombres: 'Juan Perez Perez',
-                apellidos: 'alguien@pjecz.gob.mx',
+            const data: stateProps = {
+                nombres: 'Juan Antonio',
+                apellidos: 'Perez Perez',
                 token: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',                    
                 correoElectronico: correoElectronico,
+                tipoUsuario: 'Recepcionista',
+                ventanilla: '',
             };
 
             setTimeout(() => {

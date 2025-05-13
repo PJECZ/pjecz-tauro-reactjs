@@ -1,43 +1,100 @@
-import { Box, Button, Container, Grid } from '@mui/material';
-import { useNavigate } from 'react-router';
 
-import { button_red_small } from '../styles/ButtonsStyle';
+import { useState } from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
+
+import { AppBar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material';
+
+import TuneIcon from '@mui/icons-material/Tune';
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+
+import { RootState } from '../store';
+import { logout } from '../store/slices/AuthSlice';
+import { Settings } from './Settings';
 
 export const Footer = () => {
 
-  const navigate = useNavigate();
+    const dispatch = useDispatch();
     
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "auto",
-        backgroundColor: "#ddd",
-        paddingTop: "1rem",
-        paddingBottom: "1rem",
-        marginBottom: "0",
-        position: "fixed",
-        float: "bottom",
-        bottom: "0",
-      }}
-    >
-      
-      <Container maxWidth="lg">
-        <Grid sx={{ display: 'flex', justifyContent: 'left', margin:'auto', fontSize:'2em' }}>
-          Ventanilla {localStorage.getItem('ventanilla')}
-        </Grid>
-        <Grid container direction="column" alignItems="end">
-          <img 
-              style={{ width: 40, height: 40, marginRight: 10 }}
-              src={ process.env.PUBLIC_URL + "/assets/config.png"}
-              alt='config'
-          />
-          <Button sx={{...button_red_small}} variant="contained" color="primary" onClick={() => navigate('/auth/login')}>
-            Cerrar Sesión
-          </Button>
-        </Grid>
-      </Container>
-    </Box>
-  )
+    const { nombres, apellidos, ventanilla, tipoUsuario } = useSelector( ( state: RootState ) => state.auth );
+
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+
+    const handleLogout = async () => {
+
+        setLoading( true );      
+
+        setTimeout(() => {
+
+            localStorage.setItem('lastPath', '/' );
+            localStorage.clear();
+            
+            dispatch( logout() );
+            setLoading( false );
+        
+        }, 700);           
+
+    }    
+    
+    return (
+
+        <>
+            
+            <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, boxShadow: 'none', backgroundColor: '#f5f5f5', opacity: 0.8, height: 65 }}>
+
+                <Toolbar>    
+
+                    <Box sx={{ flex: 1 }}>
+
+                        <Grid container sx={{ ml: 10 }}>
+
+                            <Grid size={{ xs: 12, md: 12 }}>
+                                <Typography variant='subtitle2' sx={{ fontSize: 18, color: 'black' }} >
+                                    { nombres } { apellidos }
+                                </Typography>
+                            </Grid>
+                        
+                            <Grid size={{ xs: 12, md: 12 }}>
+                                <Typography variant='subtitle1' sx={{ color: 'black' }} >
+                                    { ventanilla }
+                                </Typography>
+                            </Grid>
+
+                        </Grid>      
+
+                    </Box>
+
+                    <Box>
+
+                        {
+                            ( tipoUsuario === 'Ventanilla' )
+                            &&
+                                <IconButton color="primary" sx={{ mr: 3 }} onClick={ () => setOpen( true ) }>
+                                    <TuneIcon />
+                                </IconButton>
+                        }
+
+                        <Button 
+                            variant='contained' 
+                            color="primary"
+                            onClick={ handleLogout }
+                            loading={ loading }
+                            >
+                            <ExitToAppOutlinedIcon />
+                        </Button>
+
+                    </Box>
+
+                </Toolbar>
+
+            </AppBar>
+
+            <Settings 
+                open={ open }
+                setOpen={ setOpen }            
+            />
+
+        </>
+    );
 }

@@ -1,6 +1,4 @@
 
-import { useEffect, useState } from "react"
-
 import { Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 
 import { Layout } from "../../components/Layout"
@@ -8,20 +6,6 @@ import { Layout } from "../../components/Layout"
 import { table_cell_blue, table_cell_blue_light, table_padding, table_tbody, table_thead } from "../../styles/TableStyle"
 
 export const PantallaPage = () => {  
-
-      const [turnos, setTurnos] = useState([{'numero': 0, 'estatus': 'En espera'}, {'numero': 1, 'estatus': 'Atendiendo'}]);
-    
-        useEffect(() => {
-          const obtenerDatos = async () => {
-            const res = await fetch('http://localhost:5000/api/v1/turnos', { method: 'GET', mode: 'no-cors',headers: {'Content-Type': 'application/json'}});
-            {/*const data = await res.json();
-            setTurnos([...turnos,data]);*/}
-          }
-    
-          obtenerDatos();
-          console.log(turnos);
-    
-        }, [])
      
     return (
 
@@ -118,6 +102,41 @@ export const PantallaPage = () => {
                                     <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
                                 </TableRow>  
                             
+                                <TableRow>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>11</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
+                                </TableRow>  
+                            
+                                <TableRow>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>12</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
+                                </TableRow>  
+                            
+                                <TableRow>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>13</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
+                                </TableRow>  
+                            
+                                <TableRow>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>14</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
+                                </TableRow>  
+                            
+                                <TableRow>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>15</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
+                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
+                                </TableRow>                                                           
+                            
                             </TableBody>
 
                         </Table>
@@ -161,8 +180,7 @@ export const PantallaPage = () => {
 
                 </Grid>
 
-            </Grid>
-                      
+            </Grid>                      
             
         </Layout>  
         
