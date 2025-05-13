@@ -5,7 +5,7 @@ import { Box, Button, Card, CardActions, CardContent, Dialog, DialogActions, Dia
 
 import { button_blue_ligth_small } from "../../styles/ButtonsStyle"
 
-const usuario_unidad = true;
+const usuario_unidad = false;
 
 export const CrearTurnoPage = () => { 
     
@@ -17,17 +17,22 @@ export const CrearTurnoPage = () => {
 
             <Grid container spacing={3}>
 
-                <Grid size={{ xs: 12, md: 12 }}>               
-                
-                    <Box bgcolor={'#333'} sx={{ opacity:0.6}}>
+                {
+                    usuario_unidad
+                    &&
+                        <Grid size={{ xs: 12, md: 12 }}>               
                         
-                        <Typography variant="h4" color="white" textAlign={'center'} p={1} sx={{ bgcolor: '#003366'}}>
-                            Oficialía Común de Partes
-                        </Typography>
-                            
-                    </Box>                      
+                            <Box bgcolor={'#333'} sx={{ opacity:0.6}}>
+                                
+                                <Typography variant="h4" color="white" textAlign={'center'} p={1} sx={{ bgcolor: '#003366'}}>
+                                    Oficialía Común de Partes
+                                </Typography>
+                                    
+                            </Box>                      
 
-                </Grid>
+                        </Grid>
+
+                }
 
                 <Grid size={{ xs: 12, md: 12 }} sx={ { display: 'flex', justifyContent: 'center', margin:'auto' } } >
 

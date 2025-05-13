@@ -60,7 +60,7 @@ export const LoginPage = () => {
                 apellidos: 'Perez Perez',
                 token: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',                    
                 correoElectronico: correoElectronico,
-                tipoUsuario: 'Recepcionista',
+                tipoUsuario: 'Ventanilla',
                 ventanilla: '',
             };
 
