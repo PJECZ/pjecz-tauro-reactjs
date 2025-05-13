@@ -37,15 +37,15 @@ const MenuProps = {
   },
 };
 
-const names = [
+const tipos = [
   'Normal',
   'Urgente',
   'Con cita',
 ];
 
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
+function getStyles(name: string, tipoTurno: readonly string[], theme: Theme) {
   return {
-    fontWeight: personName.includes(name)
+    fontWeight: tipoTurno.includes(name)
       ? theme.typography.fontWeightMedium
       : theme.typography.fontWeightRegular,
   };
@@ -89,13 +89,13 @@ export const VentanillaAtenderTurnoPage = () => {
     }
 
     const theme = useTheme();
-    const [personName, setPersonName] = useState<string[]>([]);
+    const [tipoTurno, setTipoTurno] = useState<string[]>([]);
 
-    const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+    const handleChange = (event: SelectChangeEvent<typeof tipoTurno>) => {
         const {
         target: { value },
         } = event;
-        setPersonName(
+        setTipoTurno(
         // On autofill we get a stringified value.
         typeof value === 'string' ? value.split(',') : value,
         );
@@ -238,7 +238,7 @@ export const VentanillaAtenderTurnoPage = () => {
                                 labelId="multiple-turno-label"
                                 id="multiple-demo"
                                 multiple
-                                value={personName}
+                                value={tipoTurno}
                                 onChange={handleChange}
                                 input={<OutlinedInput id="select-multiple-turno" label="Tipo de Turno" />}
                                 renderValue={(selected) => (
@@ -250,11 +250,11 @@ export const VentanillaAtenderTurnoPage = () => {
                                 )}
                                 MenuProps={MenuProps}
                                 >
-                                {names.map((name) => (
+                                {tipos.map((name) => (
                                     <MenuItem
                                     key={name}
                                     value={name}
-                                    style={getStyles(name, personName, theme)}
+                                    style={getStyles(name, tipoTurno, theme)}
                                     >
                                     {name}
                                     </MenuItem>
