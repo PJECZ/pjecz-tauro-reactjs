@@ -22,7 +22,7 @@ export const login_col: CSSProperties = {
     width: "100%", 
     display: "flex", 
     alignItems: "center", 
-    marginBottom: '1em'
+    marginTop: '0em'
 }
 
 export const login_text: CSSProperties = {

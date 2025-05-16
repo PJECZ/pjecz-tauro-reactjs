@@ -14,6 +14,7 @@ import '../../css/Login.css';
 import { login, stateProps } from '../../store/slices/AuthSlice';
 
 import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
+import { NavBar } from '../../components/NavBar';
 
 export const LoginPage = () => {
 
@@ -94,15 +95,15 @@ export const LoginPage = () => {
                 
                 {/* Formulario */}
                 <Grid size={{ xs: 12, md: 7, lg: 5 }} style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                   
-                    <Grid container style={ login_col }>
+                    
+                    <Grid container style={ login_col } >
                         
                         <Grid size={{ xs: 6 }} style={{ textAlign: 'center' }}>
                             <img src={ process.env.PUBLIC_URL + "/assets/logo-pjecz.png" } alt="Poder Judicial" style={{ height: 120 }} />        
                         </Grid>
                         
                         <Grid size={{ xs: 6 }} style={{ textAlign: 'center' }}>
-                            <img src={ process.env.PUBLIC_URL + "/assets/logo.png" } alt="logo" style={{ height: 75 }} />
+                            <img src={ process.env.PUBLIC_URL + "/assets/logo_colors.png" } alt="logo" style={{ height: 75 }} />
                         </Grid>
 
                     </Grid>
@@ -164,7 +165,7 @@ export const LoginPage = () => {
                                 fullWidth
                                 variant="contained"    
                                 type='submit'
-                                sx={{ mt: 1 }}        
+                                sx={{ mt: 1, backgroundColor:'#003366' }}        
                                 onClick={ handleLogin }      
                                 loading={ loading }          
                             >
