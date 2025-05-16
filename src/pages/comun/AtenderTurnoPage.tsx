@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useSelector } from "react-redux";
 
@@ -103,12 +103,12 @@ export const AtenderTurnoPage = () => {
 
                                 <TableRow style={{...table_tbody }}>
 
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>
+                                    <TableCell sx={{padding:0,  fontSize: 18, textAlign: 'center' }}>
 
                                         { 
                                             turno !== '' 
                                             &&   
-                                                <Table>
+                                                <Table sx={{ backgroundColor:'#ccc', margin:0, padding:0 }}>
 
                                                     <TableRow>
 

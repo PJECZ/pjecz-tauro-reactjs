@@ -46,7 +46,7 @@ export const NavBar = () => {
 
                             <img 
                                 style={{ width: 240, height: 80 }}
-                                src={ process.env.PUBLIC_URL + "/assets/logo.png"}
+                                src={ process.env.PUBLIC_URL + "/assets/logo_colors.png"}
                                 alt='logo'
                             />      
 
