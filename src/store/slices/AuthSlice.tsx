@@ -5,12 +5,12 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 export type TypeUser = 'Recepcionista' | 'Ventanilla';
 
 export interface stateProps {
-    nombres?:                string;
-    apellidos?:              string;
+    username?:               string;   
     correoElectronico?:      string;
     token?:                  string;
-    tipoUsuario?:            TypeUser;
+    unidad?:                 string;
     ventanilla?:             string;
+    tipoUsuario?:            TypeUser;
 }
 
 const initialState = {
@@ -25,19 +25,19 @@ export const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         login: ( state, { payload } : PayloadAction<stateProps> ) => {
-            state.token = payload.token;
-            state.nombres = payload.nombres;
-            state.apellidos = payload.apellidos;
+            state.token = payload.token;        
+            state.username = payload.username;  
             state.correoElectronico = payload.correoElectronico; 
             state.tipoUsuario = payload.tipoUsuario; 
+            state.unidad = payload.unidad; 
             state.ventanilla = payload.ventanilla; 
         },
         logout: ( state ) => {     
             state.token = '';
-            state.nombres = '';
-            state.apellidos = '';
+            state.username = '';
             state.correoElectronico = '';         
             state.tipoUsuario = 'Ventanilla';          
+            state.unidad = '';          
             state.ventanilla = '';          
         },
     },

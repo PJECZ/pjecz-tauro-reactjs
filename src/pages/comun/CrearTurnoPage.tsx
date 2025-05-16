@@ -3,9 +3,7 @@ import { useState } from "react";
 
 import { Box, Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, MenuItem, TextField, Typography } from "@mui/material"
 
-import { button_blue_ligth_small } from "../../styles/ButtonsStyle"
-
-const usuario_unidad = false;
+const usuario_unidad = true;
 
 export const CrearTurnoPage = () => { 
     
@@ -117,9 +115,9 @@ export const CrearTurnoPage = () => {
 
                         </CardContent>              
 
-                        <CardActions sx={{ backgroundColor: '#efeff1', opacity: 0.6, p: 3 }}>                  
+                        <CardActions sx={{ opacity: 0.6, p: 3 }}>                  
 
-                            <Button fullWidth sx={{ ...button_blue_ligth_small }} variant="contained" onClick={ () => setOpenConfirmacion( true ) }> 
+                            <Button fullWidth variant="contained" onClick={ () => setOpenConfirmacion( true ) }> 
                                 Crear Turno
                             </Button>   
                                                     

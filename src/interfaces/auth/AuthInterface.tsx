@@ -5,13 +5,11 @@ export interface HttpResponse {
 }
 
 export interface LoginParams {
-    correoElectronico:      string;
-    contrasena:             string;
+    username:      string;
+    password:      string;
 }
 
-export interface LoginResponse extends HttpResponse {    
-    nombres?:               string;
-    apellidos?:             string;
-    token?:                 string;
-    correoElectronico?:     string;
+export interface LoginResponse extends HttpResponse {  
+    access_token: string;
+    username:     string;
 }

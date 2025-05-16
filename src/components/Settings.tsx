@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -7,6 +7,10 @@ import { Dialog, DialogContent, DialogActions, Button, Box, Chip, FormControl, M
 
 import { RootState } from "../store";
 import { login, stateProps } from "../store/slices/AuthSlice";
+
+import { ConsultarVentanillasActivas } from "../connections/comun/VentanillaConnection";
+
+import { Ventanilla } from "../interfaces/comun/VentanillaInterface";
 
 interface Props {
     open: boolean;
@@ -17,11 +21,14 @@ const tipos = [ 'Normal', 'Urgente', 'Con cita', ];
 
 export const Settings = ( { open, setOpen }: Props ) => {
 
-    const { nombres, apellidos, correoElectronico } = useSelector( ( state: RootState ) => state.auth );
+    const { username, correoElectronico, token } = useSelector( ( state: RootState ) => state.auth );
 
     const dispatch = useDispatch();
 
     const [tipoTurno, setTipoTurno] = useState<string[]>([]);
+
+    const [ventanilla, setVentanilla] = useState<number>(0);
+    const [ventanillaArray, setVentanillaArray] = useState<Ventanilla[]>([]);
     
     const handleChange = (event: SelectChangeEvent<typeof tipoTurno> ) => {
      
@@ -32,13 +39,14 @@ export const Settings = ( { open, setOpen }: Props ) => {
 
     const handleGuardarConfiguracion = () => {
 
+        console.log( ventanilla );
+
         const data: stateProps = {
-            nombres: nombres,
-            apellidos: apellidos,
-            token: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',                    
+            username: username,
+            token: token,                    
             correoElectronico: correoElectronico,
             tipoUsuario: 'Ventanilla',
-            ventanilla: 'Ventanilla 100',
+            unidad: '',
         };
 
         dispatch( login( data ) );
@@ -47,6 +55,19 @@ export const Settings = ( { open, setOpen }: Props ) => {
 
         setOpen( false );
     }
+
+    useEffect(() => {
+      
+        async function obtener(){
+
+            await ConsultarVentanillasActivas().then( resp => {
+                setVentanillaArray( resp.data );
+            });
+        }
+
+        obtener();
+
+    }, [])       
 
     return (        
 
@@ -76,14 +97,15 @@ export const Settings = ( { open, setOpen }: Props ) => {
                                         shrink: true,
                                     },
                                 }} 
-                                value={0}
+                                value={ ventanilla }
+                                onChange={ (e) => setVentanilla( parseInt( e.target.value ?? '0' ) ) }
                             >   
-                                <MenuItem value={0}>Seleccione una opción</MenuItem>              
-                                <MenuItem value={1}>Ventanilla 1</MenuItem>
-                                <MenuItem value={2}>Ventanilla 2</MenuItem>
-                                <MenuItem value={3}>Ventanilla 3</MenuItem>
-                                <MenuItem value={4}>Ventanilla 4</MenuItem>
-                                <MenuItem value={5}>Ventanilla 5</MenuItem>    
+                                <MenuItem key={0} value={0}>Seleccione una opción</MenuItem>      
+                                {
+                                    ventanillaArray.map( ( { id, nombre } ) => (
+                                        <MenuItem key={id} value={id}>{ nombre } { id } </MenuItem>      
+                                    ))
+                                }
                             </TextField>
 
                         </FormControl>   
@@ -112,7 +134,7 @@ export const Settings = ( { open, setOpen }: Props ) => {
                                             },
                                         }} 
                                         value={0}
-                                    />   
+                                    /> 
                                 }
                                 renderValue={ ( selected ) => {
 
