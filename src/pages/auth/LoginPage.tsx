@@ -14,7 +14,7 @@ import '../../css/Login.css';
 import { login, stateProps } from '../../store/slices/AuthSlice';
 
 import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
-import { NavBar } from '../../components/NavBar';
+import { Login } from '../../connections/auth/AuthConnection';
 
 export const LoginPage = () => {
 
@@ -56,23 +56,38 @@ export const LoginPage = () => {
 
             setLoading( true );        
 
-            const data: stateProps = {
-                nombres: 'Juan Antonio',
-                apellidos: 'Perez Perez',
-                token: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',                    
-                correoElectronico: correoElectronico,
-                tipoUsuario: 'Ventanilla',
-                ventanilla: '',
-            };
+            await Login({ username: correoElectronico, password: contrasena }).then( resp => {
 
-            setTimeout(() => {
-            
-                dispatch( login( data ) );
-                window.localStorage.setItem('data', JSON.stringify(data));
+                const { success, message, access_token, username } = resp;
 
-                setLoading( false );
-                
-            }, 700);            
+                if( success ){
+
+                    const data: stateProps = {
+                        username: username,
+                        token: access_token,                    
+                        correoElectronico: correoElectronico,
+                        tipoUsuario: 'Ventanilla',
+                        unidad: '',
+                    };
+
+                    setTimeout(() => {
+                    
+                        dispatch( login( data ) );
+                        window.localStorage.setItem('data', JSON.stringify(data));
+
+                        setLoading( false );
+                        
+                    }, 700);
+
+                }
+                else {
+
+                    setOpenMessage({ type: 'warning', open: true, message: message });
+                    
+                    setLoading( false );
+                }                  
+
+            });                 
                    
         }
     }
@@ -165,7 +180,7 @@ export const LoginPage = () => {
                                 fullWidth
                                 variant="contained"    
                                 type='submit'
-                                sx={{ mt: 1, backgroundColor:'#003366' }}        
+                                sx={{ mt: 1 }}        
                                 onClick={ handleLogin }      
                                 loading={ loading }          
                             >

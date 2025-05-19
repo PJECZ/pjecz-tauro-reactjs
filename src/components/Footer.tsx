@@ -17,7 +17,7 @@ export const Footer = () => {
 
     const dispatch = useDispatch();
     
-    const { nombres, apellidos, ventanilla, tipoUsuario } = useSelector( ( state: RootState ) => state.auth );
+    const { username, ventanilla, tipoUsuario } = useSelector( ( state: RootState ) => state.auth );
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -55,7 +55,7 @@ export const Footer = () => {
 
                             <Grid size={{ xs: 12, md: 12 }}>
                                 <Typography variant='subtitle2' sx={{ fontSize: 18, color: 'black' }} >
-                                    { nombres } { apellidos }
+                                    { username }
                                 </Typography>
                             </Grid>
                         

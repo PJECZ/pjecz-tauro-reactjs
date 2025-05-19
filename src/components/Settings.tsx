@@ -1,44 +1,73 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { Dialog, DialogContent, DialogActions, Button, Box, Chip, FormControl, MenuItem, Select, SelectChangeEvent, Grid, DialogTitle, TextField } from "@mui/material";
+import { Dialog, DialogContent, DialogActions, Button, FormControl, MenuItem, Grid, DialogTitle, TextField, Checkbox, FormControlLabel, FormGroup, FormLabel } from "@mui/material";
 
 import { RootState } from "../store";
 import { login, stateProps } from "../store/slices/AuthSlice";
+
+import { ConsultarVentanillasActivas } from "../connections/comun/VentanillaConnection";
+
+import { Ventanilla } from "../interfaces/comun/VentanillaInterface";
 
 interface Props {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const tipos = [ 'Normal', 'Urgente', 'Con cita', ];
+interface TipoTurnosProps {
+    id:         number;
+    nombre:     string;
+    selected?:  boolean;
+}
+
+const tipos: TipoTurnosProps[] = [
+    { id: 1, nombre: 'Normal', selected: false, },
+    { id: 2, nombre: 'Urgente', selected: false, },
+    { id: 3, nombre: 'Con cita', selected: false, },
+];
 
 export const Settings = ( { open, setOpen }: Props ) => {
 
-    const { nombres, apellidos, correoElectronico } = useSelector( ( state: RootState ) => state.auth );
+    const { username, correoElectronico, unidad, token } = useSelector( ( state: RootState ) => state.auth );
 
     const dispatch = useDispatch();
 
-    const [tipoTurno, setTipoTurno] = useState<string[]>([]);
-    
-    const handleChange = (event: SelectChangeEvent<typeof tipoTurno> ) => {
-     
-        const { target: { value }, } = event;
+    const [tiposTurno, setTiposTurno] = useState<TipoTurnosProps[]>( [] );
+    const [tiposTurnoArray, setTiposTurnoArray] = useState<TipoTurnosProps[]>( [] );
 
-        setTipoTurno( typeof value === 'string' ? value.split(',') : value, );
+    const [ventanilla, setVentanilla] = useState<number>(0);
+    const [ventanillaArray, setVentanillaArray] = useState<Ventanilla[]>([]);
+    
+    const handleChange = ( id: number, checked: boolean ) => {
+     
+        const newArray = tiposTurnoArray.map( ( elem ) => {
+            if( elem.id === id ){
+                elem.selected = checked;
+            }
+            return elem;
+        });
+
+        const tipos = newArray.filter( ( { selected } ) => selected === true );
+        setTiposTurno( tipos );
+
+        setTiposTurnoArray( newArray );
     };
 
     const handleGuardarConfiguracion = () => {
 
+        console.log( ventanilla );
+        console.log( tiposTurno );
+
         const data: stateProps = {
-            nombres: nombres,
-            apellidos: apellidos,
-            token: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',                    
+            username: username,
+            token: token,                    
             correoElectronico: correoElectronico,
             tipoUsuario: 'Ventanilla',
-            ventanilla: 'Ventanilla 100',
+            ventanilla: `Ventanilla ${ ventanilla }`,
+            unidad: unidad
         };
 
         dispatch( login( data ) );
@@ -47,6 +76,25 @@ export const Settings = ( { open, setOpen }: Props ) => {
 
         setOpen( false );
     }
+
+    useEffect(() => {
+      
+        async function obtener(){
+
+            await ConsultarVentanillasActivas().then( resp => {
+                setVentanillaArray( resp.data );
+            });
+        }
+
+        obtener();
+
+    }, [])       
+
+    useEffect(() => {
+      
+        setTiposTurnoArray( tipos );
+
+    }, [])    
 
     return (        
 
@@ -76,14 +124,15 @@ export const Settings = ( { open, setOpen }: Props ) => {
                                         shrink: true,
                                     },
                                 }} 
-                                value={0}
+                                value={ ventanilla }
+                                onChange={ (e) => setVentanilla( parseInt( e.target.value ?? '0' ) ) }
                             >   
-                                <MenuItem value={0}>Seleccione una opción</MenuItem>              
-                                <MenuItem value={1}>Ventanilla 1</MenuItem>
-                                <MenuItem value={2}>Ventanilla 2</MenuItem>
-                                <MenuItem value={3}>Ventanilla 3</MenuItem>
-                                <MenuItem value={4}>Ventanilla 4</MenuItem>
-                                <MenuItem value={5}>Ventanilla 5</MenuItem>    
+                                <MenuItem key={0} value={0}>Seleccione una opción</MenuItem>      
+                                {
+                                    ventanillaArray.map( ( { id, nombre } ) => (
+                                        <MenuItem key={id} value={id}>{ nombre } { id } </MenuItem>      
+                                    ))
+                                }
                             </TextField>
 
                         </FormControl>   
@@ -91,56 +140,30 @@ export const Settings = ( { open, setOpen }: Props ) => {
                     </Grid>
                     
                     <Grid size={{ xs: 12, md: 12 }}>
-                        
-                        <FormControl fullWidth>
-                            <Select
-                                labelId="select-tipo-turno"
-                                id="select-tipo-turno"
-                                label="Tipo de Turno"               
-                                multiple      
-                                value={ tipoTurno }
-                                onChange={ handleChange }      
-                                displayEmpty
-                                input={ 
-                                    <TextField 
-                                        id="select-ventanillas" 
-                                        label="Tipo de Turno" 
-                                        select
-                                        slotProps={{
-                                            inputLabel: {
-                                                shrink: true,
-                                            },
-                                        }} 
-                                        value={0}
-                                    />   
-                                }
-                                renderValue={ ( selected ) => {
 
-                                    if ( selected.length === 0 ) {
-                                        return <>Seleccione el (los) tipo(s) de turno</>;
-                                    }
-                                    
-                                    return (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {
-                                                selected.map( ( value ) => (
-                                                    <Chip key={ value } label={ value } />
-                                                ))
-                                            }
-                                        </Box>
-                                    );
-                                }}
-                            >
+                        <FormControl component="fieldset" variant="standard">
+                            <FormLabel component="legend" color="primary">Tipos de turno</FormLabel>
+
+                            <FormGroup sx={{ mt: 1 }}>
+
                                 {
-                                    tipos.map( ( name ) => (
-                                        <MenuItem key={name} value={name}>
-                                            {name}
-                                        </MenuItem>
+                                    tiposTurnoArray.map( ( { id, nombre, selected } ) => (
+
+                                        <FormControlLabel
+                                            key={ id }
+                                            control={
+                                                <Checkbox checked={ selected ?? false } onChange={ (e) => handleChange( id, e.target.checked) } />
+                                            }
+                                            label={ nombre }
+                                        />
+
                                     ))
                                 }
-                            </Select>
-                        </FormControl>   
 
+                            </FormGroup>
+
+                        </FormControl>
+                        
                     </Grid>
 
                 </Grid>          
