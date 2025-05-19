@@ -31,7 +31,7 @@ const tipos: TipoTurnosProps[] = [
 
 export const Settings = ( { open, setOpen }: Props ) => {
 
-    const { username, correoElectronico, token } = useSelector( ( state: RootState ) => state.auth );
+    const { username, correoElectronico, unidad, token } = useSelector( ( state: RootState ) => state.auth );
 
     const dispatch = useDispatch();
 
@@ -66,7 +66,8 @@ export const Settings = ( { open, setOpen }: Props ) => {
             token: token,                    
             correoElectronico: correoElectronico,
             tipoUsuario: 'Ventanilla',
-            unidad: '',
+            ventanilla: `Ventanilla ${ ventanilla }`,
+            unidad: unidad
         };
 
         dispatch( login( data ) );
