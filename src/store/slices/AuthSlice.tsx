@@ -1,10 +1,9 @@
 
 
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import { UnidadProps } from '../../interfaces/comun/UnidadInterface';
 import { RolProps } from '../../interfaces/comun/RolInterface';
-
-{/*export type TypeUser = 'RECEPCION' | 'VENTANILLA';*/}
 
 export interface stateProps {
     username?:               string;   

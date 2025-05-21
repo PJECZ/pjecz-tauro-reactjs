@@ -7,20 +7,30 @@ import { Layout } from "../../components/Layout"
 import { table_cell_blue, table_cell_blue_light, table_padding, table_tbody, table_thead } from "../../styles/TableStyle"
 
 import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection"
+
 import { TurnoProps } from "../../interfaces/comun/TurnoInterface"
+
+const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
 export const PantallaPage = () => {  
 
     const [ turnosArray, setTurnosArray ] = useState<TurnoProps[]>([]) ;
-    const [ ultimoTurno, setUtimoTurno ] = useState<TurnoProps>() ;
+    const [ ultimoTurno, setUtimoTurno ] = useState<TurnoProps>( defaultTurno );
     
      useEffect(() => {
           
         async function obtener(){
 
             await ConsultarTodosTurnos().then( resp => {
-                setUtimoTurno( resp.data.ultimo_turno );     
-                setTurnosArray( resp.data.turnos );
+                
+                if( resp.data ){
+                    
+                    const { ultimo_turno, turnos } = resp.data;
+
+                    setUtimoTurno( ultimo_turno ?? defaultTurno );     
+                    setTurnosArray( turnos );
+                }
+
             });
         }
 
@@ -52,14 +62,15 @@ export const PantallaPage = () => {
                             </TableHead>
 
                             <TableBody>
+
                                 {
                                     turnosArray.slice(0,20).map( ( turno, index ) => (
                                         
                                         <TableRow key={ index } style={{...table_tbody }}>
-                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{turno.unidad['clave']}-{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ turno.turno_estado === 'ATENDIENDO' ? turno.ventanilla.numero : '' }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ turno.turno_estado }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{turno.unidad['clave']}-{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado === 'ATENDIENDO' ? turno.ventanilla.numero : '' }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado }</TableCell>
                                         </TableRow>
                                         
                                     ))
