@@ -1,11 +1,40 @@
+import { useEffect, useState } from "react"
 
 import { Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 
 import { Layout } from "../../components/Layout"
 
+import { useParams } from "react-router"
 import { table_cell_blue, table_cell_blue_light, table_padding, table_tbody, table_thead } from "../../styles/TableStyle"
 
+import { ConsultarTurnosUnidad } from "../../connections/comun/TurnosConnection"
+import { TurnoProps } from "../../interfaces/comun/TurnoInterface"
+import { UnidadProps } from "../../interfaces/comun/UnidadInterface"
+
 export const PantallaUnidadPage = () => {  
+
+    const { id } = useParams<{ id: string }>();
+
+    const [ turnosArray, setTurnosArray ] = useState<TurnoProps[]>([]) ;
+    const [ ultimoTurno, setUtimoTurno ] = useState<TurnoProps>() ;
+    const [ unidad, setUnidad ] = useState<UnidadProps>() ;
+    
+        useEffect(() => {
+            
+        async function obtener(){
+
+            if (!id) return;
+            await ConsultarTurnosUnidad(id).then(resp => {
+                setUtimoTurno( resp.data.ultimo_turno );     
+                setTurnosArray( resp.data.turnos );
+                setUnidad( resp.data.unidad );
+            });
+        }
+
+        obtener();
+
+    }, []) 
+
      
     return (
 
@@ -18,7 +47,7 @@ export const PantallaUnidadPage = () => {
                     <Box bgcolor={'#003366'} sx={{ opacity:0.8}}>
                         
                         <Typography variant="h4" color="white" textAlign={'center'} p={1}>
-                            Oficialía Común de Partes
+                            {unidad?.nombre}
                         </Typography>
                             
                     </Box>                      
@@ -44,75 +73,18 @@ export const PantallaUnidadPage = () => {
 
                             <TableBody>
 
-                                <TableRow style={{...table_tbody }}>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>1</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>024</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>8</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Atendiendo</TableCell>
-                                </TableRow>
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>2</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>025</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>1</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Atendiendo</TableCell>
-                                </TableRow>
-                            
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>3</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>026</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>3</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Atendiendo</TableCell>
-                                </TableRow>
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>4</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>027</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>4</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Atendiendo</TableCell>
-                                </TableRow>       
-
-                                 <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>5</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>028</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>       
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>6</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>029</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>       
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>7</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>030</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>       
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>8</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>031</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>       
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>9</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>032</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>  
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>10</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>033</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>  
+                                {
+                                    turnosArray.slice(0,20).map( ( turno, index ) => (
+                                        
+                                        <TableRow key={ index } style={{...table_tbody }}>
+                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ turno.turno_estado === 'ATENDIENDO' ? turno.ventanilla.numero : '' }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ turno.turno_estado }</TableCell>
+                                        </TableRow>
+                                        
+                                    ))
+                                } 
                             
                             </TableBody>
 
@@ -134,7 +106,7 @@ export const PantallaUnidadPage = () => {
 
                             <Box mt={2} py={10} sx={{...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5 }}>
                             
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>024</Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ultimoTurno?.turno_numero}</Typography>
 
                             </Box>
 
@@ -147,7 +119,7 @@ export const PantallaUnidadPage = () => {
                             </Box>
 
                             <Box bgcolor={'#4D4D50'} mt={2} py={10} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5 }}>
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>8</Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ultimoTurno?.ventanilla.numero}</Typography>
                             </Box>
 
                         </Grid>

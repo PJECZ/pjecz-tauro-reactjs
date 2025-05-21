@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { Dialog, DialogContent, DialogActions, Button, FormControl, MenuItem, Grid, DialogTitle, TextField, Checkbox, FormControlLabel, FormGroup, FormLabel } from "@mui/material";
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, MenuItem, TextField } from "@mui/material";
 
 import { RootState } from "../store";
 import { login, stateProps } from "../store/slices/AuthSlice";
@@ -31,7 +31,7 @@ const tipos: TipoTurnosProps[] = [
 
 export const Settings = ( { open, setOpen }: Props ) => {
 
-    const { username, correoElectronico, unidad, token } = useSelector( ( state: RootState ) => state.auth );
+    const { username, correoElectronico, unidad, token, rol } = useSelector( ( state: RootState ) => state.auth );
 
     const dispatch = useDispatch();
 
@@ -65,7 +65,7 @@ export const Settings = ( { open, setOpen }: Props ) => {
             username: username,
             token: token,                    
             correoElectronico: correoElectronico,
-            tipoUsuario: 'Ventanilla',
+            rol: rol,
             ventanilla: `Ventanilla ${ ventanilla }`,
             unidad: unidad
         };
@@ -129,8 +129,8 @@ export const Settings = ( { open, setOpen }: Props ) => {
                             >   
                                 <MenuItem key={0} value={0}>Seleccione una opción</MenuItem>      
                                 {
-                                    ventanillaArray.map( ( { id, nombre } ) => (
-                                        <MenuItem key={id} value={id}>{ nombre } { id } </MenuItem>      
+                                    ventanillaArray.map( ( { ventanilla_id, ventanilla_nombre, ventanilla_numero } ) => (
+                                        <MenuItem key={ventanilla_id} value={ventanilla_id}>{ ventanilla_nombre } - { ventanilla_numero }   </MenuItem>      
                                     ))
                                 }
                             </TextField>

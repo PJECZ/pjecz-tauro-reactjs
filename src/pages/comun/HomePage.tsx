@@ -1,7 +1,7 @@
 
 import { useSelector } from "react-redux";
 
-import { Layout } from "../../components/Layout"
+import { Layout } from "../../components/Layout";
 
 import { RootState } from "../../store";
 
@@ -10,15 +10,15 @@ import { CrearTurnoPage } from "./CrearTurnoPage";
 
 export const HomePage = () => {  
 
-    const { tipoUsuario } = useSelector( ( state: RootState ) => state.auth );
+    const { rol } = useSelector( ( state: RootState ) => state.auth );
      
     return (
 
         <Layout footer={ true }>
 
-            { tipoUsuario === 'Ventanilla' && <AtenderTurnoPage /> }
+            { rol?.nombre === 'VENTANILLA' && <AtenderTurnoPage /> }
            
-            { tipoUsuario === 'Recepcionista' && <CrearTurnoPage /> }
+            { rol?.nombre === 'RECEPCION' && <CrearTurnoPage /> }
 
         </Layout>  
         

@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppBar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material';
 
-import TuneIcon from '@mui/icons-material/Tune';
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import PersonIcon from '@mui/icons-material/Person';
+import TuneIcon from '@mui/icons-material/Tune';
 
 import { RootState } from '../store';
 import { logout } from '../store/slices/AuthSlice';
@@ -17,7 +17,7 @@ export const Footer = () => {
 
     const dispatch = useDispatch();
     
-    const { username, ventanilla, tipoUsuario } = useSelector( ( state: RootState ) => state.auth );
+    const { username, ventanilla, rol } = useSelector( ( state: RootState ) => state.auth );
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -72,7 +72,7 @@ export const Footer = () => {
                     <Box>
 
                         {
-                            ( tipoUsuario === 'Ventanilla' )
+                            ( rol?.nombre === 'VENTANILLA' )
                             &&
                                 <IconButton color="primary" sx={{ mr: 3 }} onClick={ () => setOpen( true ) }>
                                     <TuneIcon />
