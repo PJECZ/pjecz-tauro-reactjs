@@ -27,6 +27,8 @@ export const AtenderTurnoPage = () => {
 
     const [actionTurno, setActionTurno] = useState<ActionTurno>( 'Tomar' );
 
+    const { unidad: unidadRedux } = useSelector( ( state: RootState ) => state.auth );
+
     const handleGenerarTurno = () => {
         
         const nuevoTurno = Math.floor( Math.random() * 100 ).toString().padStart(3, '0');
@@ -62,7 +64,7 @@ export const AtenderTurnoPage = () => {
                     <Box bgcolor={'#003366'} sx={{ opacity:0.6}}>
                         
                         <Typography variant="h4" color="white" textAlign={'center'} p={1}>
-                            Oficialía Común de Partes
+                            { unidadRedux?.nombre } 
                         </Typography>
                             
                     </Box>                      

@@ -13,8 +13,8 @@ import '../../css/Login.css';
 
 import { login, stateProps } from '../../store/slices/AuthSlice';
 
-import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
 import { Login } from '../../connections/auth/AuthConnection';
+import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
 
 export const LoginPage = () => {
 
@@ -23,8 +23,8 @@ export const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const [correoElectronico, setCorreoElectronico] = useState('');
-    const [contrasena, setContrasena] = useState('');
+    const [correoElectronico, setCorreoElectronico] = useState('recepcionista@pjecz.gob.mx');
+    const [contrasena, setContrasena] = useState('Recepcionista1');
 
     const [{ type: typeSnackbar, open: openMessage, message }, setOpenMessage] = useState<SnackbarProps>({
         type: 'warning',
@@ -58,16 +58,16 @@ export const LoginPage = () => {
 
             await Login({ username: correoElectronico, password: contrasena }).then( resp => {
 
-                const { success, message, access_token, username } = resp;
-
+                const { success, message, access_token, username, rol , unidad } = resp;
+                
                 if( success ){
 
                     const data: stateProps = {
                         username: username,
                         token: access_token,                    
                         correoElectronico: correoElectronico,
-                        tipoUsuario: 'Ventanilla',
-                        unidad: '',
+                        rol: rol,
+                        unidad: unidad,
                     };
 
                     setTimeout(() => {

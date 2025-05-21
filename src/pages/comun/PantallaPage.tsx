@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 
 import { Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 
@@ -5,8 +6,28 @@ import { Layout } from "../../components/Layout"
 
 import { table_cell_blue, table_cell_blue_light, table_padding, table_tbody, table_thead } from "../../styles/TableStyle"
 
+import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection"
+import { TurnoProps } from "../../interfaces/comun/TurnoInterface"
+
 export const PantallaPage = () => {  
-     
+
+    const [ turnosArray, setTurnosArray ] = useState<TurnoProps[]>([]) ;
+    const [ ultimoTurno, setUtimoTurno ] = useState<TurnoProps>() ;
+    
+     useEffect(() => {
+          
+        async function obtener(){
+
+            await ConsultarTodosTurnos().then( resp => {
+                setUtimoTurno( resp.data.ultimo_turno );     
+                setTurnosArray( resp.data.turnos );
+            });
+        }
+
+        obtener();
+
+    }, []) 
+
     return (
 
         <Layout>
@@ -25,118 +46,25 @@ export const PantallaPage = () => {
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center' }}></TableCell>
                                     <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '30%', textAlign: 'center' }}>Turno</TableCell>
                                     <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '50%', textAlign: 'center' }}>Ventanilla / Recepción</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '18%', textAlign: 'center' }}></TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontsize:18,  width: '18%', textAlign: 'center' }}>Estado</TableCell>
                                 </TableRow>
 
                             </TableHead>
 
                             <TableBody>
+                                {
+                                    turnosArray.slice(0,20).map( ( turno, index ) => (
+                                        
+                                        <TableRow key={ index } style={{...table_tbody }}>
+                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{turno.unidad['clave']}-{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ turno.turno_estado === 'ATENDIENDO' ? turno.ventanilla.numero : '' }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ turno.turno_estado }</TableCell>
+                                        </TableRow>
+                                        
+                                    ))
+                                }
 
-                                <TableRow style={{...table_tbody }}>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>1</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>OFC-024</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Ventanilla 8</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Atendiendo</TableCell>
-                                </TableRow>
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>2</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-001</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Recepción 1</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Atendiendo</TableCell>
-                                </TableRow>
-                            
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>3</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>OFC-025</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Ventanilla 3</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Atendiendo</TableCell>
-                                </TableRow>
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>4</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>DEF-001</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Recepción 2</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Atendiendo</TableCell>
-                                </TableRow>       
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>5</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-002</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>       
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>6</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-003</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>       
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>7</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-004</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>       
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>8</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>DEF-002</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>       
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>9</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>OFC-026</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Ventanilla 1</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>Atendiendo</TableCell>
-                                </TableRow>  
-
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>10</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>  
-                            
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>11</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>  
-                            
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>12</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>  
-                            
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>13</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>  
-                            
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>14</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>  
-                            
-                                <TableRow>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>15</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>ARC-005</TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>En Espera</TableCell>
-                                </TableRow>                                                           
-                            
                             </TableBody>
 
                         </Table>
@@ -157,8 +85,8 @@ export const PantallaPage = () => {
 
                             <Box mt={2} py={1} sx={{ ...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5 }}>
                             
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 150 }}>OFC</Typography>
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 150 }}>024</Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 150 }}>{ ultimoTurno?.unidad.clave }</Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 150 }}>{ String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
 
                             </Box>
 
@@ -171,7 +99,7 @@ export const PantallaPage = () => {
                             </Box>
 
                             <Box mt={2} py={10} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5 }}>
-                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>8</Typography>
+                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ ultimoTurno?.ventanilla.numero}</Typography>
                             </Box>
 
                         </Grid>

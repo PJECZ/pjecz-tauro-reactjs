@@ -19,6 +19,16 @@ export const Login = ( params: LoginParams ) => {
                 message: error.message,
                 access_token: '',
                 username: '',
+                usuario_nombre_completo: '',
+                rol: {
+                    id: 0,
+                    nombre: '',
+                },
+                unidad:{
+                    id: 0,
+                    clave: '',
+                    nombre: '',
+                }
             });
         });
         

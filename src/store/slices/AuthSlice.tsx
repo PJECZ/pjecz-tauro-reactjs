@@ -1,23 +1,27 @@
 
 
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { UnidadProps } from '../../interfaces/comun/UnidadInterface';
+import { RolProps } from '../../interfaces/comun/RolInterface';
 
-export type TypeUser = 'Recepcionista' | 'Ventanilla';
+{/*export type TypeUser = 'RECEPCION' | 'VENTANILLA';*/}
 
 export interface stateProps {
     username?:               string;   
     correoElectronico?:      string;
     token?:                  string;
-    unidad?:                 string;
+    unidad?:                 UnidadProps;
     ventanilla?:             string;
-    tipoUsuario?:            TypeUser;
+    rol?:                    RolProps;
 }
 
 const initialState = {
     token: '',
     nombres: '', 
     apellidos: '', 
-    correoElectronico: '', 
+    correoElectronico: '',
+    rol: undefined,
+    unidad: undefined,   
 } as stateProps;
 
 export const authSlice = createSlice({
@@ -28,16 +32,16 @@ export const authSlice = createSlice({
             state.token = payload.token;        
             state.username = payload.username;  
             state.correoElectronico = payload.correoElectronico; 
-            state.tipoUsuario = payload.tipoUsuario; 
+            state.rol = payload.rol; 
             state.unidad = payload.unidad; 
-            state.ventanilla = payload.ventanilla; 
+            state.ventanilla = payload.ventanilla;
         },
         logout: ( state ) => {     
             state.token = '';
             state.username = '';
             state.correoElectronico = '';         
-            state.tipoUsuario = 'Ventanilla';          
-            state.unidad = '';          
+            state.rol = undefined;          
+            state.unidad = undefined;          
             state.ventanilla = '';          
         },
     },

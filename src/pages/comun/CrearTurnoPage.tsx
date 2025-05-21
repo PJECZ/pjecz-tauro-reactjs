@@ -1,7 +1,11 @@
 
 import { useState } from "react";
 
-import { Box, Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, MenuItem, TextField, Typography } from "@mui/material"
+import { useSelector } from "react-redux";
+
+import { Box, Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, MenuItem, TextField, Typography } from "@mui/material";
+
+import { RootState } from "../../store";
 
 const usuario_unidad = true;
 
@@ -9,6 +13,12 @@ export const CrearTurnoPage = () => {
     
     const [openConfirmacion, setOpenConfirmacion] = useState( false );
 
+    const [tipoturno, setTipoturno] =useState(0)
+
+    const[ unidad, setUnidad] = useState(0);
+
+    const { unidad: unidadRedux } = useSelector( ( state: RootState ) => state.auth );
+    
     return (
 
         <>    
@@ -23,7 +33,7 @@ export const CrearTurnoPage = () => {
                             <Box bgcolor={'#333'} sx={{ opacity:0.6}}>
                                 
                                 <Typography variant="h4" color="white" textAlign={'center'} p={1} sx={{ bgcolor: '#003366'}}>
-                                    Oficialía Común de Partes
+                                    { unidadRedux?.nombre } 
                                 </Typography>
                                     
                             </Box>                      
@@ -54,7 +64,8 @@ export const CrearTurnoPage = () => {
                                                         shrink: true,
                                                     },
                                                 }} 
-                                                value={0}
+                                                value={unidad}
+                                                onChange={ (e) => setUnidad( parseInt( e.target.value ?? '0' ) ) }
                                             >       
                                                 <MenuItem value={0}>Seleccione una opción</MenuItem>           
                                                 <MenuItem value={1}>Oficialía Común de Partes</MenuItem>
@@ -79,7 +90,8 @@ export const CrearTurnoPage = () => {
                                                 shrink: true,
                                             },
                                         }} 
-                                        value={0}
+                                        value={tipoturno}
+                                        onChange={ (e) => setTipoturno( parseInt( e.target.value ?? '0' ) ) }
                                     >
                                         <MenuItem value={0}>Seleccione una opción</MenuItem>  
                                         <MenuItem value={1}>Normal</MenuItem>
@@ -145,7 +157,9 @@ export const CrearTurnoPage = () => {
 
                 <DialogActions>
                     <Button onClick={ () => setOpenConfirmacion( false ) }>Cancelar</Button>
-                    <Button variant='contained' onClick={ () => setOpenConfirmacion( false ) } >
+                    <Button variant='contained' onClick={ () => {
+                        setOpenConfirmacion( false ) ;
+                    } } >
                         Aceptar
                     </Button>
                 </DialogActions>
