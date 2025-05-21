@@ -1,5 +1,6 @@
+
 export interface UnidadProps {
-    id:     number;
-    clave:  string;
-    nombre: string;
+    id:             number;
+    clave:          string;
+    nombre:         string;
 }

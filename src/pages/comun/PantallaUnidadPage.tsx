@@ -11,30 +11,40 @@ import { ConsultarTurnosUnidad } from "../../connections/comun/TurnosConnection"
 import { TurnoProps } from "../../interfaces/comun/TurnoInterface"
 import { UnidadProps } from "../../interfaces/comun/UnidadInterface"
 
+const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
+const defaultUnidad: UnidadProps = { id: 0, clave : '', nombre : '' };
+
 export const PantallaUnidadPage = () => {  
 
-    const { id } = useParams<{ id: string }>();
+    const { id } = useParams();
 
     const [ turnosArray, setTurnosArray ] = useState<TurnoProps[]>([]) ;
-    const [ ultimoTurno, setUtimoTurno ] = useState<TurnoProps>() ;
-    const [ unidad, setUnidad ] = useState<UnidadProps>() ;
+    const [ ultimoTurno, setUtimoTurno ] = useState<TurnoProps>( defaultTurno ) ;
+    const [ unidad, setUnidad ] = useState<UnidadProps>( defaultUnidad ) ;
     
-        useEffect(() => {
+    useEffect(() => {
             
         async function obtener(){
 
-            if (!id) return;
-            await ConsultarTurnosUnidad(id).then(resp => {
-                setUtimoTurno( resp.data.ultimo_turno );     
-                setTurnosArray( resp.data.turnos );
-                setUnidad( resp.data.unidad );
+            await ConsultarTurnosUnidad( id ?? '' ).then(resp => {
+
+                if( resp.data ){
+
+                    const { ultimo_turno, turnos, unidad } = resp.data;
+
+                    setUtimoTurno( ultimo_turno ?? defaultTurno );     
+                    setUnidad( unidad ?? defaultUnidad );    
+                    setTurnosArray( turnos ?? [] );
+                }
+
             });
         }
 
-        obtener();
+        if( id ){
+            obtener();
+        }
 
-    }, []) 
-
+    }, [ id ]) 
      
     return (
 
@@ -77,10 +87,10 @@ export const PantallaUnidadPage = () => {
                                     turnosArray.slice(0,20).map( ( turno, index ) => (
                                         
                                         <TableRow key={ index } style={{...table_tbody }}>
-                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ turno.turno_estado === 'ATENDIENDO' ? turno.ventanilla.numero : '' }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 18, textAlign: 'center' }}>{ turno.turno_estado }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado === 'ATENDIENDO' ? turno.ventanilla.numero : '' }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado }</TableCell>
                                         </TableRow>
                                         
                                     ))
@@ -106,7 +116,7 @@ export const PantallaUnidadPage = () => {
 
                             <Box mt={2} py={10} sx={{...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5 }}>
                             
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ultimoTurno?.turno_numero}</Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ String(ultimoTurno?.turno_numero).padStart(3,'0') }</Typography>
 
                             </Box>
 

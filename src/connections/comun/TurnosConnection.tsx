@@ -8,7 +8,6 @@ import { PantallaUnidadResponse } from '../../interfaces/comun/PantallaUnidadInt
 
 export const ConsultarTodosTurnos = ( ) => {
     
-
     return new Promise<PantallaResponse>( (resolve, eject) => {
         
         HttpClient.get('/api/v1/consultar_turnos')
@@ -16,24 +15,43 @@ export const ConsultarTodosTurnos = ( ) => {
             resolve( data );
         })
         .catch( ( error: AxiosError ) => {
-            resolve( { success: false, message: error.message, data: { turnos: [] } } );
-        });
-        
+            resolve( { 
+                success: false, 
+                message: error.message, 
+                data: { 
+                    turnos: [], 
+                    ultimo_turno: undefined, 
+                } 
+            });
+        });        
                 
     });    
 
 }
 
 export const ConsultarTurnosUnidad = (id: string)  => {
+
     return new Promise<PantallaUnidadResponse>((resolve, eject) => {
         
         HttpClient.get(`/api/v1/consultar_turnos/${id}`)
-            .then(({ data }: { data: PantallaUnidadResponse }) => {
-                resolve(data);
-            })
-            .catch((error: AxiosError) => {
-                {/*resolve({ success: false, message: error.message, data: { turnos: [] } });*/}
-                resolve({ success: false, message: error.message, data: { turnos: [], unidad: { id: 0, clave: '', nombre: '' } } });
+        .then(({ data }: { data: PantallaUnidadResponse }) => {
+            resolve(data);
+        })
+        .catch((error: AxiosError) => {
+            resolve({ 
+                success: false, 
+                message: error.message, 
+                data: { 
+                    turnos: [], 
+                    unidad: { 
+                        id: 0, 
+                        clave: '', 
+                        nombre: '' 
+                    }, 
+                    ultimo_turno: undefined, 
+                } 
             });
+        });
     });
+
 };
