@@ -83,8 +83,13 @@ export const Settings = ( { open, setOpen }: Props ) => {
 
             await ConsultarVentanillasActivas().then( resp => {
                 setVentanillaArray( resp.data );
-            });
-        }
+                console.log( resp.data );
+            })
+            .catch( error => {
+                console.log( error );   
+            }
+            
+    )}
 
         obtener();
 
@@ -129,7 +134,7 @@ export const Settings = ( { open, setOpen }: Props ) => {
                             >   
                                 <MenuItem key={0} value={0}>Seleccione una opción</MenuItem>      
                                 {
-                                    ventanillaArray.map( ( { ventanilla_id, ventanilla_nombre, ventanilla_numero } ) => (
+                                    ventanillaArray?.map( ( { ventanilla_id, ventanilla_nombre, ventanilla_numero } ) => (
                                         <MenuItem key={ventanilla_id} value={ventanilla_id}>{ ventanilla_nombre } - { ventanilla_numero }   </MenuItem>      
                                     ))
                                 }
