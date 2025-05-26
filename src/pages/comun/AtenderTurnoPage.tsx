@@ -12,6 +12,8 @@ import { table_padding, table_tbody, table_thead } from "../../styles/TableStyle
 import { Settings } from "../../components/Settings";
 import { RootState } from "../../store";
 
+import { CancelarTurno, ConcluirTurno, TomarTurno } from "../../connections/comun/TurnosConnection";
+
 type ActionTurno = 'Tomar' | 'Concluir' | 'Cancelar';
 
 export const AtenderTurnoPage = () => {  
@@ -19,6 +21,8 @@ export const AtenderTurnoPage = () => {
     const { ventanilla } = useSelector( ( state: RootState ) => state.auth );
 
     const [turno, setTurno] = useState('');
+    const [turnoEstado, setTurnoEstado] = useState(0);
+    const [idTurno, setIdTurno] = useState(0);
 
     const [isDisabled, setIsDisabled] = useState(false);
     
@@ -29,19 +33,76 @@ export const AtenderTurnoPage = () => {
 
     const { unidad: unidadRedux } = useSelector( ( state: RootState ) => state.auth );
 
-    const handleGenerarTurno = () => {
+    const handleTomarTurno = () => {
         
-        const nuevoTurno = Math.floor( Math.random() * 100 ).toString().padStart(3, '0');
+        async function obtenerTurno(){
 
-        setTurno(nuevoTurno);
-        setIsDisabled(true);
+            await TomarTurno(  ).then(resp => {
+            
+                        if( resp.data ){
+            
+                            const { turno_numero, turno_id } = resp.data;
+                            console.log("respuesta: ",resp.data)
+                            setTurno( String(turno_numero ?? '') );  
+                            setIdTurno( turno_id ?? 0);  
+                            setIsDisabled(true);
+                        }
+            
+                    });
+                }
+        obtenerTurno();        
+        
+        setOpenConfirmacion( false );
+    }
+
+    const handleCancelarTurno = () => {
+        
+        async function cancelarTurno(){
+
+            await CancelarTurno( {
+                "turno_id": idTurno,
+                "turno_estado_id": turnoEstado,
+              } ).then(resp => {
+            
+                        if( resp.data ){
+                            
+                            console.log("respuesta: ",resp.data)
+                            setTurno( '' );  
+                            setIdTurno( 0 );  
+                        }
+            
+                    });
+                }
+        cancelarTurno();        
+        setIsDisabled(false);
+        setOpenConfirmacion( false );
+    }
+
+    const handleConcluirTurno = () => {
+        
+        async function concluirTurno(){
+
+            await ConcluirTurno( {
+                "turno_id": idTurno,
+                "turno_estado_id": turnoEstado,
+              } ).then(resp => {
+            
+                        if( resp.data ){
+                            
+                            console.log("respuesta: ",resp.data)
+                            setTurno( '' );  
+                            setIdTurno( 0 );  
+                        }
+            
+                    });
+                }
+        concluirTurno();        
+        setIsDisabled(false);
         setOpenConfirmacion( false );
     }
 
     const handleCerrarModal = () => {
-        
         setTurno( '' );
-        setIsDisabled( false );
         setOpenConfirmacion( false );
     }
 
@@ -115,13 +176,13 @@ export const AtenderTurnoPage = () => {
                                                     <TableRow>
 
                                                         <TableCell sx={{textAlign: 'center'}}>
-                                                            <Button sx={{ ...button_green_small }} variant="contained" onClick={ () => { setActionTurno( 'Concluir' ); setOpenConfirmacion( true ); } }> 
+                                                            <Button sx={{ ...button_green_small }} variant="contained" onClick={ () => { setTurnoEstado(3); setActionTurno( 'Concluir' ); setOpenConfirmacion( true ); } }> 
                                                                 Concluir
                                                             </Button>
                                                         </TableCell>
 
                                                         <TableCell sx={{textAlign: 'center'}}>
-                                                            <Button sx={{ ...button_yellow_small }} variant="contained" onClick={ () => { setActionTurno( 'Cancelar' ); setOpenConfirmacion( true ); } }> 
+                                                            <Button sx={{ ...button_yellow_small }} variant="contained" onClick={ () => { setTurnoEstado(4); setActionTurno( 'Cancelar' ); setOpenConfirmacion( true ); } }> 
                                                                 Cancelar
                                                             </Button>
                                                         </TableCell>
@@ -154,7 +215,7 @@ export const AtenderTurnoPage = () => {
                 <DialogContent sx={{ width: 300 }}>
 
                     <DialogContentText>
-                        { actionTurno === 'Tomar' && '¿Desea generar un nuevo turno?' }
+                        { actionTurno === 'Tomar' && '¿Desea tomar un nuevo turno?' }
                         { actionTurno === 'Cancelar' && '¿Desea cancelar el turno seleccionado?' }
                         { actionTurno === 'Concluir' && '¿Desea concluir el turno seleccionado?' }
                     </DialogContentText>
@@ -163,7 +224,13 @@ export const AtenderTurnoPage = () => {
 
                 <DialogActions>
                     <Button onClick={ () => setOpenConfirmacion( false ) }>Cancelar</Button>
-                    <Button variant='contained' onClick={ () => actionTurno === 'Tomar' ? handleGenerarTurno() : handleCerrarModal() } >
+                    <Button variant='contained' onClick={ 
+                        () => { 
+                            actionTurno === 'Tomar' ? handleTomarTurno() : handleCerrarModal() 
+                            actionTurno === 'Cancelar' ? handleCancelarTurno() : handleCerrarModal()
+                            actionTurno === 'Concluir' ? handleConcluirTurno() : handleCerrarModal()
+                        }
+                        } >
                         Aceptar
                     </Button>
                 </DialogActions>

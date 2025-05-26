@@ -10,6 +10,8 @@ import { login, stateProps } from "../store/slices/AuthSlice";
 
 import { ConsultarVentanillasActivas } from "../connections/comun/VentanillaConnection";
 
+import { ConsultarTiposTurno } from "../connections/comun/TiposTurnoConnection";
+
 import { Ventanilla } from "../interfaces/comun/VentanillaInterface";
 
 interface Props {
@@ -93,8 +95,8 @@ export const Settings = ( { open, setOpen }: Props ) => {
 
         obtener();
 
-    }, [])       
-
+    }, [])     
+    
     useEffect(() => {
       
         setTiposTurnoArray( tipos );
@@ -134,8 +136,8 @@ export const Settings = ( { open, setOpen }: Props ) => {
                             >   
                                 <MenuItem key={0} value={0}>Seleccione una opción</MenuItem>      
                                 {
-                                    ventanillaArray?.map( ( { ventanilla_id, ventanilla_nombre, ventanilla_numero } ) => (
-                                        <MenuItem key={ventanilla_id} value={ventanilla_id}>{ ventanilla_nombre } - { ventanilla_numero }   </MenuItem>      
+                                    ventanillaArray?.map( ( { id, nombre, numero } ) => (
+                                        <MenuItem key={id} value={id}>{ nombre } - { numero }   </MenuItem>      
                                     ))
                                 }
                             </TextField>

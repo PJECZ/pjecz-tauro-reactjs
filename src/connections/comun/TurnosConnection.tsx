@@ -5,6 +5,8 @@ import { AxiosError } from 'axios';
 
 import { PantallaResponse } from '../../interfaces/comun/PantallaInterface';
 import { PantallaUnidadResponse } from '../../interfaces/comun/PantallaUnidadInterface';
+import { CancelarTurnoResponse, ConcluirTurnoResponse, CrearTurnoResponse, TomarTurnoResponse } from '../../interfaces/comun/TurnoInterface';
+import HttpClientToken from '../../services/HttpClientToken';
 
 export const ConsultarTodosTurnos = ( ) => {
     
@@ -55,3 +57,156 @@ export const ConsultarTurnosUnidad = (id: string)  => {
     });
 
 };
+
+
+export const CrearTurno = ( params : any ) => {
+    
+    return new Promise<CrearTurnoResponse>( (resolve, eject) => {
+        
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+
+        if( data ){
+
+            const { token } = data;
+            HttpClientToken.post('/api/v1/crear_turno', params, token)
+            .then( ( { data } : { data : CrearTurnoResponse }) => {           
+                resolve( data );
+            })
+            .catch( ( error: AxiosError ) => {
+                resolve( { 
+                    success: false, 
+                    message: error.message, 
+                    data: {
+                            turno_id: 0,
+                            turno_numero: 0,
+                            turno_estado: '',
+                            turno_comentarios: '',
+                            ventanilla: {
+                                id: 0,
+                                nombre: '',
+                                numero: 0,
+                            }
+                        
+                    }
+                });
+            });
+        }
+         
+                
+    });    
+
+}
+
+export const TomarTurno = (  ) => {
+    
+    return new Promise<TomarTurnoResponse>( (resolve, eject) => {
+        
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+
+        if( data ){
+
+            const { token } = data;
+            HttpClientToken.get('/api/v1/tomar_turno',  token)
+            .then( ( { data } : { data : TomarTurnoResponse }) => {           
+                resolve( data );
+            })
+            .catch( ( error: AxiosError ) => {
+                resolve( { 
+                    success: false, 
+                    message: error.message, 
+                    data: {
+                            turno_id: 0,
+                            turno_numero: 0,
+                            turno_estado: '',
+                            turno_comentarios: '',
+                            ventanilla: {
+                                id: 0,
+                                nombre: '',
+                                numero: 0,
+                            }
+                        
+                    }
+                });
+            });
+        }
+         
+                
+    });    
+
+}
+
+export const CancelarTurno = ( params : any ) => {
+    
+    return new Promise<CancelarTurnoResponse>( (resolve, eject) => {
+        
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+
+        if( data ){
+
+            const { token } = data;
+            HttpClientToken.post('/api/v1/actualizar_turno_estado', params, token)
+            .then( ( { data } : { data : CancelarTurnoResponse }) => {           
+                resolve( data );
+            })
+            .catch( ( error: AxiosError ) => {
+                resolve( { 
+                    success: false, 
+                    message: error.message, 
+                    data: {
+                            turno_id: 0,
+                            turno_numero: 0,
+                            turno_estado: '',
+                            turno_comentarios: '',
+                            ventanilla: {
+                                id: 0,
+                                nombre: '',
+                                numero: 0,
+                            }
+                        
+                    }
+                });
+            });
+        }
+         
+                
+    });    
+
+}
+
+export const ConcluirTurno = ( params : any ) => {
+    
+    return new Promise<ConcluirTurnoResponse>( (resolve, eject) => {
+        
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+
+        if( data ){
+
+            const { token } = data;
+            HttpClientToken.post('/api/v1/actualizar_turno_estado', params, token)
+            .then( ( { data } : { data : ConcluirTurnoResponse }) => {           
+                resolve( data );
+            })
+            .catch( ( error: AxiosError ) => {
+                resolve( { 
+                    success: false, 
+                    message: error.message, 
+                    data: {
+                            turno_id: 0,
+                            turno_numero: 0,
+                            turno_estado: '',
+                            turno_comentarios: '',
+                            ventanilla: {
+                                id: 0,
+                                nombre: '',
+                                numero: 0,
+                            }
+                        
+                    }
+                });
+            });
+        }
+         
+                
+    });    
+
+}
