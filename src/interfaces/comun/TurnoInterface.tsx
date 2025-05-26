@@ -43,3 +43,7 @@ export interface ConcluirTurnoParams {
 export interface ConcluirTurnoResponse extends HttpResponse {
     data :  TurnoProps
 }
+
+export interface SocketTurnoResponse extends HttpResponse {
+    data:   TurnoProps
+}

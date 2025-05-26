@@ -10,21 +10,23 @@ import { login, stateProps } from "../store/slices/AuthSlice";
 
 import { ConsultarVentanillasActivas } from "../connections/comun/VentanillaConnection";
 import { ConsultarTiposTurno } from "../connections/comun/TiposTurnoConnection";
+import { ActualizarUsuario, ConsultarConfiguracionUsuario } from "../connections/comun/UsuarioConnection";
 
 import { Ventanilla } from "../interfaces/comun/VentanillaInterface";
 import { TiposTurnoProps } from "../interfaces/comun/TiposTurnoInterface";
-import { ActualizarUsuario, ConsultarConfiguracionUsuario } from "../connections/comun/UsuarioConnection";
+import { TurnoProps } from "../interfaces/comun/TurnoInterface";
 
 interface Props {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setTurno?: React.Dispatch<React.SetStateAction<TurnoProps>>;
 }
 
 export interface ErrorsProps {
     configuracion?:         string;
 }
 
-export const Settings = ( { open, setOpen }: Props ) => {
+export const Settings = ( { open, setOpen, setTurno }: Props ) => {
 
     const { username, correoElectronico, unidad, token, rol } = useSelector( ( state: RootState ) => state.auth );
 
@@ -146,7 +148,7 @@ export const Settings = ( { open, setOpen }: Props ) => {
 
                 if( resp.data ){    
 
-                    const { ventanilla, turnos_tipos } = resp.data;
+                    const { ventanilla, turnos_tipos } = resp.data;        
 
                     if( ventanilla.id !== 0 ){
                         setVentanilla( ventanilla.id );

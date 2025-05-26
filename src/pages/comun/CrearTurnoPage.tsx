@@ -85,14 +85,10 @@ export const CrearTurnoPage = () => {
             if( resp.data ){
                 
                 setTurno( resp.data );
-
-                setTimeout(() => {
                     
-                    setOpenTurnoConfirmacion( true );   
-                    setOpenConfirmacion( false ); 
-                    setLoading( false );
-
-                }, 700);
+                setOpenTurnoConfirmacion( true );   
+                setOpenConfirmacion( false ); 
+                setLoading( false );      
 
             }
             else {

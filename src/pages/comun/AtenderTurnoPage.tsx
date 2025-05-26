@@ -14,6 +14,7 @@ import { CancelarTurno, ConcluirTurno, TomarTurno } from "../../connections/comu
 
 import { TurnoProps } from '../../interfaces/comun/TurnoInterface';
 import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
+import { ConsultarConfiguracionUsuario } from '../../connections/comun/UsuarioConnection';
 
 type ActionTurno = 'Tomar' | 'Concluir' | 'Cancelar';
 
@@ -108,6 +109,27 @@ export const AtenderTurnoPage = () => {
         }
 
     }, [ ventanilla ])    
+
+    useEffect(() => {
+    
+        async function obtener(){
+
+            await ConsultarConfiguracionUsuario().then( resp => {
+
+                if( resp.data ){    
+
+                    const { ultimo_turno } = resp.data;   
+        
+                    setTurno( ultimo_turno?? defaultTurno );          
+                    
+                }
+                
+            });
+        }    
+        
+        obtener();              
+
+    }, [ ])   
 
     return (
 
