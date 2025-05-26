@@ -2,11 +2,12 @@
 import { HttpResponse } from "../auth/AuthInterface";
 
 export interface TiposTurnoResponse extends HttpResponse {
-    data: TiposTurno[];
+    data: TiposTurnoProps[];
 }
 
-export interface TiposTurno {
+export interface TiposTurnoProps {
     id:         number;
     nombre:     string;
-    nivel:     string;
+    nivel:      string;
+    selected?:  boolean;
 }

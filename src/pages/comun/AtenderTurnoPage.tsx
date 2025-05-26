@@ -3,9 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { useSelector } from "react-redux";
 
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-
-import { button_blue_ligth, button_green_small, button_yellow_small } from "../../styles/ButtonsStyle";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
 import { table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
 
@@ -14,17 +12,18 @@ import { RootState } from "../../store";
 
 import { CancelarTurno, ConcluirTurno, TomarTurno } from "../../connections/comun/TurnosConnection";
 
+import { TurnoProps } from '../../interfaces/comun/TurnoInterface';
+import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
+
 type ActionTurno = 'Tomar' | 'Concluir' | 'Cancelar';
+
+const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
 export const AtenderTurnoPage = () => {  
 
     const { ventanilla } = useSelector( ( state: RootState ) => state.auth );
 
-    const [turno, setTurno] = useState('');
-    const [turnoEstado, setTurnoEstado] = useState(0);
-    const [idTurno, setIdTurno] = useState(0);
-
-    const [isDisabled, setIsDisabled] = useState(false);
+    const [turno, setTurno] = useState<TurnoProps>( defaultTurno );
     
     const [open, setOpen] = useState( false );
     const [openConfirmacion, setOpenConfirmacion] = useState( false );
@@ -33,77 +32,73 @@ export const AtenderTurnoPage = () => {
 
     const { unidad: unidadRedux } = useSelector( ( state: RootState ) => state.auth );
 
-    const handleTomarTurno = () => {
-        
-        async function obtenerTurno(){
+    const [{ type: typeSnackbar, open: openMessage, message }, setOpenMessage] = useState<SnackbarProps>({
+        type: 'warning',
+        message: '',
+        open: false,
+    });    
 
-            await TomarTurno(  ).then(resp => {
-            
-                        if( resp.data ){
-            
-                            const { turno_numero, turno_id } = resp.data;
-                            console.log("respuesta: ",resp.data)
-                            setTurno( String(turno_numero ?? '') );  
-                            setIdTurno( turno_id ?? 0);  
-                            setIsDisabled(true);
-                        }
-            
-                    });
+    const handleCloseSnackbar = () => setOpenMessage({ type: typeSnackbar, open: false, message }) 
+
+    const handleTomarTurno = async () => {
+
+        await TomarTurno().then(resp => {
+    
+            const { success, message, data } = resp;
+
+            if( success ){
+
+                if( data ){        
+                    setTurno( data );  
                 }
-        obtenerTurno();        
+
+            }
+            else {
+                setOpenMessage({
+                    type: 'warning',
+                    open: true,
+                    message,
+                });
+            }
+
+        });  
         
         setOpenConfirmacion( false );
     }
 
-    const handleCancelarTurno = () => {
-        
-        async function cancelarTurno(){
+    const handleCancelarTurno = async () => {      
 
-            await CancelarTurno( {
-                "turno_id": idTurno,
-                "turno_estado_id": turnoEstado,
-              } ).then(resp => {
-            
-                        if( resp.data ){
-                            
-                            console.log("respuesta: ",resp.data)
-                            setTurno( '' );  
-                            setIdTurno( 0 );  
-                        }
-            
-                    });
-                }
-        cancelarTurno();        
-        setIsDisabled(false);
+        await CancelarTurno({ turno_id: turno.turno_id, turno_estado_id: 4 })
+        .then(resp => {
+        
+            if( resp.data ){
+                setTurno( defaultTurno );
+            }
+
+        });                
+    
         setOpenConfirmacion( false );
     }
 
-    const handleConcluirTurno = () => {
+    const handleConcluirTurno = async () => {
         
-        async function concluirTurno(){
+        await ConcluirTurno({ turno_id: turno.turno_id, turno_estado_id: 3 })
+        .then(resp => {
+        
+            if( resp.data ){
+                setTurno( defaultTurno );
+            }
 
-            await ConcluirTurno( {
-                "turno_id": idTurno,
-                "turno_estado_id": turnoEstado,
-              } ).then(resp => {
-            
-                        if( resp.data ){
-                            
-                            console.log("respuesta: ",resp.data)
-                            setTurno( '' );  
-                            setIdTurno( 0 );  
-                        }
-            
-                    });
-                }
-        concluirTurno();        
-        setIsDisabled(false);
+        });  
+
         setOpenConfirmacion( false );
     }
 
     const handleCerrarModal = () => {
-        setTurno( '' );
+
+        setTurno( defaultTurno );
         setOpenConfirmacion( false );
+
     }
 
     useEffect(() => {
@@ -117,6 +112,18 @@ export const AtenderTurnoPage = () => {
     return (
 
         <>
+
+            <Snackbar open={openMessage} autoHideDuration={1500} onClose={ handleCloseSnackbar } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                <Alert
+                    onClose={ handleCloseSnackbar }
+                    severity={ typeSnackbar }
+                    variant="filled"
+                    sx={{ width: '100%' }}                   
+                >
+                    { message }
+                </Alert>
+            </Snackbar> 
+
 
             <Grid container spacing={3}>
 
@@ -134,7 +141,7 @@ export const AtenderTurnoPage = () => {
 
                 <Grid size={{ xs: 12, md: 12 }} sx={ { display: 'flex', justifyContent: 'center', margin:'auto' } } >
 
-                    <Button disabled={ isDisabled } sx={{ ...button_blue_ligth, opacity:.8 }} variant="contained" onClick={ () => { setActionTurno( 'Tomar' ); setOpenConfirmacion( true ); } }> 
+                    <Button disabled={ turno.turno_id !== 0 } size='large' variant="contained" onClick={ () => { setActionTurno( 'Tomar' ); setOpenConfirmacion( true ); } }> 
                         Tomar Turno
                     </Button>
                         
@@ -159,7 +166,7 @@ export const AtenderTurnoPage = () => {
                                 <TableRow style={{...table_tbody }}>
                                     
                                     <TableCell sx={{ ...table_padding, fontSize: 200, textAlign: 'center', fontWeight: 'bold', height:'25vh', maxHeight:'25vh' }}>
-                                        { turno }
+                                        { turno.turno_numero === 0 ? '' : turno.turno_numero }
                                     </TableCell>
 
                                 </TableRow>
@@ -169,21 +176,21 @@ export const AtenderTurnoPage = () => {
                                     <TableCell sx={{padding:0,  fontSize: 18, textAlign: 'center' }}>
 
                                         { 
-                                            turno !== '' 
+                                            turno.turno_id !== 0 
                                             &&   
                                                 <Table sx={{ backgroundColor:'#ccc', margin:0, padding:0 }}>
 
                                                     <TableRow>
 
                                                         <TableCell sx={{textAlign: 'center'}}>
-                                                            <Button sx={{ ...button_green_small }} variant="contained" onClick={ () => { setTurnoEstado(3); setActionTurno( 'Concluir' ); setOpenConfirmacion( true ); } }> 
-                                                                Concluir
+                                                            <Button variant="outlined" color='secondary' onClick={ () => { setActionTurno( 'Cancelar' ); setOpenConfirmacion( true ); } }> 
+                                                                Cancelar
                                                             </Button>
                                                         </TableCell>
 
                                                         <TableCell sx={{textAlign: 'center'}}>
-                                                            <Button sx={{ ...button_yellow_small }} variant="contained" onClick={ () => { setTurnoEstado(4); setActionTurno( 'Cancelar' ); setOpenConfirmacion( true ); } }> 
-                                                                Cancelar
+                                                            <Button variant="contained" size='large' color='success' onClick={ () => { setActionTurno( 'Concluir' ); setOpenConfirmacion( true ); } }> 
+                                                                Concluir
                                                             </Button>
                                                         </TableCell>
 

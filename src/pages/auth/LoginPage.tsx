@@ -58,7 +58,7 @@ export const LoginPage = () => {
 
             await Login({ username: correoElectronico, password: contrasena }).then( resp => {
 
-                const { success, message, access_token, username, rol , unidad } = resp;
+                const { success, message, access_token, username, rol , unidad, ventanilla } = resp;
                 
                 if( success ){
 
@@ -68,6 +68,7 @@ export const LoginPage = () => {
                         correoElectronico: correoElectronico,
                         rol: rol,
                         unidad: unidad,
+                        ventanilla: ventanilla ? `Ventanilla ${ ventanilla.numero }` : '',
                     };
 
                     setTimeout(() => {
