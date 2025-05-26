@@ -6,9 +6,9 @@ export interface VentanillaResponse extends HttpResponse {
 }
 
 export interface Ventanilla {
-    ventanilla_id:         number;
-    ventanilla_nombre:     string;
-    ventanilla_numero:     string;
+    id:         number;
+    nombre:     string;
+    numero:     string;
 }
 
 export interface VentanillaProps {
