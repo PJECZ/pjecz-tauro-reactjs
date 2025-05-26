@@ -3,46 +3,46 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, MenuItem, TextField } from "@mui/material";
+import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, MenuItem, TextField } from "@mui/material";
 
 import { RootState } from "../store";
 import { login, stateProps } from "../store/slices/AuthSlice";
 
 import { ConsultarVentanillasActivas } from "../connections/comun/VentanillaConnection";
-
 import { ConsultarTiposTurno } from "../connections/comun/TiposTurnoConnection";
+import { ActualizarUsuario, ConsultarConfiguracionUsuario } from "../connections/comun/UsuarioConnection";
 
 import { Ventanilla } from "../interfaces/comun/VentanillaInterface";
+import { TiposTurnoProps } from "../interfaces/comun/TiposTurnoInterface";
+import { TurnoProps } from "../interfaces/comun/TurnoInterface";
 
 interface Props {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setTurno?: React.Dispatch<React.SetStateAction<TurnoProps>>;
 }
 
-interface TipoTurnosProps {
-    id:         number;
-    nombre:     string;
-    selected?:  boolean;
+export interface ErrorsProps {
+    configuracion?:         string;
 }
 
-const tipos: TipoTurnosProps[] = [
-    { id: 1, nombre: 'Normal', selected: false, },
-    { id: 2, nombre: 'Urgente', selected: false, },
-    { id: 3, nombre: 'Con cita', selected: false, },
-];
-
-export const Settings = ( { open, setOpen }: Props ) => {
+export const Settings = ( { open, setOpen, setTurno }: Props ) => {
 
     const { username, correoElectronico, unidad, token, rol } = useSelector( ( state: RootState ) => state.auth );
 
     const dispatch = useDispatch();
 
-    const [tiposTurno, setTiposTurno] = useState<TipoTurnosProps[]>( [] );
-    const [tiposTurnoArray, setTiposTurnoArray] = useState<TipoTurnosProps[]>( [] );
+    const [loading, setLoading] = useState( false );
+
+    const [tiposTurno, setTiposTurno] = useState<number[]>( [] );
+    const [tiposTurnoArray, setTiposTurnoArray] = useState<TiposTurnoProps[]>( [] );
+    const [tiposTurnoArrayTemp, setTiposTurnoArrayTemp] = useState<TiposTurnoProps[]>( [] );
 
     const [ventanilla, setVentanilla] = useState<number>(0);
     const [ventanillaArray, setVentanillaArray] = useState<Ventanilla[]>([]);
     
+    const [errors, setErrors] = useState<ErrorsProps>( {} );
+
     const handleChange = ( id: number, checked: boolean ) => {
      
         const newArray = tiposTurnoArray.map( ( elem ) => {
@@ -53,30 +53,56 @@ export const Settings = ( { open, setOpen }: Props ) => {
         });
 
         const tipos = newArray.filter( ( { selected } ) => selected === true );
-        setTiposTurno( tipos );
-
+        
+        setTiposTurno( tipos.map( (elem) => elem.id ) );      
         setTiposTurnoArray( newArray );
     };
 
-    const handleGuardarConfiguracion = () => {
+    const handleGuardarConfiguracion = async () => {
 
-        console.log( ventanilla );
-        console.log( tiposTurno );
+        setLoading( true );
 
-        const data: stateProps = {
-            username: username,
-            token: token,                    
-            correoElectronico: correoElectronico,
-            rol: rol,
-            ventanilla: `Ventanilla ${ ventanilla }`,
-            unidad: unidad
-        };
+        await ActualizarUsuario({ ventanilla_id: ventanilla, turnos_tipos_ids: tiposTurno }).then( resp => {
 
-        dispatch( login( data ) );
+            const { success, message, data: dataResponse } = resp;
 
-        window.localStorage.setItem('data', JSON.stringify(data));    
+            if( success ){
 
-        setOpen( false );
+                setTimeout(() => {
+
+                    const { ventanilla } = dataResponse;
+                    
+                    const data: stateProps = {
+                        username: username,
+                        token: token,                    
+                        correoElectronico: correoElectronico,
+                        rol: rol,
+                        ventanilla: `Ventanilla ${ ventanilla.numero }`,
+                        unidad: unidad
+                    };
+            
+                    dispatch( login( data ) );
+            
+                    window.localStorage.setItem('data', JSON.stringify(data));    
+            
+                    setOpen( false );
+                    setLoading( false );
+
+                }, 700);
+
+            }
+            else {
+
+                setTimeout(() => {
+                    
+                    setErrors({ configuracion: message });
+                    setLoading( false );
+
+                }, 700);
+            }
+
+        });
+
     }
 
     useEffect(() => {
@@ -85,23 +111,73 @@ export const Settings = ( { open, setOpen }: Props ) => {
 
             await ConsultarVentanillasActivas().then( resp => {
                 setVentanillaArray( resp.data );
-                console.log( resp.data );
-            })
-            .catch( error => {
-                console.log( error );   
-            }
-            
-    )}
+            });
+        }
 
-        obtener();
+        if( open ){
+            obtener();
+        }
 
-    }, [])     
+    }, [ open ])     
     
     useEffect(() => {
-      
-        setTiposTurnoArray( tipos );
 
-    }, [])    
+        async function obtener(){
+
+            await ConsultarTiposTurno().then( resp => {
+
+                if( resp.data ){    
+                    setTiposTurnoArray( resp.data );
+                    setTiposTurnoArrayTemp( resp.data );
+                }
+                
+            });
+        }
+
+        if( open ){
+            obtener();
+        }  
+
+    }, [ open ])    
+
+    useEffect(() => {
+
+        async function obtener(){
+
+            await ConsultarConfiguracionUsuario().then( resp => {
+
+                if( resp.data ){    
+
+                    const { ventanilla, turnos_tipos } = resp.data;        
+
+                    if( ventanilla.id !== 0 ){
+                        setVentanilla( ventanilla.id );
+                    }
+
+                    if( turnos_tipos.length !== 0 ){
+
+                        const newArray = tiposTurnoArrayTemp.map( ( elem ) => {
+                            const findElem = turnos_tipos.find( (e) => e.id === elem.id );
+                            if( findElem ){
+                                elem.selected = true;
+                            }
+                            
+                            return elem;
+                        });
+                        
+                        setTiposTurno( newArray.map( (elem) => elem.id ) );  
+                        setTiposTurnoArray( newArray );
+                    }
+                }
+                
+            });
+        }
+
+        if( open && ventanillaArray.length !== 0 && tiposTurnoArrayTemp.length !== 0 ){
+            obtener();
+        }       
+
+    }, [ open, ventanillaArray, tiposTurnoArrayTemp ])    
 
     return (        
 
@@ -173,13 +249,25 @@ export const Settings = ( { open, setOpen }: Props ) => {
                         
                     </Grid>
 
+                    {
+                        errors.configuracion
+                        &&
+                            <Grid size={{ xs: 12, md: 12 }}>
+                                <Alert variant="standard" color="warning">{ errors.configuracion }</Alert>
+                            </Grid>
+                    }
+
                 </Grid>          
           
             </DialogContent>
            
             <DialogActions>
 
-                <Button variant="contained" onClick={ handleGuardarConfiguracion } autoFocus>
+                <Button variant="text" onClick={ () => setOpen( false ) } autoFocus>
+                    Cancelar
+                </Button>
+
+                <Button disabled={ ventanilla === 0 || tiposTurno.length === 0 } variant="contained" onClick={ handleGuardarConfiguracion } loading={ loading }>
                     Guardar
                 </Button>
 

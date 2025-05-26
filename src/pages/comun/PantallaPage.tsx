@@ -8,7 +8,8 @@ import { table_cell_blue, table_cell_blue_light, table_padding, table_tbody, tab
 
 import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection"
 
-import { TurnoProps } from "../../interfaces/comun/TurnoInterface"
+import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInterface"
+import { useSocket } from "../../hooks/useSocket"
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
@@ -16,27 +17,78 @@ export const PantallaPage = () => {
 
     const [ turnosArray, setTurnosArray ] = useState<TurnoProps[]>([]) ;
     const [ ultimoTurno, setUtimoTurno ] = useState<TurnoProps>( defaultTurno );
+    const [ loadFetch, setLoadFetch ] = useState( true );
+
+    const { socket, online } = useSocket();
+
+    console.log( online );
+
+    useEffect( () => {
+
+        socket.on('message', ( socketMessage: SocketTurnoResponse ) => {
+           
+            const turno = socketMessage.data;
+
+            if( turno.turno_id !== 0 ){
+
+                if( turno.turno_estado === 'EN ESPERA' ){
+                    setTurnosArray( ( arrays ) => [ ...arrays, turno ]);
+                }
+                else if( turno.turno_estado === 'ATENDIENDO' ){
+
+                    setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
+                        if( elem.turno_id === turno.turno_id){
+                            elem = { ...turno };
+                        }
+                        return elem;
+                    }));
+
+                    setUtimoTurno( turno );
+
+                }
+                else if( turno.turno_estado === 'COMPLETADO' || turno.turno_estado === 'CANCELADO' ){
+                    setLoadFetch( true );
+                }
+            }
+
+        })
+
+        return () => { 
+            socket.off('message'); 
+        }
+
+    }, [ socket ])
     
-     useEffect(() => {
+    useEffect(() => {
           
         async function obtener(){
 
             await ConsultarTodosTurnos().then( resp => {
-                
-                if( resp.data ){
+
+                const { data } = resp;        
+
+                if( data ){
                     
-                    const { ultimo_turno, turnos } = resp.data;
+                    const { ultimo_turno, turnos } = data;
 
                     setUtimoTurno( ultimo_turno ?? defaultTurno );     
                     setTurnosArray( turnos );
+                    setLoadFetch( false );
                 }
+                else {
+                    setUtimoTurno( defaultTurno );     
+                    setTurnosArray( [] );
+                    setLoadFetch( false );
+                }              
 
             });
         }
 
-        obtener();
+        if( loadFetch ){
+            obtener();
+        }
 
-    }, []) 
+    }, [ loadFetch ])     
 
     return (
 
@@ -64,11 +116,13 @@ export const PantallaPage = () => {
                             <TableBody>
 
                                 {
-                                    turnosArray.slice(0,20).map( ( turno, index ) => (
+                                    turnosArray
+                                    .slice(0, 20)
+                                    .map( ( turno, index ) => (
                                         
                                         <TableRow key={ index } style={{...table_tbody }}>
                                             <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{turno.unidad['clave']}-{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
+                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{turno.unidad.clave}-{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
                                             <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado === 'ATENDIENDO' ? turno.ventanilla.numero : '' }</TableCell>
                                             <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado }</TableCell>
                                         </TableRow>

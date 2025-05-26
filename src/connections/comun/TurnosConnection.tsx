@@ -1,12 +1,13 @@
 
 import HttpClient from '../../services/HttpClient';
+import HttpClientToken from '../../services/HttpClientToken';
 
 import { AxiosError } from 'axios';
 
 import { PantallaResponse } from '../../interfaces/comun/PantallaInterface';
 import { PantallaUnidadResponse } from '../../interfaces/comun/PantallaUnidadInterface';
-import { CancelarTurnoResponse, ConcluirTurnoResponse, CrearTurnoResponse, TomarTurnoResponse } from '../../interfaces/comun/TurnoInterface';
-import HttpClientToken from '../../services/HttpClientToken';
+
+import { CancelarTurnoParams, CancelarTurnoResponse, ConcluirTurnoParams, ConcluirTurnoResponse, CrearTurnoParams, CrearTurnoResponse, TomarTurnoResponse } from '../../interfaces/comun/TurnoInterface';
 
 export const ConsultarTodosTurnos = ( ) => {
     
@@ -58,8 +59,7 @@ export const ConsultarTurnosUnidad = (id: string)  => {
 
 };
 
-
-export const CrearTurno = ( params : any ) => {
+export const CrearTurno = ( params : CrearTurnoParams ) => {
     
     return new Promise<CrearTurnoResponse>( (resolve, eject) => {
         
@@ -68,6 +68,7 @@ export const CrearTurno = ( params : any ) => {
         if( data ){
 
             const { token } = data;
+
             HttpClientToken.post('/api/v1/crear_turno', params, token)
             .then( ( { data } : { data : CrearTurnoResponse }) => {           
                 resolve( data );
@@ -77,27 +78,30 @@ export const CrearTurno = ( params : any ) => {
                     success: false, 
                     message: error.message, 
                     data: {
-                            turno_id: 0,
-                            turno_numero: 0,
-                            turno_estado: '',
-                            turno_comentarios: '',
-                            ventanilla: {
-                                id: 0,
-                                nombre: '',
-                                numero: 0,
-                            }
-                        
+                        turno_id: 0,
+                        turno_numero: 0,
+                        turno_estado: '',
+                        turno_comentarios: '',
+                        ventanilla: {
+                            id: 0,
+                            nombre: '',
+                            numero: 0,
+                        },
+                        unidad: {
+                            id: 0,
+                            clave: '',
+                            nombre: '',
+                        }                   
                     }
                 });
             });
-        }
-         
+        }        
                 
     });    
 
 }
 
-export const TomarTurno = (  ) => {
+export const TomarTurno = () => {
     
     return new Promise<TomarTurnoResponse>( (resolve, eject) => {
         
@@ -106,6 +110,7 @@ export const TomarTurno = (  ) => {
         if( data ){
 
             const { token } = data;
+
             HttpClientToken.get('/api/v1/tomar_turno',  token)
             .then( ( { data } : { data : TomarTurnoResponse }) => {           
                 resolve( data );
@@ -115,16 +120,20 @@ export const TomarTurno = (  ) => {
                     success: false, 
                     message: error.message, 
                     data: {
-                            turno_id: 0,
-                            turno_numero: 0,
-                            turno_estado: '',
-                            turno_comentarios: '',
-                            ventanilla: {
-                                id: 0,
-                                nombre: '',
-                                numero: 0,
-                            }
-                        
+                        turno_id: 0,
+                        turno_numero: 0,
+                        turno_estado: '',
+                        turno_comentarios: '',
+                        ventanilla: {
+                            id: 0,
+                            nombre: '',
+                            numero: 0,
+                        },
+                        unidad: {
+                            id: 0,
+                            clave: '',
+                            nombre: '',
+                        }                        
                     }
                 });
             });
@@ -135,7 +144,7 @@ export const TomarTurno = (  ) => {
 
 }
 
-export const CancelarTurno = ( params : any ) => {
+export const CancelarTurno = ( params : CancelarTurnoParams ) => {
     
     return new Promise<CancelarTurnoResponse>( (resolve, eject) => {
         
@@ -144,6 +153,7 @@ export const CancelarTurno = ( params : any ) => {
         if( data ){
 
             const { token } = data;
+
             HttpClientToken.post('/api/v1/actualizar_turno_estado', params, token)
             .then( ( { data } : { data : CancelarTurnoResponse }) => {           
                 resolve( data );
@@ -153,27 +163,30 @@ export const CancelarTurno = ( params : any ) => {
                     success: false, 
                     message: error.message, 
                     data: {
-                            turno_id: 0,
-                            turno_numero: 0,
-                            turno_estado: '',
-                            turno_comentarios: '',
-                            ventanilla: {
-                                id: 0,
-                                nombre: '',
-                                numero: 0,
-                            }
-                        
+                        turno_id: 0,
+                        turno_numero: 0,
+                        turno_estado: '',
+                        turno_comentarios: '',
+                        ventanilla: {
+                            id: 0,
+                            nombre: '',
+                            numero: 0,
+                        },
+                        unidad: {
+                            id: 0,
+                            clave: '',
+                            nombre: '',
+                        }                          
                     }
                 });
             });
-        }
-         
+        }       
                 
     });    
 
 }
 
-export const ConcluirTurno = ( params : any ) => {
+export const ConcluirTurno = ( params : ConcluirTurnoParams ) => {
     
     return new Promise<ConcluirTurnoResponse>( (resolve, eject) => {
         
@@ -182,6 +195,7 @@ export const ConcluirTurno = ( params : any ) => {
         if( data ){
 
             const { token } = data;
+
             HttpClientToken.post('/api/v1/actualizar_turno_estado', params, token)
             .then( ( { data } : { data : ConcluirTurnoResponse }) => {           
                 resolve( data );
@@ -191,21 +205,24 @@ export const ConcluirTurno = ( params : any ) => {
                     success: false, 
                     message: error.message, 
                     data: {
-                            turno_id: 0,
-                            turno_numero: 0,
-                            turno_estado: '',
-                            turno_comentarios: '',
-                            ventanilla: {
-                                id: 0,
-                                nombre: '',
-                                numero: 0,
-                            }
-                        
+                        turno_id: 0,
+                        turno_numero: 0,
+                        turno_estado: '',
+                        turno_comentarios: '',
+                        ventanilla: {
+                            id: 0,
+                            nombre: '',
+                            numero: 0,
+                        },
+                        unidad: {
+                            id: 0,
+                            clave: '',
+                            nombre: '',
+                        }                          
                     }
                 });
             });
-        }
-         
+        }         
                 
     });    
 
