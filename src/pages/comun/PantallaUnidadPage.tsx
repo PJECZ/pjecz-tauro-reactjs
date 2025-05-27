@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import { Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import WifiIcon from '@mui/icons-material/Wifi';
+import { AppBar, Box, Grid, List, ListItem, ListItemIcon, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
 
-import { Layout } from "../../components/Layout"
+import { Layout } from "../../components/Layout";
 
-import { useParams } from "react-router"
-import { table_cell_blue, table_cell_blue_light, table_padding, table_tbody, table_thead } from "../../styles/TableStyle"
+import { useParams } from "react-router";
+import { table_cell_blue, table_cell_blue_light, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
 
-import { ConsultarTurnosUnidad } from "../../connections/comun/TurnosConnection"
-import { TurnoProps } from "../../interfaces/comun/TurnoInterface"
-import { UnidadProps } from "../../interfaces/comun/UnidadInterface"
+import { ConsultarTurnosUnidad } from "../../connections/comun/TurnosConnection";
+import { useSocket } from "../../hooks/useSocket";
+import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInterface";
+import { UnidadProps } from "../../interfaces/comun/UnidadInterface";
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 const defaultUnidad: UnidadProps = { id: 0, clave : '', nombre : '' };
@@ -21,7 +23,60 @@ export const PantallaUnidadPage = () => {
     const [ turnosArray, setTurnosArray ] = useState<TurnoProps[]>([]) ;
     const [ ultimoTurno, setUtimoTurno ] = useState<TurnoProps>( defaultTurno ) ;
     const [ unidad, setUnidad ] = useState<UnidadProps>( defaultUnidad ) ;
+    const [ loadFetch, setLoadFetch ] = useState( true );
+
+    const { socket, online } = useSocket();    
+
+      const [sound, setSound] = useState<HTMLAudioElement | null>(null);
     
+        const playSound = () => {
+            if (sound) {
+                sound.play();
+            }
+        }
+    
+        const loadSound = () => {
+            const audio = new Audio('/assets/sounds/siguiente2.mp4');
+            setSound(audio);
+        }
+    
+
+        useEffect( () => {
+    
+            socket.on('message', ( socketMessage: SocketTurnoResponse ) => {
+               
+                const turno = socketMessage.data;
+    
+                if( turno.turno_id !== 0 && turno.unidad.id === Number(id) ){
+    
+                    if( turno.turno_estado === 'EN ESPERA' ){
+                        setTurnosArray( ( arrays ) => [ ...arrays, turno ]);
+                    }
+                    else if( turno.turno_estado === 'ATENDIENDO' ){
+    
+                        setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
+                            if( elem.turno_id === turno.turno_id){
+                                elem = { ...turno };
+                            }
+                            return elem;
+                        }));
+    
+                        setUtimoTurno( turno );
+    
+                    }
+                    else if( turno.turno_estado === 'COMPLETADO' || turno.turno_estado === 'CANCELADO' ){
+                        setLoadFetch( true );
+                    }
+                }
+    
+            })
+    
+            return () => { 
+                socket.off('message'); 
+            }
+    
+        }, [ socket ])
+
     useEffect(() => {
             
         async function obtener(){
@@ -33,18 +88,27 @@ export const PantallaUnidadPage = () => {
                     const { ultimo_turno, turnos, unidad } = resp.data;
 
                     setUtimoTurno( ultimo_turno ?? defaultTurno );     
+                    playSound();
                     setUnidad( unidad ?? defaultUnidad );    
                     setTurnosArray( turnos ?? [] );
+                    setLoadFetch( false );
                 }
+                else {
+                    setUtimoTurno( defaultTurno );     
+                    playSound();
+                    setTurnosArray( [] );
+                    setLoadFetch( false );
+                }
+                
 
             });
         }
 
-        if( id ){
+        if( loadFetch ){
             obtener();
         }
 
-    }, [ id ]) 
+    }, [ loadFetch ]) 
      
     return (
 
@@ -114,9 +178,9 @@ export const PantallaUnidadPage = () => {
                                 <Typography variant="h5" color="white" textAlign={'center'}>Turno</Typography>
                             </Box>
 
-                            <Box mt={2} py={10} sx={{...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5 }}>
+                            <Box mt={2} py={10} sx={{...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5, height: '70%' }}>
                             
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ String(ultimoTurno?.turno_numero).padStart(3,'0') }</Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ ultimoTurno.turno_numero>0 && String(ultimoTurno?.turno_numero).padStart(3,'0') }</Typography>
 
                             </Box>
 
@@ -128,8 +192,8 @@ export const PantallaUnidadPage = () => {
                                 <Typography variant="h5" textAlign={'center'} sx={{color:'#003366'}}>Ventanilla</Typography>
                             </Box>
 
-                            <Box bgcolor={'#4D4D50'} mt={2} py={10} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5 }}>
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ultimoTurno?.ventanilla.numero}</Typography>
+                            <Box bgcolor={'#4D4D50'} mt={2} py={10} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height: '70%' }}>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ ultimoTurno.ventanilla.numero!=0 && ultimoTurno?.ventanilla.numero}</Typography>
                             </Box>
 
                         </Grid>
@@ -139,7 +203,41 @@ export const PantallaUnidadPage = () => {
                 </Grid>
 
 
-            </Grid>          
+            </Grid> 
+
+            <AppBar position="fixed" color="primary" sx={{borderTop:'1px solid #999', top: 'auto', bottom: 0, boxShadow: 'none', backgroundColor: '#f5f5f5', opacity: 0.8, height: 65 }}>
+                <Toolbar>    
+                    
+                    <Box sx={{  display: 'flex', alignItems: 'end'}}>
+
+                        { 
+                        online ? 
+                            <List sx={{ listStyleType: 'disc' }}>
+                                <ListItem sx={{fontSize:'.75em', color:'#555'}}>
+                                    <ListItemIcon>
+                                        <WifiIcon sx={{ color: 'green' }} />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Conectado al servidor" />
+                                </ListItem>
+                            </List>
+                        :
+                            <List sx={{ listStyleType: 'disc' }}>
+                                <ListItem sx={{fontSize:'.75em', color:'#555'}}>
+                                    <ListItemIcon>
+                                        <WifiIcon sx={{ color: 'red' }} />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Desconectado" />
+                                </ListItem>
+                            </List>
+                        }                    
+
+                    </Box>
+
+                </Toolbar>
+
+            </AppBar>  
+
+                   
             
         </Layout>  
         

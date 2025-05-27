@@ -45,6 +45,7 @@ export const CrearTurnoPage = () => {
 
     const [errors, setErrors] = useState<ErrorsProps>( {} );
 
+
     const handleValidateFields = () => {
 
         setErrors( {} );
@@ -79,7 +80,7 @@ export const CrearTurnoPage = () => {
 
         setLoading( true );
 
-        await CrearTurno({ turno_tipo_id: tipoturno, unidad_id: unidadRedux?.id ?? unidad, comentarios: observaciones })
+        await CrearTurno({ turno_tipo_id: tipoturno, unidad_id: unidadRedux?.id===1 ? unidad : unidadRedux?.id ?? 0, comentarios: observaciones })
         .then(resp => {
 
             if( resp.data ){
