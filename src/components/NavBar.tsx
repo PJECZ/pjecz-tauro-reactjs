@@ -1,9 +1,10 @@
 
-import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Container, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material";
 
 import { useEffect, useState } from 'react';
 
 export const NavBar = () => {
+
 
     const [currentTime, setCurrentTime] = useState( new Date() );
 
@@ -36,7 +37,7 @@ export const NavBar = () => {
                             style={{ width: 350, height: 100 }}
                             src={ process.env.PUBLIC_URL + "/assets/logo-pjecz-horizontal.png"}
                             alt='logo'
-                        />                       
+                        /> 
                         
                     </Box>  
 
@@ -65,7 +66,9 @@ export const NavBar = () => {
                             />
 
                             { currentTime.toLocaleTimeString() }
+
                         </Typography>
+                        
 
                     </Box>                  
 
