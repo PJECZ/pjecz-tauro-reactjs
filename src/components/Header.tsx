@@ -5,7 +5,7 @@ export const Header = () => {
 
     return (
 
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1 }} >
             
             <AppBar position="static" sx={{ bgcolor: 'transparent',  boxShadow: 'none' }}>
 
