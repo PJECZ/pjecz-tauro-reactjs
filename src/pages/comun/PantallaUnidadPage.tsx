@@ -16,6 +16,8 @@ import { UnidadProps } from "../../interfaces/comun/UnidadInterface";
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 const defaultUnidad: UnidadProps = { id: 0, clave : '', nombre : '' };
 
+const audio = new Audio('/assets/sounds/siguiente2.mp4');
+
 export const PantallaUnidadPage = () => {  
 
     const { id } = useParams();
@@ -27,55 +29,41 @@ export const PantallaUnidadPage = () => {
 
     const { socket, online } = useSocket();    
 
-      const [sound, setSound] = useState<HTMLAudioElement | null>(null);
-    
-        const playSound = () => {
-            if (sound) {
-                sound.play();
-            }
-        }
-    
-        const loadSound = () => {
-            const audio = new Audio('/assets/sounds/siguiente2.mp4');
-            setSound(audio);
-        }
-    
+    useEffect( () => {
 
-        useEffect( () => {
-    
-            socket.on('message', ( socketMessage: SocketTurnoResponse ) => {
-               
-                const turno = socketMessage.data;
-    
-                if( turno.turno_id !== 0 && turno.unidad.id === Number(id) ){
-    
-                    if( turno.turno_estado === 'EN ESPERA' ){
-                        setTurnosArray( ( arrays ) => [ ...arrays, turno ]);
-                    }
-                    else if( turno.turno_estado === 'ATENDIENDO' ){
-    
-                        setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
-                            if( elem.turno_id === turno.turno_id){
-                                elem = { ...turno };
-                            }
-                            return elem;
-                        }));
-    
-                        setUtimoTurno( turno );
-    
-                    }
-                    else if( turno.turno_estado === 'COMPLETADO' || turno.turno_estado === 'CANCELADO' ){
-                        setLoadFetch( true );
-                    }
+        socket.on('message', ( socketMessage: SocketTurnoResponse ) => {
+            
+            const turno = socketMessage.data;
+
+            if( turno.turno_id !== 0 && turno.unidad.id === parseInt( id ?? '0' ) ){
+
+                if( turno.turno_estado === 'EN ESPERA' ){
+                    setTurnosArray( ( arrays ) => [ ...arrays, turno ]);
                 }
-    
-            })
-    
-            return () => { 
-                socket.off('message'); 
+                else if( turno.turno_estado === 'ATENDIENDO' ){
+
+                    setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
+                        if( elem.turno_id === turno.turno_id){
+                            elem = { ...turno };
+                        }
+                        return elem;
+                    }));
+
+                    setUtimoTurno( turno );
+                    audio.play();
+                }
+                else if( turno.turno_estado === 'COMPLETADO' || turno.turno_estado === 'CANCELADO' ){
+                    setLoadFetch( true );
+                }
             }
-    
-        }, [ socket ])
+
+        })
+
+        return () => { 
+            socket.off('message'); 
+        }
+
+    }, [ socket, id ])
 
     useEffect(() => {
             
@@ -87,28 +75,25 @@ export const PantallaUnidadPage = () => {
 
                     const { ultimo_turno, turnos, unidad } = resp.data;
 
-                    setUtimoTurno( ultimo_turno ?? defaultTurno );     
-                    playSound();
+                    setUtimoTurno( ultimo_turno ?? defaultTurno );  
                     setUnidad( unidad ?? defaultUnidad );    
                     setTurnosArray( turnos ?? [] );
                     setLoadFetch( false );
                 }
                 else {
-                    setUtimoTurno( defaultTurno );     
-                    playSound();
+                    setUtimoTurno( defaultTurno );          
                     setTurnosArray( [] );
                     setLoadFetch( false );
-                }
-                
+                }                
 
             });
         }
 
-        if( loadFetch ){
+        if( loadFetch && id ){
             obtener();
         }
 
-    }, [ loadFetch ]) 
+    }, [ loadFetch, id ]) 
      
     return (
 
@@ -193,7 +178,7 @@ export const PantallaUnidadPage = () => {
                             </Box>
 
                             <Box bgcolor={'#4D4D50'} mt={2} py={10} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height: '70%' }}>
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ ultimoTurno.ventanilla.numero!=0 && ultimoTurno?.ventanilla.numero}</Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ ultimoTurno.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero}</Typography>
                             </Box>
 
                         </Grid>

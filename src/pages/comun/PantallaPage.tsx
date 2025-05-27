@@ -14,6 +14,8 @@ import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInt
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
+const audio = new Audio('/assets/sounds/siguiente2.mp4');
+
 export const PantallaPage = () => {  
 
     const [ turnosArray, setTurnosArray ] = useState<TurnoProps[]>([]) ;
@@ -21,20 +23,6 @@ export const PantallaPage = () => {
     const [ loadFetch, setLoadFetch ] = useState( true );
 
     const { socket, online } = useSocket();
-
-    const [sound, setSound] = useState<HTMLAudioElement | null>(null);
-
-    const playSound = () => {
-        if (sound) {
-            sound.play();
-        }
-    }
-
-    const loadSound = () => {
-        const audio = new Audio('/assets/sounds/siguiente2.mp4');
-        setSound(audio);
-    }
-
 
     useEffect( () => {
 
@@ -57,7 +45,7 @@ export const PantallaPage = () => {
                     }));
 
                     setUtimoTurno( turno );
-                    playSound();
+                    audio.play();
 
                 }
                 else if( turno.turno_estado === 'COMPLETADO' || turno.turno_estado === 'CANCELADO' ){
@@ -108,10 +96,7 @@ export const PantallaPage = () => {
     return (
 
         <Layout>
-            <Box sx={{ width: '100%',  backgroundColor: '#f5f5f5', padding: 2 }}>
-                <button onClick={loadSound}>Load Sound</button>
-                <button onClick={playSound} disabled={!sound}>Play Sound</button>
-            </Box>
+      
             <Grid container spacing={3}>
 
                 <Grid size={{ xs: 12, md: 5 }}>
@@ -169,7 +154,7 @@ export const PantallaPage = () => {
                             <Box mt={2} py={10} sx={{ ...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5, height: '70%' }}>
                             
                                 <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ ultimoTurno?.unidad.clave }</Typography>
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ ultimoTurno.turno_numero>0 && String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ ultimoTurno.turno_numero > 0 && String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
 
                             </Box>
 
@@ -182,7 +167,7 @@ export const PantallaPage = () => {
                             </Box>
 
                             <Box mt={2} py={10} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height:'70%' }}>
-                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ ultimoTurno?.ventanilla.numero!=0 && ultimoTurno?.ventanilla.numero}</Typography>
+                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero}</Typography>
                             </Box>
 
                         </Grid>
