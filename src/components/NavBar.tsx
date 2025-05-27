@@ -22,7 +22,7 @@ export const NavBar = () => {
 
     return (
        
-        <AppBar position="relative" style={{ boxShadow: 'none', backgroundColor: '#f5f5f5', opacity: 0.8 }}>
+        <AppBar position="relative" sx={{  backgroundColor: '#f5f5f5', opacity: 0.8 , boxShadow:'10px 10px 31px #000000', mb:3}}>
 
             <Container maxWidth="xl" sx={{ backgroundColor: '#f5f5f5', mt: 1 }}>
 

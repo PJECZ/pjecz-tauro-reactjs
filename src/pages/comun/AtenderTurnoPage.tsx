@@ -151,7 +151,7 @@ export const AtenderTurnoPage = () => {
 
                 <Grid size={{ xs: 12, md: 12 }}>               
                 
-                    <Box bgcolor={'#003366'} sx={{ opacity:0.6}}>
+                    <Box bgcolor={'#003366'} sx={{ opacity:0.8}}>
                         
                         <Typography variant="h4" color="white" textAlign={'center'} p={1}>
                             { unidadRedux?.nombre } 
