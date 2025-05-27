@@ -193,7 +193,7 @@ export const PantallaUnidadPage = () => {
             <AppBar position="fixed" color="primary" sx={{borderTop:'1px solid #999', top: 'auto', bottom: 0, boxShadow: 'none', backgroundColor: '#f5f5f5', opacity: 0.8, height: 65 }}>
                 <Toolbar>    
                     
-                    <Box sx={{  display: 'flex', alignItems: 'end'}}>
+                    <Box sx={{ marginLeft:'auto' }}>
 
                         { 
                         online ? 

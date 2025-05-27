@@ -14,7 +14,7 @@ import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInt
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
-const audio = new Audio('/assets/sounds/siguiente2.mp4');
+const audio = new Audio('/assets/sounds/siguiente2.mp3');
 
 export const PantallaPage = () => {  
 
@@ -109,9 +109,9 @@ export const PantallaPage = () => {
 
                                 <TableRow>   
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '30%', textAlign: 'center' }}>Turno</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '50%', textAlign: 'center' }}>Ventanilla / Recepción</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontsize:18,  width: '18%', textAlign: 'center' }}>Estado</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '28%', textAlign: 'center' }}>Turno</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '20%', textAlign: 'center' }}>Ventanilla<br />Recepción</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontsize:18,  width: '50%', textAlign: 'center' }}>Estado</TableCell>
                                 </TableRow>
 
                             </TableHead>
@@ -181,7 +181,7 @@ export const PantallaPage = () => {
             <AppBar position="fixed" color="primary" sx={{borderTop:'1px solid #999', top: 'auto', bottom: 0, boxShadow: 'none', backgroundColor: '#f5f5f5', opacity: 0.8, height: 65 }}>
                 <Toolbar>    
                     
-                    <Box sx={{  display: 'flex', alignItems: 'end'}}>
+                    <Box sx={{ marginLeft:'auto' }}>
 
                         { 
                         online ? 
