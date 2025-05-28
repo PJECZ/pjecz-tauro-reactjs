@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 
-import { Alert, Box, Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, MenuItem, Snackbar, TextField, Typography } from "@mui/material";
 
 import { ConsultarTiposTurno } from "../../connections/comun/TiposTurnoConnection";
 import { CrearTurno } from "../../connections/comun/TurnosConnection";
@@ -13,6 +13,7 @@ import { ConsultarUnidades } from "../../connections/comun/UnidadConnection";
 
 import { Unidades } from "../../interfaces/comun/UnidadInterface";
 import { TurnoProps } from "../../interfaces/comun/TurnoInterface";
+import { SnackbarProps } from "../../interfaces/ui/SnackbarInterface";
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
@@ -44,6 +45,14 @@ export const CrearTurnoPage = () => {
     const [turno, setTurno] = useState<TurnoProps>( defaultTurno ); 
 
     const [errors, setErrors] = useState<ErrorsProps>( {} );
+
+    const [{ type: typeSnackbar, open: openMessage, message }, setOpenMessage] = useState<SnackbarProps>({
+        type: 'warning',
+        message: '',
+        open: false,
+    });    
+    
+    const handleCloseSnackbar = () => setOpenMessage({ type: typeSnackbar, open: false, message }) 
 
     const handleValidateFields = () => {
 
@@ -82,21 +91,33 @@ export const CrearTurnoPage = () => {
         await CrearTurno({ turno_tipo_id: tipoturno, unidad_id: unidadRedux?.id===1 ? unidad : unidadRedux?.id ?? 0, comentarios: observaciones })
         .then(resp => {
 
-            if( resp.data ){
+            const { success, message, data } = resp;
 
-                setTimeout(() => {
-                    
-                    setTurno( resp.data );
+            if( success ){
+
+                if( data ){
+               
+                    setTimeout(() => {
                         
-                    setOpenTurnoConfirmacion( true );   
-                    setOpenConfirmacion( false ); 
-                    setLoading( false );     
+                        setTurno( data );
+                            
+                        setOpenTurnoConfirmacion( true );   
+                        setOpenConfirmacion( false ); 
+                        setLoading( false );     
+    
+                    }, 500);                
 
-                }, 500);                
-
+                }
             }
             else {
                 setLoading( false );
+                setOpenConfirmacion( false ); 
+
+                setOpenMessage({
+                    type: 'warning',
+                    open: true,
+                    message,
+                });
             }
 
         });
@@ -143,6 +164,17 @@ export const CrearTurnoPage = () => {
     return (
 
         <>   
+
+            <Snackbar open={openMessage} autoHideDuration={1500} onClose={ handleCloseSnackbar } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                <Alert
+                    onClose={ handleCloseSnackbar }
+                    severity={ typeSnackbar }
+                    variant="filled"
+                    sx={{ width: '100%' }}                   
+                >
+                    { message }
+                </Alert>
+            </Snackbar> 
 
             <Grid container spacing={3}>
 
