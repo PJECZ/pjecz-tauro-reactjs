@@ -209,7 +209,6 @@ export const AtenderTurnoPage = () => {
                 </Alert>
             </Snackbar> 
 
-
             <Grid container spacing={3}>
 
                 <Grid size={{ xs: 12, md: 12 }}>               
