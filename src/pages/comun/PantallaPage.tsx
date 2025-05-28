@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import WifiIcon from '@mui/icons-material/Wifi';
-import { AppBar, Box, Grid, List, ListItem, ListItemIcon, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
 
 import { Layout } from "../../components/Layout";
 
@@ -74,7 +74,7 @@ export const PantallaPage = () => {
                     const { ultimo_turno, turnos } = data;
 
                     setUtimoTurno( ultimo_turno ?? defaultTurno );     
-                    setTurnosArray( turnos );
+                    setTurnosArray( turnos ?? [] );
                     setLoadFetch( false );
                 }
                 else {
@@ -110,8 +110,8 @@ export const PantallaPage = () => {
                                 <TableRow>   
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center' }}></TableCell>
                                     <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '28%', textAlign: 'center' }}>Turno</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '20%', textAlign: 'center' }}>Ventanilla<br />Recepción</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontsize:18,  width: '50%', textAlign: 'center' }}>Estado</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '20%', textAlign: 'center' }}>Ventanilla/Recepción</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontsize:18,  width: '50%', textAlign: 'center' }}></TableCell>
                                 </TableRow>
 
                             </TableHead>
@@ -121,13 +121,42 @@ export const PantallaPage = () => {
                                 {
                                     turnosArray
                                     .slice(0, 20)
-                                    .map( ( turno, index ) => (
+                                    .map( ( { unidad, turno_numero, turno_estado, ventanilla }, index ) => (
                                         
                                         <TableRow key={ index } style={{...table_tbody }}>
-                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{turno.unidad.clave}-{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado === 'ATENDIENDO' ? turno.ventanilla.numero : '' }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado }</TableCell>
+
+                                            <Grow 
+                                                in
+                                                style={{ transformOrigin: '0 0 0' }}
+                                                {...( { timeout: 1000 } )}
+                                            > 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell> 
+                                            </Grow>
+                                            
+                                            <Grow 
+                                                in
+                                                style={{ transformOrigin: '0 0 0' }}
+                                                {...( { timeout: 1000 } )}
+                                            > 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>                                             
+                                            </Grow>
+
+                                            <Grow 
+                                                in
+                                                style={{ transformOrigin: '0 0 0' }}
+                                                {...( { timeout: 1000 } )}
+                                            > 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno_estado === 'ATENDIENDO' ? ventanilla.numero : '' }</TableCell> 
+                                            </Grow>
+
+                                            <Grow 
+                                                in
+                                                style={{ transformOrigin: '0 0 0' }}
+                                                {...( { timeout: 1000 } )}
+                                            > 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno_estado }</TableCell> 
+                                            </Grow>
+
                                         </TableRow>
                                         
                                     ))
@@ -151,10 +180,10 @@ export const PantallaPage = () => {
                                 <Typography variant="h5" color="white" textAlign={'center'}>Turno</Typography>
                             </Box>
 
-                            <Box mt={2} py={10} sx={{ ...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5, height: '70%' }}>
+                            <Box mt={2} py={8} sx={{ ...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5, height: 'calc(100% - 250px)' }}>
                             
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ ultimoTurno?.unidad.clave }</Typography>
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210 }}>{ ultimoTurno.turno_numero > 0 && String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
+                                <Typography variant="h5" color="white" textAlign={'center'} sx={{ fontSize: 180 }}>{ ultimoTurno?.unidad.clave }</Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 180 }}>{ ultimoTurno.turno_numero > 0 && String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
 
                             </Box>
 
@@ -166,8 +195,8 @@ export const PantallaPage = () => {
                                 <Typography variant="h5" textAlign={'center'} sx={{color:'#003366'}}>Ventanilla</Typography>
                             </Box>
 
-                            <Box mt={2} py={10} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height:'70%' }}>
-                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero}</Typography>
+                            <Box mt={2} py={8} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height: 'calc(100% - 250px)' }}>
+                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366', mt: 5 }}>{ ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero}</Typography>
                             </Box>
 
                         </Grid>
@@ -178,30 +207,32 @@ export const PantallaPage = () => {
 
             </Grid>                      
             
-            <AppBar position="fixed" color="primary" sx={{borderTop:'1px solid #999', top: 'auto', bottom: 0, boxShadow: 'none', backgroundColor: '#f5f5f5', opacity: 0.8, height: 65 }}>
+            <AppBar position="fixed" color="primary" sx={{ borderTop:'1px solid #999', top: 'auto', bottom: 0, boxShadow: 'none', backgroundColor: '#f5f5f5', opacity: 0.8  }}>
+
                 <Toolbar>    
                     
                     <Box sx={{ marginLeft:'auto' }}>
 
                         { 
-                        online ? 
-                            <List sx={{ listStyleType: 'disc' }}>
-                                <ListItem sx={{fontSize:'.75em', color:'#555'}}>
-                                    <ListItemIcon>
-                                        <WifiIcon sx={{ color: 'green' }} />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Conectado al servidor" />
-                                </ListItem>
-                            </List>
-                        :
-                            <List sx={{ listStyleType: 'disc' }}>
-                                <ListItem sx={{fontSize:'.75em', color:'#555'}}>
-                                    <ListItemIcon>
-                                        <WifiIcon sx={{ color: 'red' }} />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Desconectado" />
-                                </ListItem>
-                            </List>
+                            online 
+                            ? 
+                                <List sx={{ listStyleType: 'disc' }}>
+                                    <ListItem sx={{fontSize:'.75em', color:'#555'}}>
+                                        <ListItemIcon>
+                                            <WifiIcon sx={{ color: 'green' }} />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Conectado al servidor" />
+                                    </ListItem>
+                                </List>
+                            :
+                                <List sx={{ listStyleType: 'disc' }}>
+                                    <ListItem sx={{fontSize:'.75em', color:'#555'}}>
+                                        <ListItemIcon>
+                                            <WifiIcon sx={{ color: 'red' }} />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Desconectado" />
+                                    </ListItem>
+                                </List>
                         }                    
 
                     </Box>
@@ -209,6 +240,7 @@ export const PantallaPage = () => {
                 </Toolbar>
 
             </AppBar>  
+
         </Layout>  
         
     )

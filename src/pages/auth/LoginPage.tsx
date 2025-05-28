@@ -60,7 +60,7 @@ export const LoginPage = () => {
 
                 const { success, message, access_token, username, rol , unidad, ventanilla } = resp;
                 
-                if( success ){
+                if( success ){                    
 
                     const data: stateProps = {
                         username: username,
@@ -68,7 +68,7 @@ export const LoginPage = () => {
                         correoElectronico: correoElectronico,
                         rol: rol,
                         unidad: unidad,
-                        ventanilla: ventanilla ? `Ventanilla ${ ventanilla.numero }` : '',
+                        ventanilla: ( ventanilla && ventanilla?.id !== 1 ) ? `Ventanilla ${ ventanilla.numero }` : '',
                     };
 
                     setTimeout(() => {

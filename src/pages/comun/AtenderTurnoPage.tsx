@@ -29,6 +29,8 @@ export const AtenderTurnoPage = () => {
     const [open, setOpen] = useState( false );
     const [openConfirmacion, setOpenConfirmacion] = useState( false );
 
+    const [loading, setLoading] = useState( false );
+
     const [actionTurno, setActionTurno] = useState<ActionTurno>( 'Tomar' );
 
     const { unidad: unidadRedux } = useSelector( ( state: RootState ) => state.auth );
@@ -43,6 +45,8 @@ export const AtenderTurnoPage = () => {
 
     const handleTomarTurno = async () => {
 
+        setLoading( true );
+
         await TomarTurno().then(resp => {
     
             const { success, message, data } = resp;
@@ -50,56 +54,99 @@ export const AtenderTurnoPage = () => {
             if( success ){
 
                 if( data ){        
-                    setTurno( data );  
+
+                    setTimeout(() => {              
+
+                        setTurno( data );  
+                        setLoading( false );
+    
+                        setOpenConfirmacion( false );
+
+                    }, 500);
                 }
 
             }
             else {
-                setOpenMessage({
-                    type: 'warning',
-                    open: true,
-                    message,
-                });
+
+                setTimeout(() => {        
+
+                    setOpenMessage({
+                        type: 'warning',
+                        open: true,
+                        message,
+                    });
+    
+                    setLoading( false );
+    
+                    setOpenConfirmacion( false );
+
+                }, 500);
+
             }
 
         });  
         
-        setOpenConfirmacion( false );
     }
 
     const handleCancelarTurno = async () => {      
 
+        setLoading( true );
+
         await CancelarTurno({ turno_id: turno.turno_id, turno_estado_id: 4 })
         .then(resp => {
         
-            if( resp.data ){
-                setTurno( defaultTurno );
+            if( resp.success ){
+
+                setTimeout(() => {    
+
+                    setTurno( defaultTurno );
+                    setLoading( false );
+
+                    setOpenConfirmacion( false );
+
+                }, 500);
+            }
+            else {
+                setTimeout(() => {            
+
+                    setLoading( false );
+                    setOpenConfirmacion( false );
+
+                }, 500);
             }
 
         });                
-    
-        setOpenConfirmacion( false );
     }
 
     const handleConcluirTurno = async () => {
+
+        setLoading( true );
         
         await ConcluirTurno({ turno_id: turno.turno_id, turno_estado_id: 3 })
         .then(resp => {
         
-            if( resp.data ){
-                setTurno( defaultTurno );
+            if( resp.success ){
+
+                setTimeout(() => {         
+
+                    setTurno( defaultTurno );
+                    setLoading( false );
+
+                    setOpenConfirmacion( false );
+
+                }, 500);
+            }
+            else {
+                setTimeout(() => {            
+
+                    setLoading( false );
+                    setOpenConfirmacion( false );
+                    
+                }, 500);
             }
 
         });  
-
-        setOpenConfirmacion( false );
-    }
-
-    const handleCerrarModal = () => {
-
-        setTurno( defaultTurno );
-        setOpenConfirmacion( false );
-
+        
     }
 
     useEffect(() => {
@@ -253,13 +300,23 @@ export const AtenderTurnoPage = () => {
 
                 <DialogActions>
                     <Button onClick={ () => setOpenConfirmacion( false ) }>Cancelar</Button>
-                    <Button variant='contained' onClick={ 
-                        () => { 
-                            actionTurno === 'Tomar' ? handleTomarTurno() : handleCerrarModal() 
-                            actionTurno === 'Cancelar' ? handleCancelarTurno() : handleCerrarModal()
-                            actionTurno === 'Concluir' ? handleConcluirTurno() : handleCerrarModal()
-                        }
-                        } >
+                    <Button 
+                        variant='contained' 
+                        onClick={ 
+                            () => { 
+                                if( actionTurno === 'Tomar' ){
+                                    handleTomarTurno()
+                                }
+                                else if( actionTurno === 'Cancelar' ){
+                                    handleCancelarTurno()
+                                }
+                                else if( actionTurno === 'Concluir' ){
+                                    handleConcluirTurno()
+                                }
+                            }
+                        } 
+                        loading={ loading }
+                    >
                         Aceptar
                     </Button>
                 </DialogActions>

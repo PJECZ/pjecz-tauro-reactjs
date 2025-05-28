@@ -45,7 +45,6 @@ export const CrearTurnoPage = () => {
 
     const [errors, setErrors] = useState<ErrorsProps>( {} );
 
-
     const handleValidateFields = () => {
 
         setErrors( {} );
@@ -84,12 +83,16 @@ export const CrearTurnoPage = () => {
         .then(resp => {
 
             if( resp.data ){
-                
-                setTurno( resp.data );
+
+                setTimeout(() => {
                     
-                setOpenTurnoConfirmacion( true );   
-                setOpenConfirmacion( false ); 
-                setLoading( false );      
+                    setTurno( resp.data );
+                        
+                    setOpenTurnoConfirmacion( true );   
+                    setOpenConfirmacion( false ); 
+                    setLoading( false );     
+
+                }, 500);                
 
             }
             else {
@@ -115,7 +118,7 @@ export const CrearTurnoPage = () => {
         async function obtener(){
 
             await ConsultarUnidades().then( resp => {
-                setUnidadArray( resp.data );
+                setUnidadArray( resp.data ?? [] );
             });
         }
 
@@ -128,7 +131,7 @@ export const CrearTurnoPage = () => {
         async function obtenerTipoTurno(){
 
             await ConsultarTiposTurno().then( resp => {
-                setTiposTurnoArray( resp.data );
+                setTiposTurnoArray( resp.data ?? [] );
             });
 
         }

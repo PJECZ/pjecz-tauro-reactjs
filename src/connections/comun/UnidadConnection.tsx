@@ -9,13 +9,13 @@ export const ConsultarUnidades = ( ) => {
 
     return new Promise<UnidadesResponse>( (resolve, eject) => {
 
-        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
         if( data ){
 
             const { token } = data;
         
-            HttpClientToken.get('/api/v1/consultar_unidades', token)
+            HttpClientToken.get('/api_oauth2/v1/consultar_unidades', token)
             .then( ( { data } : { data : UnidadesResponse }) => {           
                 resolve( data );
             })

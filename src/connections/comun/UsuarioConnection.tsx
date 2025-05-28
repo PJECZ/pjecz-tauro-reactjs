@@ -9,13 +9,13 @@ export const ActualizarUsuario = ( params: ActualizarUsuarioParams ) => {
 
     return new Promise<ActualizarUsuarioResponse>( (resolve, eject) => {
 
-        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
         if( data ){
 
             const { token } = data;
         
-            HttpClientToken.post('/api/v1/actualizar_usuario', params, token)
+            HttpClientToken.post('/api_oauth2/v1//actualizar_usuario', params, token)
             .then( ( { data } : { data : ActualizarUsuarioResponse }) => {           
                 resolve( data );
             })
@@ -78,13 +78,13 @@ export const ConsultarConfiguracionUsuario = () => {
 
     return new Promise<ConsultarConfiguracionUsuarioResponse>( (resolve, eject) => {
 
-        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
         if( data ){
 
             const { token } = data;
         
-            HttpClientToken.get('/api/v1/consultar_configuracion_usuario', token)
+            HttpClientToken.get('/api_oauth2/v1/consultar_configuracion_usuario', token)
             .then( ( { data } : { data : ConsultarConfiguracionUsuarioResponse }) => {           
                 resolve( data );
             })

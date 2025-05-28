@@ -16,9 +16,9 @@ export const Layout = ( { children, footer = false } : Props ) => {
         <>        
             <NavBar />            
 
-            <Container maxWidth='xl' sx={{ pb: 5 }} >
+            <Container maxWidth='xl'>
 
-                <Box component={ 'div' } sx={{ p: 3 }}>
+                <Box component={ 'div' }>
 
                     { children }
 
