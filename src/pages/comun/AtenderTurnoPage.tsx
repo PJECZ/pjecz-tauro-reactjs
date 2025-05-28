@@ -94,8 +94,10 @@ export const AtenderTurnoPage = () => {
 
         await CancelarTurno({ turno_id: turno.turno_id, turno_estado_id: 4 })
         .then(resp => {
+
+            const { success, message } = resp;
         
-            if( resp.success ){
+            if( success ){
 
                 setTimeout(() => {    
 
@@ -112,6 +114,12 @@ export const AtenderTurnoPage = () => {
                     setLoading( false );
                     setOpenConfirmacion( false );
 
+                    setOpenMessage({
+                        type: 'warning',
+                        open: true,
+                        message,
+                    });
+
                 }, 500);
             }
 
@@ -124,8 +132,10 @@ export const AtenderTurnoPage = () => {
         
         await ConcluirTurno({ turno_id: turno.turno_id, turno_estado_id: 3 })
         .then(resp => {
+
+            const { success, message } = resp;
         
-            if( resp.success ){
+            if( success ){
 
                 setTimeout(() => {         
 
@@ -141,6 +151,12 @@ export const AtenderTurnoPage = () => {
 
                     setLoading( false );
                     setOpenConfirmacion( false );
+
+                    setOpenMessage({
+                        type: 'warning',
+                        open: true,
+                        message,
+                    });
                     
                 }, 500);
             }
