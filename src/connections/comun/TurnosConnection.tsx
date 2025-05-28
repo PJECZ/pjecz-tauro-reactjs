@@ -13,7 +13,7 @@ export const ConsultarTodosTurnos = ( ) => {
     
     return new Promise<PantallaResponse>( (resolve, eject) => {
         
-        HttpClient.get('/api/v1/consultar_turnos')
+        HttpClient.get('/api_oauth2/v1/consultar_turnos')
         .then( ( { data } : { data : PantallaResponse }) => {           
             resolve( data );
         })
@@ -36,7 +36,7 @@ export const ConsultarTurnosUnidad = (id: string)  => {
 
     return new Promise<PantallaUnidadResponse>((resolve, eject) => {
         
-        HttpClient.get(`/api/v1/consultar_turnos/${id}`)
+        HttpClient.get(`/api_oauth2/v1/consultar_turnos/${id}`)
         .then(({ data }: { data: PantallaUnidadResponse }) => {
             resolve(data);
         })
@@ -63,13 +63,13 @@ export const CrearTurno = ( params : CrearTurnoParams ) => {
     
     return new Promise<CrearTurnoResponse>( (resolve, eject) => {
         
-        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
         if( data ){
 
             const { token } = data;
 
-            HttpClientToken.post('/api/v1/crear_turno', params, token)
+            HttpClientToken.post('/api_oauth2/v1/crear_turno', params, token)
             .then( ( { data } : { data : CrearTurnoResponse }) => {           
                 resolve( data );
             })
@@ -105,13 +105,13 @@ export const TomarTurno = () => {
     
     return new Promise<TomarTurnoResponse>( (resolve, eject) => {
         
-        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
         if( data ){
 
             const { token } = data;
 
-            HttpClientToken.get('/api/v1/tomar_turno',  token)
+            HttpClientToken.get('/api_oauth2/v1/tomar_turno',  token)
             .then( ( { data } : { data : TomarTurnoResponse }) => {           
                 resolve( data );
             })
@@ -148,13 +148,13 @@ export const CancelarTurno = ( params : CancelarTurnoParams ) => {
     
     return new Promise<CancelarTurnoResponse>( (resolve, eject) => {
         
-        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
         if( data ){
 
             const { token } = data;
 
-            HttpClientToken.post('/api/v1/actualizar_turno_estado', params, token)
+            HttpClientToken.post('/api_oauth2/v1/actualizar_turno_estado', params, token)
             .then( ( { data } : { data : CancelarTurnoResponse }) => {           
                 resolve( data );
             })
@@ -190,13 +190,13 @@ export const ConcluirTurno = ( params : ConcluirTurnoParams ) => {
     
     return new Promise<ConcluirTurnoResponse>( (resolve, eject) => {
         
-        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
         if( data ){
 
             const { token } = data;
 
-            HttpClientToken.post('/api/v1/actualizar_turno_estado', params, token)
+            HttpClientToken.post('/api_oauth2/v1/actualizar_turno_estado', params, token)
             .then( ( { data } : { data : ConcluirTurnoResponse }) => {           
                 resolve( data );
             })

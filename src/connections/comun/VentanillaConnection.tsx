@@ -9,13 +9,13 @@ export const ConsultarVentanillasActivas = ( ) => {
 
     return new Promise<VentanillaResponse>( (resolve, eject) => {
 
-        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
         if( data ){
 
             const { token } = data;
         
-            HttpClientToken.get('/api/v1/consultar_ventanillas_activas', token)
+            HttpClientToken.get('/api_oauth2/v1/consultar_ventanillas_activas', token)
             .then( ( { data } : { data : VentanillaResponse }) => {           
                 resolve( data );
             })

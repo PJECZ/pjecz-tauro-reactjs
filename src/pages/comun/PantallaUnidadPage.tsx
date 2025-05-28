@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import WifiIcon from '@mui/icons-material/Wifi';
-import { AppBar, Box, Grid, List, ListItem, ListItemIcon, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
 
 import { Layout } from "../../components/Layout";
 
@@ -122,10 +122,10 @@ export const PantallaUnidadPage = () => {
                             <TableHead sx={{ ...table_thead }}>
 
                                 <TableRow>   
-                                    <TableCell sx={{ ...table_padding, ...table_thead, ...table_cell_blue, width: '2%', textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '30%', textAlign: 'center' }}>Turno</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '50%', textAlign: 'center' }}>Ventanilla / Recepción</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '18%', textAlign: 'center' }}></TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center' }}></TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '28%', textAlign: 'center' }}>Turno</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '20%', textAlign: 'center' }}>Ventanilla/Recepción</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontsize: 18,  width: '50%', textAlign: 'center' }}></TableCell>
                                 </TableRow>
 
                             </TableHead>
@@ -133,17 +133,48 @@ export const PantallaUnidadPage = () => {
                             <TableBody>
 
                                 {
-                                    turnosArray.slice(0,20).map( ( turno, index ) => (
-                                        
+                                    turnosArray
+                                    .slice(0, 20)
+                                    .map( ( { unidad, turno_numero, turno_estado, ventanilla }, index ) => (
+                                                                            
                                         <TableRow key={ index } style={{...table_tbody }}>
-                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ String(turno.turno_numero).padStart(3,'0') }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado === 'ATENDIENDO' ? turno.ventanilla.numero : '' }</TableCell>
-                                            <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno.turno_estado }</TableCell>
+
+                                            <Grow 
+                                                in
+                                                style={{ transformOrigin: '0 0 0' }}
+                                                {...( { timeout: 1000 } )}
+                                            > 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell> 
+                                            </Grow>
+                                            
+                                            <Grow 
+                                                in
+                                                style={{ transformOrigin: '0 0 0' }}
+                                                {...( { timeout: 1000 } )}
+                                            > 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>                                             
+                                            </Grow>
+
+                                            <Grow 
+                                                in
+                                                style={{ transformOrigin: '0 0 0' }}
+                                                {...( { timeout: 1000 } )}
+                                            > 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno_estado === 'ATENDIENDO' ? ventanilla.numero : '' }</TableCell> 
+                                            </Grow>
+
+                                            <Grow 
+                                                in
+                                                style={{ transformOrigin: '0 0 0' }}
+                                                {...( { timeout: 1000 } )}
+                                            > 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno_estado }</TableCell> 
+                                            </Grow>
+
                                         </TableRow>
                                         
                                     ))
-                                } 
+                                }
                             
                             </TableBody>
 

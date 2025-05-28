@@ -19,7 +19,7 @@ export const table_cell_blue_light: CSSProperties = {
     textAlign: 'center',
 }
 export const table_padding: CSSProperties = {
-    padding: '6px 15px',
+    padding: '8px 15px',
 }
 
 export const table_tbody: CSSProperties = {

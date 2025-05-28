@@ -9,13 +9,13 @@ export const ConsultarTiposTurno = ( ) => {
 
     return new Promise<TiposTurnoResponse>( (resolve, eject) => {
 
-        const data = JSON.parse( window.localStorage.getItem('data') ?? '' );
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
         if( data ){
 
             const { token } = data;
         
-            HttpClientToken.get('/api/v1/consultar_turnos_tipos', token)
+            HttpClientToken.get('/api_oauth2/v1/consultar_turnos_tipos', token)
             .then( ( { data } : { data : TiposTurnoResponse }) => {           
                 resolve( data );
             })

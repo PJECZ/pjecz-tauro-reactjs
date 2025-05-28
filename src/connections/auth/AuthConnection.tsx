@@ -1,15 +1,16 @@
 
 import HttpClient from '../../services/HttpClient';
+import HttpClientToken from '../../services/HttpClientToken';
 
 import { AxiosError } from 'axios';
 
-import { LoginParams, LoginResponse } from '../../interfaces/auth/AuthInterface';
+import { HttpResponse, LoginParams, LoginResponse } from '../../interfaces/auth/AuthInterface';
 
 export const Login = ( params: LoginParams ) => {
 
     return new Promise<LoginResponse>( (resolve, eject) => {
 
-        HttpClient.post('/api/v1/token', params)
+        HttpClient.post('/api_oauth2/v1/token', params)
         .then( ( { data } : { data : LoginResponse }) => {           
             resolve( data );
         })
@@ -31,6 +32,33 @@ export const Login = ( params: LoginParams ) => {
                 }
             });
         });
+        
+    });    
+
+}
+
+export const ValidarToken = () => {
+
+    return new Promise<HttpResponse>( (resolve, eject) => {
+
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
+
+        if( data ){
+
+            const { token } = data;
+
+            HttpClientToken.get('/api_oauth2/v1/validar_token', token)
+            .then( ( { data } : { data : HttpResponse }) => {           
+                resolve( data );
+            })
+            .catch( ( error: AxiosError ) => {
+                resolve({
+                    success: false,
+                    message: error.message,                  
+                });
+            });
+
+        }
         
     });    
 
