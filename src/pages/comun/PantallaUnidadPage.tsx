@@ -16,7 +16,7 @@ import { UnidadProps } from "../../interfaces/comun/UnidadInterface";
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 const defaultUnidad: UnidadProps = { id: 0, clave : '', nombre : '' };
 
-const audio = new Audio('/assets/sounds/siguiente2.mp4');
+const audio = new Audio('/assets/sounds/siguiente2.mp3');
 
 export const PantallaUnidadPage = () => {  
 
