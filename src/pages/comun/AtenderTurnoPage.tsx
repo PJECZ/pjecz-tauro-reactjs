@@ -18,7 +18,7 @@ import { ConsultarConfiguracionUsuario } from '../../connections/comun/UsuarioCo
 
 type ActionTurno = 'Tomar' | 'Concluir' | 'Cancelar';
 
-const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
+const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
 export const AtenderTurnoPage = () => {  
 

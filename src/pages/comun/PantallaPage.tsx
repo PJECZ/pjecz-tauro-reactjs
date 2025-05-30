@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
 import WifiIcon from '@mui/icons-material/Wifi';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AccessibleIcon from '@mui/icons-material/Accessible';
+
 import { AppBar, Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
 
 import { Layout } from "../../components/Layout";
@@ -12,7 +15,7 @@ import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection";
 import { useSocket } from "../../hooks/useSocket";
 import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInterface";
 
-const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '', unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
+const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
 const audio = new Audio('/assets/sounds/siguiente2.mp3');
 
@@ -121,7 +124,7 @@ export const PantallaPage = () => {
                                 {
                                     turnosArray
                                     .slice(0, 20)
-                                    .map( ( { unidad, turno_numero, turno_estado, ventanilla }, index ) => (
+                                    .map( ( { unidad, turno_numero, turno_estado, ventanilla, turno_tipo_id }, index ) => (
                                         
                                         <TableRow key={ index } style={{...table_tbody }}>
 
@@ -130,7 +133,9 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>{ index + 1 }</TableCell> 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>
+                                                    {turno_tipo_id===2 ? <CalendarMonthIcon sx={{ color: '#003366', fontSize: 30 }} /> : turno_tipo_id===3 ? <AccessibleIcon sx={{ color: '#449ede', fontSize: 30 }} /> : ''}
+                                                </TableCell> 
                                             </Grow>
                                             
                                             <Grow 
