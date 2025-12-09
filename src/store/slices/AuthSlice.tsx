@@ -1,5 +1,4 @@
 
-
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { UnidadProps } from '../../interfaces/comun/UnidadInterface';

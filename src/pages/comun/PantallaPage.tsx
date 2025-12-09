@@ -75,7 +75,6 @@ export const PantallaPage = () => {
                 if( data ){
                     
                     const { ultimo_turno, turnos } = data;
-                    console.log(ultimo_turno);
                     setUtimoTurno( ultimo_turno ?? defaultTurno );   
                     setTurnosArray( turnos ?? [] );
                     setLoadFetch( false );
