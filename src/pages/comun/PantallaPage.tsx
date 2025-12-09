@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import WifiIcon from '@mui/icons-material/Wifi';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessibleIcon from '@mui/icons-material/Accessible';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import WifiIcon from '@mui/icons-material/Wifi';
 
 import { AppBar, Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
 
@@ -15,7 +15,7 @@ import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection";
 import { useSocket } from "../../hooks/useSocket";
 import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInterface";
 
-const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
+const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
 const audio = new Audio('/assets/sounds/siguiente2.mp3');
 
@@ -38,7 +38,7 @@ export const PantallaPage = () => {
                 if( turno.turno_estado === 'EN ESPERA' ){
                     setTurnosArray( ( arrays ) => [ ...arrays, turno ]);
                 }
-                else if( turno.turno_estado === 'ATENDIENDO' ){
+                else if( turno.turno_estado === 'ATENDIENDO' || turno.turno_estado === 'ATENDIENDO EN CUBICULO' ){
 
                     setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
                         if( elem.turno_id === turno.turno_id){
@@ -75,8 +75,8 @@ export const PantallaPage = () => {
                 if( data ){
                     
                     const { ultimo_turno, turnos } = data;
-
-                    setUtimoTurno( ultimo_turno ?? defaultTurno );     
+                    console.log(ultimo_turno);
+                    setUtimoTurno( ultimo_turno ?? defaultTurno );   
                     setTurnosArray( turnos ?? [] );
                     setLoadFetch( false );
                 }
@@ -113,7 +113,7 @@ export const PantallaPage = () => {
                                 <TableRow>   
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center' }}></TableCell>
                                     <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '28%', textAlign: 'center' }}>Turno</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '20%', textAlign: 'center' }}>Ventanilla/Recepción</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '20%', textAlign: 'center' }}>Ubicación</TableCell>
                                     <TableCell sx={{ ...table_padding, ...table_thead, fontsize:18,  width: '50%', textAlign: 'center' }}></TableCell>
                                 </TableRow>
 
@@ -124,7 +124,7 @@ export const PantallaPage = () => {
                                 {
                                     turnosArray
                                     .slice(0, 20)
-                                    .map( ( { unidad, turno_numero, turno_estado, ventanilla, turno_tipo_id }, index ) => (
+                                    .map( ( { unidad, turno_numero, turno_estado, ventanilla, turno_tipo_id , turno_numero_cubiculo}, index ) => (
                                         
                                         <TableRow key={ index } style={{...table_tbody }}>
 
@@ -151,7 +151,14 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno_estado === 'ATENDIENDO' ? ventanilla.numero : '' }</TableCell> 
+                                                <TableCell sx={{ ...table_padding, fontSize: 30, textAlign: 'center' }}>
+                                                    <Typography sx={{ fontSize:16}}> 
+                                                        { turno_estado === 'ATENDIENDO' ?  'Ventanilla' : '' }
+                                                        { turno_estado === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : '' }
+                                                    </Typography>
+                                                    { turno_estado === 'ATENDIENDO' ? ventanilla.numero : '' }
+                                                    { turno_estado === 'ATENDIENDO EN CUBICULO' ? turno_numero_cubiculo : '' }
+                                                </TableCell> 
                                             </Grow>
 
                                             <Grow 
@@ -187,7 +194,7 @@ export const PantallaPage = () => {
 
                             <Box mt={2} py={8} sx={{ ...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5, height: 'calc(100% - 250px)' }}>
                             
-                                <Typography variant="h5" color="white" textAlign={'center'} sx={{ fontSize: 180 }}>{ ultimoTurno?.unidad.clave }</Typography>
+                                <Typography variant="h5" color="white" textAlign={'center'} sx={{ fontSize: '6rem' }}>{ ultimoTurno?.unidad.clave }</Typography>
                                 <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 180 }}>{ ultimoTurno.turno_numero > 0 && String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
 
                             </Box>
@@ -197,11 +204,11 @@ export const PantallaPage = () => {
                         <Grid size={{ xs: 12, md: 6 }} sx={{ mt: { xs: 2, md: 0 } }}>
 
                             <Box sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5 }} p={1}>
-                                <Typography variant="h5" textAlign={'center'} sx={{color:'#003366'}}>Ventanilla</Typography>
+                                <Typography variant="h5" textAlign={'center'} sx={{color:'#003366'}}> { ultimoTurno?.turno_estado === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : 'Ventanilla' }</Typography>
                             </Box>
 
                             <Box mt={2} py={8} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height: 'calc(100% - 250px)' }}>
-                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366', mt: 5 }}>{ ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero}</Typography>
+                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366', mt: 5 }}>{ ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero}{ ultimoTurno?.turno_numero_cubiculo > 0 && ultimoTurno?.turno_numero_cubiculo}</Typography>
                             </Box>
 
                         </Grid>

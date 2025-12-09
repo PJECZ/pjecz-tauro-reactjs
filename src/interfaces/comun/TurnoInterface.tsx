@@ -9,6 +9,7 @@ export interface TurnoProps {
     turno_tipo_id:          number;
     turno_estado:           string;
     turno_comentarios:      string;
+    turno_numero_cubiculo:  number;
     unidad:                 UnidadProps;
     ventanilla:             VentanillaProps;
 }

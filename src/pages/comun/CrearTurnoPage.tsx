@@ -15,7 +15,7 @@ import { Unidades } from "../../interfaces/comun/UnidadInterface";
 import { TurnoProps } from "../../interfaces/comun/TurnoInterface";
 import { SnackbarProps } from "../../interfaces/ui/SnackbarInterface";
 
-const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
+const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
 
 export interface ErrorsProps {
     tipoTurno?:         string;
