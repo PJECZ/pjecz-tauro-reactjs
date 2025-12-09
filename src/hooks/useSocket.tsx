@@ -1,10 +1,10 @@
-import { useMemo, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { connect } from 'socket.io-client';
 
 export const useSocket = ( ) => {
 
-    const serverPath = process.env.REACT_APP_URL_BASE ?? '';
+    const serverPath = process.env.REACT_APP_URL_BASE_SOCKET ?? '';
 
     const socket = useMemo( () => connect( serverPath, { transports: ['websocket'] } ), [ serverPath ] );
     const [ online, setOnline ] = useState(false);
