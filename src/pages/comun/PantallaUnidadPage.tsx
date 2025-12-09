@@ -221,7 +221,12 @@ export const PantallaUnidadPage = () => {
                             </Box>
 
                             <Box bgcolor={'#4D4D50'} mt={2} py={10} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height: '70%' }}>
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>{ ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero}{ ultimoTurno?.turno_numero_cubiculo > 0 && ultimoTurno?.turno_numero_cubiculo}</Typography>
+                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 210, color:'#003366' }}>
+                                    {ultimoTurno?.turno_numero_cubiculo > 0 
+                                        ? ultimoTurno?.turno_numero_cubiculo
+                                        : ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero
+                                    }    
+                                </Typography>
                             </Box>
 
                         </Grid>
