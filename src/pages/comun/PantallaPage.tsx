@@ -38,7 +38,7 @@ export const PantallaPage = () => {
                 if( turno.turno_estado === 'EN ESPERA' ){
                     setTurnosArray( ( arrays ) => [ ...arrays, turno ]);
                 }
-                else if( turno.turno_estado === 'ATENDIENDO' || turno.turno_estado === 'ATENDIENDO EN CUBICULO' ){
+                else if( turno.turno_estado === 'ATENDIENDO' || turno.turno_estado === 'ATENDIENDO EN CUBICULO' || turno.turno_estado === 'EN ESPERA DE CUBICULO' ){
 
                     setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
                         if( elem.turno_id === turno.turno_id){
