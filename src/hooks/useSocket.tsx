@@ -6,7 +6,7 @@ export const useSocket = ( ) => {
 
     const serverPath = process.env.REACT_APP_URL_BASE_SOCKET ?? '';
 
-    const socket = useMemo( () => connect( serverPath, { transports: ['websocket'] } ), [ serverPath ] );
+    const socket = useMemo( () => connect( serverPath, { path: '/socket.io/', transports: ['websocket', "polling"] } ), [ serverPath ] );
     const [ online, setOnline ] = useState(false);
 
     useEffect(() => {
