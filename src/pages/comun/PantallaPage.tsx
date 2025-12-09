@@ -207,7 +207,12 @@ export const PantallaPage = () => {
                             </Box>
 
                             <Box mt={2} py={8} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height: 'calc(100% - 250px)' }}>
-                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366', mt: 5 }}>{ ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero}{ ultimoTurno?.turno_numero_cubiculo > 0 && ultimoTurno?.turno_numero_cubiculo}</Typography>
+                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366', mt: 5 }}>
+                                    {ultimoTurno?.turno_numero_cubiculo > 0 
+                                        ? ultimoTurno?.turno_numero_cubiculo
+                                        : ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero
+                                    }
+                                </Typography>
                             </Box>
 
                         </Grid>
