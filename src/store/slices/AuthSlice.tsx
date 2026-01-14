@@ -9,7 +9,7 @@ export interface stateProps {
     correoElectronico?:      string;
     token?:                  string;
     unidad?:                 UnidadProps;
-    ventanilla?:             string;
+    ubicacion?:             string;
     rol?:                    RolProps;
 }
 
@@ -32,7 +32,7 @@ export const authSlice = createSlice({
             state.correoElectronico = payload.correoElectronico; 
             state.rol = payload.rol; 
             state.unidad = payload.unidad; 
-            state.ventanilla = payload.ventanilla;
+            state.ubicacion = payload.ubicacion;
         },
         logout: ( state ) => {     
             state.token = '';
@@ -40,7 +40,7 @@ export const authSlice = createSlice({
             state.correoElectronico = '';         
             state.rol = undefined;          
             state.unidad = undefined;          
-            state.ventanilla = '';          
+            state.ubicacion = '';          
         },
     },
 })

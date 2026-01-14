@@ -1,7 +1,7 @@
 
 import { RolProps } from "../comun/RolInterface";
 import { UnidadProps } from "../comun/UnidadInterface";
-import { VentanillaProps } from "../comun/VentanillaInterface";
+import { UbicacionProps } from "../comun/UbicacionInterface";
 
 export interface HttpResponse {
     success:    boolean;
@@ -19,5 +19,5 @@ export interface LoginResponse extends HttpResponse {
     usuario_nombre_completo:    string;
     rol:                        RolProps;
     unidad?:                    UnidadProps;
-    ventanilla?:                VentanillaProps;
+    ubicacion?:                UbicacionProps;
 }

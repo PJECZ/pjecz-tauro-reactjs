@@ -24,7 +24,7 @@ export const ActualizarUsuario = ( params: ActualizarUsuarioParams ) => {
                     success: false, 
                     message: error.message,
                     data: {                        
-                        ventanilla: {
+                        ubicacion: {
                             id: 0,
                             nombre: '',
                             numero: 0,
@@ -50,7 +50,7 @@ export const ActualizarUsuario = ( params: ActualizarUsuarioParams ) => {
                 success: false, 
                 message: 'Ocurrio un error',
                 data: {                        
-                    ventanilla: {
+                    ubicacion: {
                         id: 0,
                         nombre: '',
                         numero: 0,
@@ -93,7 +93,7 @@ export const ConsultarConfiguracionUsuario = () => {
                     success: false, 
                     message: error.message,
                     data: {                        
-                        ventanilla: {
+                        ubicacion: {
                             id: 0,
                             nombre: '',
                             numero: 0,
@@ -119,7 +119,7 @@ export const ConsultarConfiguracionUsuario = () => {
                 success: false, 
                 message: 'Ocurrio un error',
                 data: {                        
-                    ventanilla: {
+                    ubicacion: {
                         id: 0,
                         nombre: '',
                         numero: 0,

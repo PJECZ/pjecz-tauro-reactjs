@@ -1,7 +1,7 @@
 
 import { HttpResponse } from "../auth/AuthInterface";
 import { UnidadProps } from "./UnidadInterface";
-import { VentanillaProps } from "./VentanillaInterface";
+import { UbicacionProps } from "./UbicacionInterface";
 
 export interface TurnoProps {
     turno_id:               number;
@@ -11,7 +11,7 @@ export interface TurnoProps {
     turno_comentarios:      string;
     turno_numero_cubiculo:  number;
     unidad:                 UnidadProps;
-    ventanilla:             VentanillaProps;
+    ubicacion:             UbicacionProps;
 }
 
 export interface CrearTurnoParams {

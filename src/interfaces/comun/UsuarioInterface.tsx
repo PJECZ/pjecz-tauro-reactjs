@@ -4,10 +4,10 @@ import { RolProps } from "./RolInterface";
 import { TiposTurnoProps } from "./TiposTurnoInterface";
 import { TurnoProps } from "./TurnoInterface";
 import { UnidadProps } from "./UnidadInterface";
-import { VentanillaProps } from "./VentanillaInterface";
+import { UbicacionProps } from "./UbicacionInterface";
 
 export interface ActualizarUsuarioParams {
-    ventanilla_id:            number;
+    ubicacion_id:            number;
     turnos_tipos_ids:         number[];
 }
 
@@ -20,7 +20,7 @@ export interface ConsultarConfiguracionUsuarioResponse extends HttpResponse {
 }
 
 export interface ConsultarConfiguracionUsuarioData {
-    ventanilla:                 VentanillaProps;
+    ubicacion:                 UbicacionProps;
     unidad:                     UnidadProps;
     rol:                        RolProps;
     turnos_tipos:               TiposTurnoProps[];

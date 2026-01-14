@@ -18,11 +18,11 @@ import { ConsultarConfiguracionUsuario } from '../../connections/comun/UsuarioCo
 
 type ActionTurno = 'Tomar' | 'Concluir' | 'Cancelar';
 
-const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
+const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ubicacion: { id: 0, nombre : '', numero : 0 } };
 
 export const AtenderTurnoPage = () => {  
 
-    const { ventanilla } = useSelector( ( state: RootState ) => state.auth );
+    const { ubicacion } = useSelector( ( state: RootState ) => state.auth );
 
     const [turno, setTurno] = useState<TurnoProps>( defaultTurno );
     
@@ -167,11 +167,11 @@ export const AtenderTurnoPage = () => {
 
     useEffect(() => {
     
-        if( !ventanilla ){
+        if( !ubicacion ){
             setOpen( true );
         }
 
-    }, [ ventanilla ])    
+    }, [ ubicacion ])    
 
     useEffect(() => {
     

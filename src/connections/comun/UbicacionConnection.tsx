@@ -3,11 +3,11 @@ import HttpClientToken from '../../services/HttpClientToken';
 
 import { AxiosError } from 'axios';
 
-import { VentanillaResponse } from '../../interfaces/comun/VentanillaInterface';
+import { UbicacionResponse } from '../../interfaces/comun/UbicacionInterface';
 
-export const ConsultarVentanillasActivas = ( ) => {
+export const ConsultarUbicacionesActivas = ( ) => {
 
-    return new Promise<VentanillaResponse>( (resolve, eject) => {
+    return new Promise<UbicacionResponse>( (resolve, eject) => {
 
         const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
 
@@ -15,8 +15,8 @@ export const ConsultarVentanillasActivas = ( ) => {
 
             const { token } = data;
         
-            HttpClientToken.get('/api_oauth2/v1/consultar_ventanillas_activas', token)
-            .then( ( { data } : { data : VentanillaResponse }) => {           
+            HttpClientToken.get('/api_oauth2/v1/consultar_ubicaciones_activas', token)
+            .then( ( { data } : { data : UbicacionResponse }) => {           
                 resolve( data );
             })
             .catch( ( error: AxiosError ) => {

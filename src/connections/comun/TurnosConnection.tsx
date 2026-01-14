@@ -84,7 +84,7 @@ export const CrearTurno = ( params : CrearTurnoParams ) => {
                         turno_tipo_id:0,
                         turno_comentarios: '',
                         turno_numero_cubiculo: 0,
-                        ventanilla: {
+                        ubicacion: {
                             id: 0,
                             nombre: '',
                             numero: 0,
@@ -128,7 +128,7 @@ export const TomarTurno = () => {
                         turno_tipo_id:0,
                         turno_comentarios: '',
                         turno_numero_cubiculo: 0,
-                        ventanilla: {
+                        ubicacion: {
                             id: 0,
                             nombre: '',
                             numero: 0,
@@ -173,7 +173,7 @@ export const CancelarTurno = ( params : CancelarTurnoParams ) => {
                         turno_tipo_id:0,
                         turno_comentarios: '',
                         turno_numero_cubiculo: 0,
-                        ventanilla: {
+                        ubicacion: {
                             id: 0,
                             nombre: '',
                             numero: 0,
@@ -217,7 +217,7 @@ export const ConcluirTurno = ( params : ConcluirTurnoParams ) => {
                         turno_tipo_id:0,
                         turno_comentarios: '',
                         turno_numero_cubiculo: 0,
-                        ventanilla: {
+                        ubicacion: {
                             id: 0,
                             nombre: '',
                             numero: 0,

@@ -15,7 +15,7 @@ import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection";
 import { useSocket } from "../../hooks/useSocket";
 import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInterface";
 
-const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ventanilla: { id: 0, nombre : '', numero : 0 } };
+const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: '',turno_tipo_id:0, unidad : { id: 0, clave : '', nombre : '' }, ubicacion: { id: 0, nombre : '', numero : 0 } };
 
 const audio = new Audio('/assets/sounds/siguiente2.mp3');
 
@@ -123,7 +123,7 @@ export const PantallaPage = () => {
                                 {
                                     turnosArray
                                     .slice(0, 20)
-                                    .map( ( { unidad, turno_numero, turno_estado, ventanilla, turno_tipo_id , turno_numero_cubiculo}, index ) => (
+                                    .map( ( { unidad, turno_numero, turno_estado, ubicacion, turno_tipo_id , turno_numero_cubiculo}, index ) => (
                                         
                                         <TableRow key={ index } style={{...table_tbody }}>
 
@@ -155,7 +155,7 @@ export const PantallaPage = () => {
                                                         { turno_estado === 'ATENDIENDO' ?  'Ventanilla' : '' }
                                                         { turno_estado === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : '' }
                                                     </Typography>
-                                                    { turno_estado === 'ATENDIENDO' ? ventanilla.numero : '' }
+                                                    { turno_estado === 'ATENDIENDO' ? ubicacion.numero : '' }
                                                     { turno_estado === 'ATENDIENDO EN CUBICULO' ? turno_numero_cubiculo : '' }
                                                 </TableCell> 
                                             </Grow>
@@ -210,7 +210,7 @@ export const PantallaPage = () => {
                                 <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366', mt: 5 }}>
                                     {ultimoTurno?.turno_numero_cubiculo > 0 
                                         ? ultimoTurno?.turno_numero_cubiculo
-                                        : ultimoTurno?.ventanilla.numero !== 0 && ultimoTurno?.ventanilla.numero
+                                        : ultimoTurno?.ubicacion.numero !== 0 && ultimoTurno?.ubicacion.numero
                                     }
                                 </Typography>
                             </Box>
