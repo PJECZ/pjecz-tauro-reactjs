@@ -1,17 +1,17 @@
 
 import { HttpResponse } from "../auth/AuthInterface";
 
-export interface VentanillaResponse extends HttpResponse {
-    data: Ventanilla[];
+export interface UbicacionResponse extends HttpResponse {
+    data: Ubicacion[];
 }
 
-export interface Ventanilla {
+export interface Ubicacion {
     id:         number;
     nombre:     string;
     numero:     string;
 }
 
-export interface VentanillaProps {
+export interface UbicacionProps {
     id:         number;
     nombre:     string;
     numero:     number | null;

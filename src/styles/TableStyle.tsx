@@ -27,7 +27,7 @@ export const table_tbody: CSSProperties = {
     backgroundColor: '#f5f5f5',
 }
 
-export const table_ventanilla: CSSProperties = {
+export const table_ubicacion: CSSProperties = {
     borderBottom: '1px solid #dddddd',
     backgroundColor: '#003366',
     color: '#ffffff',
