@@ -80,8 +80,15 @@ export const CrearTurno = ( params : CrearTurnoParams ) => {
                     data: {
                         turno_id: 0,
                         turno_numero: 0,
-                        turno_estado: '',
-                        turno_tipo_id:0,
+                        turno_estado: {
+                            id:0, 
+                            nombre:''
+                        },
+                        turno_tipo: {
+                            id:0, 
+                            nombre:'', 
+                            nivel:''
+                        } ,
                         turno_comentarios: '',
                         turno_numero_cubiculo: 0,
                         ubicacion: {
@@ -124,8 +131,15 @@ export const TomarTurno = () => {
                     data: {
                         turno_id: 0,
                         turno_numero: 0,
-                        turno_estado: '',
-                        turno_tipo_id:0,
+                        turno_estado: {
+                            id:0, 
+                            nombre:''
+                        },
+                        turno_tipo: {
+                            id:0, 
+                            nombre:'', 
+                            nivel:''
+                        } ,
                         turno_comentarios: '',
                         turno_numero_cubiculo: 0,
                         ubicacion: {
@@ -169,8 +183,15 @@ export const CancelarTurno = ( params : CancelarTurnoParams ) => {
                     data: {
                         turno_id: 0,
                         turno_numero: 0,
-                        turno_estado: '',
-                        turno_tipo_id:0,
+                        turno_estado: {
+                            id:0, 
+                            nombre:''
+                        },
+                        turno_tipo: {
+                            id:0, 
+                            nombre:'', 
+                            nivel:''
+                        } ,
                         turno_comentarios: '',
                         turno_numero_cubiculo: 0,
                         ubicacion: {
@@ -213,8 +234,15 @@ export const ConcluirTurno = ( params : ConcluirTurnoParams ) => {
                     data: {
                         turno_id: 0,
                         turno_numero: 0,
-                        turno_estado: '',
-                        turno_tipo_id:0,
+                        turno_estado: {
+                            id:0, 
+                            nombre:''
+                        },
+                        turno_tipo: {
+                            id:0, 
+                            nombre:'', 
+                            nivel:''
+                        } ,
                         turno_comentarios: '',
                         turno_numero_cubiculo: 0,
                         ubicacion: {

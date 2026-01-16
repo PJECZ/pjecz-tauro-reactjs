@@ -2,16 +2,18 @@
 import { HttpResponse } from "../auth/AuthInterface";
 import { UnidadProps } from "./UnidadInterface";
 import { UbicacionProps } from "./UbicacionInterface";
+import { TiposTurnoProps } from "./TiposTurnoInterface";
+import { EstadosTurnoProps } from "./EstadosTurnoInterface";
 
 export interface TurnoProps {
     turno_id:               number;
     turno_numero:           number;
-    turno_tipo_id:          number;
-    turno_estado:           string;
+    turno_tipo:             TiposTurnoProps;
+    turno_estado:           EstadosTurnoProps
     turno_comentarios:      string;
     turno_numero_cubiculo:  number;
     unidad:                 UnidadProps;
-    ubicacion:             UbicacionProps;
+    ubicacion:              UbicacionProps;
 }
 
 export interface CrearTurnoParams {
