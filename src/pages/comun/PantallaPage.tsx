@@ -35,10 +35,11 @@ export const PantallaPage = () => {
 
             if( turno.turno_id !== 0 ){
 
-                if( turno.turno_estado.nombre === 'EN ESPERA' ){
-                    setTurnosArray( ( arrays ) => [ ...arrays, turno ]);
+                if( turno.turno_estado.id === 1 || turno.turno_estado.id === 5 ){ /* 1 'EN ESPERA' , 5 'EN ESPERA DE CUBICULO' */
+                    /*setTurnosArray( ( arrays ) => [ ...arrays, turno ]);*/
+                    setLoadFetch( true );
                 }
-                else if( turno.turno_estado.nombre === 'ATENDIENDO' || turno.turno_estado.nombre === 'ATENDIENDO EN CUBICULO' || turno.turno_estado.nombre === 'EN ESPERA DE CUBICULO' ){
+                else if( turno.turno_estado.id === 2 || turno.turno_estado.id === 6  ){ /* 2 'ATENDIENDO' , 6 'ATENDIENDO EN CUBICULO'*/
 
                     setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
                         if( elem.turno_id === turno.turno_id){
@@ -51,7 +52,7 @@ export const PantallaPage = () => {
                     audio.play();
 
                 }
-                else if( turno.turno_estado.nombre === 'COMPLETADO' || turno.turno_estado.nombre === 'CANCELADO' ){
+                else if( turno.turno_estado.id === 3 || turno.turno_estado.id === 4 ){ /* 3 'COMPLETADO' , 4 'CANCELADO'  */ 
                     setLoadFetch( true );
                 }
             }
@@ -152,11 +153,11 @@ export const PantallaPage = () => {
                                             > 
                                                 <TableCell sx={{ ...table_padding, fontSize: 30, textAlign: 'center' }}>
                                                     <Typography sx={{ fontSize:16}}> 
-                                                        { turno_estado.nombre === 'ATENDIENDO' ?  'Ventanilla' : '' }
-                                                        { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : '' }
+                                                        { turno_estado.id === 2 ?  'Ventanilla' : '' /* 2 'ATENDIENDO' */}
+                                                        { turno_estado.id === 6 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' */}
                                                     </Typography>
-                                                    { turno_estado.nombre === 'ATENDIENDO' ? ubicacion.numero : '' }
-                                                    { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? turno_numero_cubiculo : '' }
+                                                    { turno_estado.id === 2 ? ubicacion.numero : '' /* 2 'ATENDIENDO' */ } 
+                                                    { turno_estado.id === 6 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' */}
                                                 </TableCell> 
                                             </Grow>
 
@@ -203,7 +204,7 @@ export const PantallaPage = () => {
                         <Grid size={{ xs: 12, md: 6 }} sx={{ mt: { xs: 2, md: 0 } }}>
 
                             <Box sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5 }} p={1}>
-                                <Typography variant="h5" textAlign={'center'} sx={{color:'#003366'}}> { ultimoTurno?.turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : 'Ventanilla' }</Typography>
+                                <Typography variant="h5" textAlign={'center'} sx={{color:'#003366'}}> { ultimoTurno?.turno_estado.id === 6 ? 'Cubículo' : 'Ventanilla' /* 6 'ATENDIENDO EN CUBICULO' */}</Typography>
                             </Box>
 
                             <Box mt={2} py={8} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height: 'calc(100% - 250px)' }}>

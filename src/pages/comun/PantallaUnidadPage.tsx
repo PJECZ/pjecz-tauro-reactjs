@@ -39,10 +39,11 @@ export const PantallaUnidadPage = () => {
 
             if( turno.turno_id !== 0 && turno.unidad.id === parseInt( id ?? '0' ) ){
 
-                if( turno.turno_estado.nombre === 'EN ESPERA' ){
-                    setTurnosArray( ( arrays ) => [ ...arrays, turno ]);
+                if( turno.turno_estado.id === 1 ){ /* 1 'EN ESPERA' */
+                    /*setTurnosArray( ( arrays ) => [ ...arrays, turno ]);*/
+                    setLoadFetch( true );
                 }
-                else if( turno.turno_estado.nombre === 'ATENDIENDO' || turno.turno_estado.nombre === 'ATENDIENDO EN CUBICULO'  || turno.turno_estado.nombre === 'EN ESPERA DE CUBICULO'){
+                else if( turno.turno_estado.id === 2 || turno.turno_estado.id === 6  ){/* 2 'ATENDIENDO' , 6 'ATENDIENDO EN CUBICULO'*/
 
                     setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
                         if( elem.turno_id === turno.turno_id){
@@ -54,7 +55,7 @@ export const PantallaUnidadPage = () => {
                     setUtimoTurno( turno );
                     audio.play();
                 }
-                else if( turno.turno_estado.nombre === 'COMPLETADO' || turno.turno_estado.nombre === 'CANCELADO' ){
+                else if( turno.turno_estado.id === 3 || turno.turno_estado.id === 4 ){/* 3 'COMPLETADO' , 4 'CANCELADO'  */ 
                     setLoadFetch( true );
                 }
             }
