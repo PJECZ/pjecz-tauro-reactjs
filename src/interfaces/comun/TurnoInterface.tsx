@@ -1,9 +1,9 @@
 
 import { HttpResponse } from "../auth/AuthInterface";
-import { UnidadProps } from "./UnidadInterface";
-import { UbicacionProps } from "./UbicacionInterface";
-import { TiposTurnoProps } from "./TiposTurnoInterface";
 import { EstadosTurnoProps } from "./EstadosTurnoInterface";
+import { TiposTurnoProps } from "./TiposTurnoInterface";
+import { UbicacionProps } from "./UbicacionInterface";
+import { UnidadProps } from "./UnidadInterface";
 
 export interface TurnoProps {
     turno_id:               number;
@@ -20,6 +20,7 @@ export interface CrearTurnoParams {
     turno_tipo_id:      number;
     unidad_id:          number;
     comentarios:        string;
+    turno_telefono:     string | null;
 }
 
 export interface CrearTurnoResponse extends HttpResponse {
