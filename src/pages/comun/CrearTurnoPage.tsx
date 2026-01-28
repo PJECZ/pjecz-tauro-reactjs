@@ -11,9 +11,11 @@ import { RootState } from "../../store";
 
 import { ConsultarUnidades } from "../../connections/comun/UnidadConnection";
 
-import { Unidades } from "../../interfaces/comun/UnidadInterface";
 import { TurnoProps } from "../../interfaces/comun/TurnoInterface";
+import { Unidades } from "../../interfaces/comun/UnidadInterface";
 import { SnackbarProps } from "../../interfaces/ui/SnackbarInterface";
+
+import { Teclado } from "../../components/Teclado";
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: { id:0, nombre:''},turno_tipo: {id:0, nombre:'', nivel:''}, unidad : { id: 0, clave : '', nombre : '' }, ubicacion: { id: 0, nombre : '', numero : 0 } };
 
@@ -23,7 +25,7 @@ export interface ErrorsProps {
     observaciones?:     string;
 }
 
-export const CrearTurnoPage = () => { 
+export const CrearTurnoPage = (  ) => { 
     
     const [openConfirmacion, setOpenConfirmacion] = useState( false );
     const [openTurnoConfirmacion, setOpenTurnoConfirmacion] = useState( false );
@@ -50,7 +52,9 @@ export const CrearTurnoPage = () => {
         type: 'warning',
         message: '',
         open: false,
-    });    
+    });
+    
+    const [telefonoCelular, setTelefonoCelular] = useState<string>('');
     
     const handleCloseSnackbar = () => setOpenMessage({ type: typeSnackbar, open: false, message }) 
 
@@ -87,8 +91,8 @@ export const CrearTurnoPage = () => {
     const handleCrearTurno = async () => {       
 
         setLoading( true );
-
-        await CrearTurno({ turno_tipo_id: tipoturno, unidad_id: unidadRedux?.id===1 ? unidad : unidadRedux?.id ?? 0, comentarios: observaciones })
+        
+        await CrearTurno({ turno_tipo_id: tipoturno, unidad_id: unidadRedux?.id===1 ? unidad : unidadRedux?.id ?? 0, comentarios: observaciones, turno_telefono: telefonoCelular!='' ? telefonoCelular : null })
         .then(resp => {
 
             const { success, message, data } = resp;
@@ -268,6 +272,8 @@ export const CrearTurnoPage = () => {
 
                             </Grid>
 
+                            <Teclado onDataChange={setTelefonoCelular} /> 
+   
                             <Grid size={{ xs: 12, md: 12 }} sx={{ mt: 3 }}>
                                 
                                 <FormControl fullWidth>
