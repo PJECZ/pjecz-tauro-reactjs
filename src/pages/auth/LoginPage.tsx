@@ -119,7 +119,7 @@ export const LoginPage = () => {
                         </Grid>
                         
                         <Grid size={{ xs: 6 }} style={{ textAlign: 'center' }}>
-                            <img src={ process.env.PUBLIC_URL + "/assets/logo_colors.png" } alt="logo" style={{ height: 75 }} />
+                            <img src={ process.env.PUBLIC_URL + "/assets/logo.png" } alt="logo" style={{ height: 75 }} />
                         </Grid>
 
                     </Grid>

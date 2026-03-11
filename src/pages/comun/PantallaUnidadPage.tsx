@@ -103,7 +103,7 @@ export const PantallaUnidadPage = () => {
         <div>
 
             {/* Barra superior con descripcion de la unidad */}
-            <Grid size={{ xs: 12, md: 12 }} sx={{ ...table_cell_blue, borderRadius: 5}} style={{marginLeft:'60px', marginRight:'60px', marginTop:'20px', border:'1px solid #8facef', borderRadius:10, background: 'linear-gradient(180deg,rgba(27, 57, 125, .8) 0%, rgba(189, 200, 226, 0.5) 90%)',}}>               
+            <Grid size={{ xs: 12, md: 12 }} sx={{ ...table_cell_blue, borderRadius: 5}} style={{marginLeft:'60px', marginRight:'60px', marginTop:'20px', border:'1px solid #84a2e8', borderRadius:10, background: 'linear-gradient(180deg,rgba(27, 57, 125, .8) 0%, rgba(92, 129, 215, 0.5) 90%)',}}>               
 
                 <Box sx={{ opacity:0.8}}>
                     
@@ -183,7 +183,7 @@ export const PantallaUnidadPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }}>{ turno_estado.nombre }</TableCell> 
+                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#91f36a' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '20px'  }}>{ turno_estado.nombre }</TableCell> 
                                             </Grow>
 
                                         </TableRow>
@@ -241,7 +241,7 @@ export const PantallaUnidadPage = () => {
                        <Grid size={{ xs: 12, md: 11 }} sx={{ mt: { xs: 2, md: 0 } }} >
 
                             <Box mt={2} py={8} sx={{ ...table_cell_blue, padding:5 }}>
-                                <Typography style={{fontSize:40, fontWeight:'lighter'}}>Su Turno</Typography>
+                                <Typography style={{fontSize:40, fontWeight:'lighter'}}>Turno</Typography>
                                 <Typography sx={{ fontSize: 180, lineHeight: 0.9, textAlign:'center' }}>{ ultimoTurno.turno_numero>0 && String(ultimoTurno?.turno_numero).padStart(3,'0') }</Typography>
 
                                 <hr style={{ borderColor: '#7fbeeb', borderStyle: 'solid', borderWidth: '0.5px 0 0 0' }} />

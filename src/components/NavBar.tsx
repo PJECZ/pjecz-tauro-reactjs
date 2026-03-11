@@ -29,13 +29,13 @@ export const NavBar = () => {
 
         <>
         
-            <AppBar position="relative" sx={{  backgroundColor: '#f5f5f5', opacity: 0.8 , boxShadow:'1px 1px 10px rgba(0, 0, 0, 0.2)', mb:3}}>
+            <AppBar position="relative" sx={{ boxShadow:'1px 1px 10px rgba(0, 0, 0, 0.2)', mb:3}} style={{backgroundColor:'rgba(255,255,255,0.3)'}}>
 
-                <Container maxWidth="xl" sx={{ backgroundColor: '#f5f5f5', mt: 1 }}>
+                <Container maxWidth="xl" sx={{ mt: 1 }}>
 
                     <Toolbar 
                         disableGutters
-                        sx={{ backgroundColor: '#f5f5f5', height: 125 }}
+                        sx={{  height: 125 }}
                     >
                     
                         <Box sx={{ textAlign: 'start' }}>               
