@@ -5,10 +5,12 @@ import { useSelector } from "react-redux";
 
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
-import { table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
+import { table_cell_blue, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
 
 import { Settings } from "../../components/Settings";
 import { RootState } from "../../store";
+
+
 
 import { CancelarTurno, ConcluirTurno, TomarTurno } from "../../connections/comun/TurnosConnection";
 
@@ -211,16 +213,17 @@ export const AtenderTurnoPage = () => {
 
             <Grid container spacing={3}>
 
-                <Grid size={{ xs: 12, md: 12 }}>               
-                
-                    <Box bgcolor={'#003366'} sx={{ opacity:0.8}}>
+                {/* Barra superior con descripcion de la unidad */}
+                <Grid size={{ xs: 12, md: 12 }} sx={{ ...table_cell_blue, borderRadius: 5}} style={{marginLeft:'60px', marginRight:'60px', marginTop:'20px', border:'1px solid #84a2e8', borderRadius:10, background: 'linear-gradient(180deg,rgba(27, 57, 125, .8) 0%, rgba(92, 129, 215, 0.5) 90%)',}}>               
+    
+                    <Box sx={{ opacity:0.8}}>
                         
                         <Typography variant="h4" color="white" textAlign={'center'} p={1}>
-                            { unidadRedux?.nombre } 
+                            {unidadRedux?.nombre}
                         </Typography>
                             
                     </Box>                      
-
+    
                 </Grid>
 
                 <Grid size={{ xs: 12, md: 12 }} sx={ { display: 'flex', justifyContent: 'center', margin:'auto' } } >
@@ -231,9 +234,9 @@ export const AtenderTurnoPage = () => {
                         
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }} sx={ { display: 'flex', justifyContent: 'center', margin:'auto' } } >
+                <Grid size={{ xs: 12, md: 6 }} sx={ { display: 'flex', justifyContent: 'center', margin:'auto' } }  >
 
-                    <TableContainer component={ Paper } variant="outlined" sx={{ borderRadius: 2 }}>
+                    <TableContainer component={ Paper } variant="outlined" sx={{ borderRadius: 2 }} style={{backgroundColor:'rgba(255,255,255,0.6)'}}>
 
                         <Table>
 
@@ -262,7 +265,7 @@ export const AtenderTurnoPage = () => {
                                         { 
                                             turno.turno_id !== 0 
                                             &&   
-                                                <Table sx={{ backgroundColor:'#ccc', margin:0, padding:0 }}>
+                                                <Table sx={{ margin:0, padding:0 }} style={{backgroundColor:'rgba(255,255,255,0.1)'}}>
 
                                                     <TableRow>
 

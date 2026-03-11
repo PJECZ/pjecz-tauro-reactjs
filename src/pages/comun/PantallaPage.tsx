@@ -228,7 +228,7 @@ export const PantallaPage = () => {
 
                             <Box mt={2} py={8} sx={{ ...table_cell_blue, padding:5 }}>
 
-                                <Typography style={{fontSize:40, fontWeight:'lighter'}}>Su Turno</Typography>
+                                <Typography style={{fontSize:40, fontWeight:'lighter'}}>Turno</Typography>
                                 <Typography sx={{ fontSize: '6rem', lineHeight:.9, textAlign:'center' }}>{ ultimoTurno?.unidad.clave }</Typography>
                                 <Typography sx={{ fontSize: 180, lineHeight: 0.9, textAlign:'center' }}>{ ultimoTurno.turno_numero > 0 && String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
                                 

@@ -42,7 +42,7 @@ export const Footer = () => {
 
         <>
             
-            <AppBar position="fixed" color="primary" sx={{borderTop:'1px solid #999', top: 'auto', bottom: 0, boxShadow: 'none', backgroundColor: '#f5f5f5', opacity: 0.8, height: 65 }}>
+            <AppBar position="fixed" color="primary" sx={{borderTop:'1px solid #999', top: 'auto', bottom: 0, boxShadow: 'none', height: 65 }} style={{ backgroundColor: 'rgba(255,255,255,0.4)'  }}>
 
                 <Toolbar>    
                     <Box sx={{ ml:3 , display: 'flex', alignItems: 'end'}}>
