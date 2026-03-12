@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 import AccessibleIcon from '@mui/icons-material/Accessible';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WifiIcon from '@mui/icons-material/Wifi';
-import { AppBar, Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
+import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
-import { Layout } from "../../components/Layout";
 
 import { useParams } from "react-router";
-import { table_cell_blue, table_cell_blue_light, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
+import { table_cell_blue, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
 
 import { ConsultarTurnosUnidad } from "../../connections/comun/TurnosConnection";
 import { useSocket } from "../../hooks/useSocket";
@@ -30,6 +29,8 @@ export const PantallaUnidadPage = () => {
     const [ loadFetch, setLoadFetch ] = useState( true );
 
     const { socket, online } = useSocket();    
+
+    const [fecha, setFecha] = useState(new Date());
 
     useEffect( () => {
 
@@ -100,10 +101,10 @@ export const PantallaUnidadPage = () => {
      
     return (
 
-        <div>
+        <Box className="pantalla">
 
             {/* Barra superior con descripcion de la unidad */}
-            <Grid size={{ xs: 12, md: 12 }} sx={{ ...table_cell_blue, borderRadius: 5}} style={{marginLeft:'60px', marginRight:'60px', marginTop:'20px', border:'1px solid #84a2e8', borderRadius:10, background: 'linear-gradient(180deg,rgba(27, 57, 125, .8) 0%, rgba(92, 129, 215, 0.5) 90%)',}}>               
+            <Grid size={{ xs: 12, md: 12 }} sx={{ ...table_cell_blue, borderRadius: 5}} style={{ marginLeft:'60px', marginRight:'60px'   }}>               
 
                 <Box sx={{ opacity:0.8}}>
                     
@@ -130,7 +131,7 @@ export const PantallaUnidadPage = () => {
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '30%', textAlign: 'center',paddingBottom:'15px' }}>Turno</TableCell>
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '50%', textAlign: 'center',paddingBottom:'15px' }}>Estado</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '50%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
                                 </TableRow>
 
                             </TableHead>
@@ -139,7 +140,7 @@ export const PantallaUnidadPage = () => {
 
                                 {
                                     turnosArray
-                                    .slice(0, 20)
+                                    .slice(0, 15)
                                     .map( ( { unidad, turno_numero, turno_estado, ubicacion, turno_tipo , turno_numero_cubiculo}, index ) => (
                                                                             
                                         <TableRow key={ index } style={{...table_tbody }}>
@@ -169,12 +170,13 @@ export const PantallaUnidadPage = () => {
                                                 {...( { timeout: 1000 } )}
                                             > 
                                                 <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }}> 
-                                                    <Typography sx={{ fontSize:16}}> 
+                                                    <Typography sx={{ fontSize:22}}> 
                                                         { turno_estado.nombre === 'ATENDIENDO' ?  'Ventanilla' : '' }
                                                         { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : '' }
+                                                        &nbsp;
+                                                        { turno_estado.nombre === 'ATENDIENDO' ? ubicacion.numero : '' }
+                                                        { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? turno_numero_cubiculo : '' }
                                                     </Typography>
-                                                    { turno_estado.nombre === 'ATENDIENDO' ? ubicacion.numero : '' }
-                                                    { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? turno_numero_cubiculo : '' }
                                                 </TableCell> 
                                             </Grow>
 
@@ -183,7 +185,11 @@ export const PantallaUnidadPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#91f36a' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '20px'  }}>{ turno_estado.nombre }</TableCell> 
+                                                <TableCell 
+                                                    sx={{ ...table_padding, fontSize: 22, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC', paddingY:0 }} 
+                                                    style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#91f36a' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '20px'  }}>
+                                                        { turno_estado.nombre }
+                                                </TableCell> 
                                             </Grow>
 
                                         </TableRow>
@@ -208,7 +214,9 @@ export const PantallaUnidadPage = () => {
 
                     <Grid container>
                         <Grid size={{ xs: 12, md: 12 }} sx={{ mt: { xs: 2, md: 0 } }} style={{textAlign:'right'}}>
-                            <Typography style={{fontFamily: 'Arial', fontSize: 20, color: '#fff',paddingRight:'30px'}}><CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} />  Martes, 25 de Junio de 2024</Typography>
+                            <Typography style={{fontFamily: 'Arial', fontSize: 20, color: '#fff',paddingRight:'30px'}}><CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} />
+                                &nbsp;{fecha.toLocaleDateString('es-ES', { weekday: 'long' }).charAt(0).toUpperCase() + fecha.toLocaleDateString('es-ES', { weekday: 'long' }).slice(1)}, {fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}       
+                            </Typography>
                             <Box style={{textAlign:'right', padding:'0px'}}>
 
                                 { 
@@ -237,11 +245,12 @@ export const PantallaUnidadPage = () => {
                         </Grid>
                     </Grid>
 
-                    <Grid container>
+                    <Grid container sx={{ mt: 8 }}>
                        <Grid size={{ xs: 12, md: 11 }} sx={{ mt: { xs: 2, md: 0 } }} >
 
                             <Box mt={2} py={8} sx={{ ...table_cell_blue, padding:5 }}>
                                 <Typography style={{fontSize:40, fontWeight:'lighter'}}>Turno</Typography>
+                                <Typography sx={{ fontSize: '6rem', lineHeight:.9, textAlign:'center' }}>{ ultimoTurno?.unidad.clave }</Typography>
                                 <Typography sx={{ fontSize: 180, lineHeight: 0.9, textAlign:'center' }}>{ ultimoTurno.turno_numero>0 && String(ultimoTurno?.turno_numero).padStart(3,'0') }</Typography>
 
                                 <hr style={{ borderColor: '#7fbeeb', borderStyle: 'solid', borderWidth: '0.5px 0 0 0' }} />
@@ -262,7 +271,7 @@ export const PantallaUnidadPage = () => {
 
             </Grid> 
             
-        </div>  
+        </Box>  
         
     )
 }

@@ -7,7 +7,7 @@ import WifiIcon from '@mui/icons-material/Wifi';
 import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
 
-import { table_cell_blue, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
+import { table_padding_pantalla, table_cell_blue, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
 
 import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection";
 
@@ -25,6 +25,8 @@ export const PantallaPage = () => {
     const [ loadFetch, setLoadFetch ] = useState( true );
 
     const { socket, online } = useSocket();
+
+    const [fecha, setFecha] = useState(new Date());
 
     useEffect( () => {
 
@@ -97,7 +99,7 @@ export const PantallaPage = () => {
 
     return (
 
-        <div style={{ minHeight:'100vh'}}>
+        <Box className="pantalla">
       
             <Grid container spacing={3} style={{minHeight:'85vh',margin:'60px', padding:'30px', border:'4px solid #2256cf', borderRadius:10, background: 'linear-gradient(180deg,rgba(27, 57, 125, .8) 0%, rgba(45, 82, 167, .5) 50%)',}}>
 
@@ -114,7 +116,7 @@ export const PantallaPage = () => {
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '30%', textAlign: 'center',paddingBottom:'15px' }}>Turno</TableCell>
                                     <TableCell sx={{ ...table_padding, ...table_thead, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '50%', textAlign: 'center',paddingBottom:'15px' }}>Estado</TableCell>
+                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '50%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
                                 </TableRow>
 
                             </TableHead>
@@ -123,7 +125,7 @@ export const PantallaPage = () => {
 
                                 {
                                     turnosArray
-                                    .slice(0, 20)
+                                    .slice(0, 15)
                                     .map( ( { unidad, turno_numero, turno_estado, ubicacion, turno_tipo , turno_numero_cubiculo}, index ) => (
                                         
                                         <TableRow key={ index } style={{...table_tbody }}>
@@ -133,7 +135,7 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold', borderBottom: '1px solid #98E3FC' }}>
+                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 12, textAlign: 'center', fontWeight: 'bold', borderBottom: '1px solid #98E3FC' }}>
                                                     {turno_tipo.id===2 ? <CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} /> : turno_tipo.id===3 ? <AccessibleIcon sx={{ color: '#fff', fontSize: 30 }} /> : ''}
                                                 </TableCell> 
                                             </Grow>
@@ -143,7 +145,7 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', color:'#fff', borderBottom: '1px solid #98E3FC' }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>                                             
+                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 26, textAlign: 'center', color:'#fff', borderBottom: '1px solid #98E3FC' }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>                                             
                                             </Grow>
 
                                             <Grow 
@@ -151,8 +153,8 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 30, textAlign: 'center', color:'#fff', borderBottom: '1px solid #98E3FC' }}>
-                                                    <Typography sx={{ fontSize:'30px'}}> 
+                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 22, textAlign: 'center', color:'#fff', borderBottom: '1px solid #98E3FC' }}>
+                                                    <Typography sx={{ fontSize:'22px'}}> 
                                                         { turno_estado.id === 2 ?  'Ventanilla' : '' /* 2 'ATENDIENDO' */}
                                                         { turno_estado.id === 6 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' */}
                                                         &nbsp;
@@ -168,7 +170,7 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, textAlign: 'center', borderBottom: '1px solid #98E3FC' }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#91f36a' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '20px'  }}>{ turno_estado.nombre }</TableCell> 
+                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center', borderBottom: '1px solid #98E3FC' }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#91f36a' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '20px'  }}>{ turno_estado.nombre }</TableCell> 
                                             </Grow>
 
                                         </TableRow>
@@ -193,7 +195,9 @@ export const PantallaPage = () => {
                     
                     <Grid container>
                         <Grid size={{ xs: 12, md: 12 }} sx={{ mt: { xs: 2, md: 0 } }} style={{textAlign:'right'}}>
-                            <Typography style={{fontFamily: 'Arial', fontSize: 20, color: '#fff',paddingRight:'30px'}}><CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} />  Martes, 25 de Junio de 2024</Typography>
+                            <Typography style={{fontFamily: 'Arial', fontSize: 20, color: '#fff',paddingRight:'30px'}}><CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} />  
+                                &nbsp;{fecha.toLocaleDateString('es-ES', { weekday: 'long' }).charAt(0).toUpperCase() + fecha.toLocaleDateString('es-ES', { weekday: 'long' }).slice(1)}, {fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                            </Typography>
                             <Box style={{textAlign:'right', padding:'0px'}}>
 
                                 { 
@@ -222,7 +226,7 @@ export const PantallaPage = () => {
                         </Grid>
                     </Grid>
                     
-                    <Grid container>
+                    <Grid container sx={{ mt: 8 }}>
 
                         <Grid size={{ xs: 12, md: 11 }} sx={{ mt: { xs: 2, md: 0 } }}>
 
@@ -251,7 +255,7 @@ export const PantallaPage = () => {
 
             </Grid>                      
 
-        </div>  
+        </Box>  
         
     )
 }

@@ -9,7 +9,6 @@ import { ConsultarTiposTurno } from "../../connections/comun/TiposTurnoConnectio
 import { CrearTurno } from "../../connections/comun/TurnosConnection";
 import { RootState } from "../../store";
 
-import { table_cell_blue } from "../../styles/TableStyle";
 
 import { ConsultarUnidades } from "../../connections/comun/UnidadConnection";
 
@@ -187,11 +186,11 @@ export const CrearTurnoPage = (  ) => {
                 {
                     unidadRedux?.id!==1
                     &&
-                        <Grid size={{ xs: 12, md: 12 }} sx={{ ...table_cell_blue, borderRadius: 5}} style={{marginLeft:'60px', marginRight:'60px', marginTop:'20px', border:'1px solid #84a2e8', borderRadius:10, background: 'linear-gradient(180deg,rgba(27, 57, 125, .8) 0%, rgba(92, 129, 215, 0.5) 90%)',}}>               
+                        <Grid size={{ xs: 12, md: 12 }}>               
+
+                            <Box bgcolor={'#003366'} sx={{ opacity:0.8}}>
                         
-                            <Box sx={{ opacity:0.6}}>
-                                
-                                <Typography variant="h4" color="white" textAlign={'center'} p={1} >
+                                <Typography variant="h4" color="white" textAlign={'center'} p={1}>
                                     { unidadRedux?.nombre } 
                                 </Typography>
                                     
@@ -201,9 +200,10 @@ export const CrearTurnoPage = (  ) => {
 
                 }
 
+                
                 <Grid size={{ xs: 12, md: 12 }} sx={ { display: 'flex', justifyContent: 'center', margin:'auto' } } >
 
-                    <Card sx={{ width: 400, mt: 3 }} style={{backgroundColor:'rgba(255,255,255,0.6)'}}>
+                    <Card sx={{ width: 400, mt: 3, opacity:0.6 }} >
                 
                         <CardContent>
 
@@ -315,6 +315,9 @@ export const CrearTurnoPage = (  ) => {
                     </Card>
                         
                 </Grid>
+                
+                
+                 {/* Inicia espacio para crear turno nuevo */}   
 
             </Grid>   
             
