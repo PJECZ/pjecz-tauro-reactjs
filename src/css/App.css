@@ -1,8 +1,12 @@
 
 body {
     background-color: #f5f5f5;
+}
+
+.pantalla {
     background-image: url('/public/assets/fondo.png');
     background-size: cover;
     background-repeat: no-repeat;
-       
+    min-height: 100vh;
+    padding: 30px;
 }

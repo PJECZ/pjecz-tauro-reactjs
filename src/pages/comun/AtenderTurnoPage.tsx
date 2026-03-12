@@ -214,11 +214,11 @@ export const AtenderTurnoPage = () => {
             <Grid container spacing={3}>
 
                 {/* Barra superior con descripcion de la unidad */}
-                <Grid size={{ xs: 12, md: 12 }} sx={{ ...table_cell_blue, borderRadius: 5}} style={{marginLeft:'60px', marginRight:'60px', marginTop:'20px', border:'1px solid #84a2e8', borderRadius:10, background: 'linear-gradient(180deg,rgba(27, 57, 125, .8) 0%, rgba(92, 129, 215, 0.5) 90%)',}}>               
-    
-                    <Box sx={{ opacity:0.8}}>
+                <Grid size={{ xs: 12, md: 12 }}>               
+
+                            <Box bgcolor={'#003366'} sx={{ opacity:0.8}}>
                         
-                        <Typography variant="h4" color="white" textAlign={'center'} p={1}>
+                                <Typography variant="h4" color="white" textAlign={'center'} p={1}>
                             {unidadRedux?.nombre}
                         </Typography>
                             
