@@ -93,7 +93,7 @@ export const CrearTurnoPage = (  ) => {
 
         setLoading( true );
         
-        await CrearTurno({ turno_tipo_id: tipoturno, unidad_id: unidadRedux?.id===1 ? unidad : unidadRedux?.id ?? 0, comentarios: observaciones, turno_telefono: telefonoCelular!='' ? telefonoCelular : null })
+        await CrearTurno({ turno_tipo_id: tipoturno, unidad_id: unidadRedux?.id===1 ? unidad : unidadRedux?.id ?? 0, comentarios: observaciones, turno_telefono: telefonoCelular!=='' ? telefonoCelular : null })
         .then(resp => {
 
             const { success, message, data } = resp;
@@ -203,7 +203,7 @@ export const CrearTurnoPage = (  ) => {
                 
                 <Grid size={{ xs: 12, md: 12 }} sx={ { display: 'flex', justifyContent: 'center', margin:'auto' } } >
 
-                    <Card sx={{ width: 400, mt: 3, opacity:0.6 }} >
+                    <Card sx={{ width: 400, mt: 3, opacity:0.9 }} >
                 
                         <CardContent>
 
@@ -304,9 +304,9 @@ export const CrearTurnoPage = (  ) => {
 
                         </CardContent>              
 
-                        <CardActions sx={{ opacity: 0.6, p: 3 }}>                  
+                        <CardActions sx={{  p: 3 }}>                  
 
-                            <Button fullWidth variant="contained" onClick={ handleValidateFields }> 
+                            <Button fullWidth variant="contained" onClick={ handleValidateFields } > 
                                 Crear Turno
                             </Button>   
                                                     

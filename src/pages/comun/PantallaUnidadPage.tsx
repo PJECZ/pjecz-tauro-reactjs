@@ -7,7 +7,7 @@ import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, Tab
 
 
 import { useParams } from "react-router";
-import { table_cell_blue, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
+import { table_cell_blue, table_padding, table_tbody, table_thead_unidad } from "../../styles/TableStyle";
 
 import { ConsultarTurnosUnidad } from "../../connections/comun/TurnosConnection";
 import { useSocket } from "../../hooks/useSocket";
@@ -39,7 +39,7 @@ export const PantallaUnidadPage = () => {
             const turno = socketMessage.data;
 
             if( turno.turno_id !== 0 && turno.unidad.id === parseInt( id ?? '0' ) ){
-
+                setFecha( new Date() );
                 if( turno.turno_estado.id === 1 ){ /* 1 'EN ESPERA' */
                     /*setTurnosArray( ( arrays ) => [ ...arrays, turno ]);*/
                     setLoadFetch( true );
@@ -125,13 +125,13 @@ export const PantallaUnidadPage = () => {
 
                         <Table>
 
-                            <TableHead sx={{ ...table_thead }}>
+                            <TableHead sx={{ backgroundColor: 'transparent' }}>
 
                                 <TableRow>   
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '30%', textAlign: 'center',paddingBottom:'15px' }}>Turno</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '50%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
+                                    <TableCell sx={{  ...table_thead_unidad, width: '2%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
+                                    <TableCell sx={{  ...table_thead_unidad, width: '30%', textAlign: 'center',paddingBottom:'15px' }}>Turno</TableCell>
+                                    <TableCell sx={{  ...table_thead_unidad, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>
+                                    <TableCell sx={{  ...table_thead_unidad, width: '50%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
                                 </TableRow>
 
                             </TableHead>
@@ -151,7 +151,7 @@ export const PantallaUnidadPage = () => {
                                                 {...( { timeout: 1000 } )}
                                             > 
                                             
-                                                <TableCell sx={{ ...table_padding, fontSize: 12, textAlign: 'center', fontWeight: 'bold',color:'#fff', borderBottom: '1px solid #98E3FC' }}>
+                                                <TableCell sx={{ ...table_padding }}>
                                                     {turno_tipo.id===2 ? <CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} /> : turno_tipo.id===3 ? <AccessibleIcon sx={{ color: '#449ede', fontSize: 30 }} /> : ''}
                                                 </TableCell> 
                                             </Grow>
@@ -224,7 +224,7 @@ export const PantallaUnidadPage = () => {
                                     ? 
                                         <List sx={{ listStyleType: 'disc' }} style={{padding:'0px'}}>
                                             <ListItem sx={{fontSize:'.75em', color:'#fff'}} style={{textAlign:'right', padding:'0px'}}>
-                                                <ListItemText primary="Conectado al servidor" style={{paddingRight:'5px'}} /> 
+                                                <ListItemText primary="En línea" style={{paddingRight:'5px'}} /> 
                                                 <ListItemIcon>
                                                     <WifiIcon sx={{ color: '#91f36a' }} />
                                                 </ListItemIcon>

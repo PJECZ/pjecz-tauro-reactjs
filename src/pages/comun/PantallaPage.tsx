@@ -7,7 +7,7 @@ import WifiIcon from '@mui/icons-material/Wifi';
 import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
 
-import { table_padding_pantalla, table_cell_blue, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
+import { table_cell_blue, table_padding_pantalla, table_tbody, table_thead_pantalla } from "../../styles/TableStyle";
 
 import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection";
 
@@ -35,7 +35,7 @@ export const PantallaPage = () => {
             const turno = socketMessage.data;
 
             if( turno.turno_id !== 0 ){
-
+                setFecha( new Date() );
                 if( turno.turno_estado.id === 1 || turno.turno_estado.id === 5 ){ /* 1 'EN ESPERA' , 5 'EN ESPERA DE CUBICULO' */
                     /*setTurnosArray( ( arrays ) => [ ...arrays, turno ]);*/
                     setLoadFetch( true );
@@ -110,13 +110,13 @@ export const PantallaPage = () => {
 
                         <Table>
 
-                            <TableHead sx={{ ...table_thead }}>
+                            <TableHead sx={{ backgroundColor: 'transparent' }}>
 
                                 <TableRow>   
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '30%', textAlign: 'center',paddingBottom:'15px' }}>Turno</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '50%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
+                                    <TableCell sx={{  ...table_thead_pantalla, width: '2%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
+                                    <TableCell sx={{  ...table_thead_pantalla, width: '30%', textAlign: 'center',paddingBottom:'15px' }}>Turno</TableCell>
+                                    <TableCell sx={{  ...table_thead_pantalla, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>
+                                    <TableCell sx={{  ...table_thead_pantalla, width: '50%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
                                 </TableRow>
 
                             </TableHead>
@@ -205,7 +205,7 @@ export const PantallaPage = () => {
                                     ? 
                                         <List sx={{ listStyleType: 'disc' }} style={{padding:'0px'}}>
                                             <ListItem sx={{fontSize:'.75em', color:'#fff'}} style={{textAlign:'right', padding:'0px'}}>
-                                                <ListItemText primary="Conectado al servidor" style={{paddingRight:'5px'}} /> 
+                                                <ListItemText primary="En línea " style={{paddingRight:'5px'}} /> 
                                                 <ListItemIcon>
                                                     <WifiIcon sx={{ color: '#91f36a' }} />
                                                 </ListItemIcon>
