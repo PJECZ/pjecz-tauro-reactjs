@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
-import { table_cell_blue, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
+import { table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
 
 import { Settings } from "../../components/Settings";
 import { RootState } from "../../store";
@@ -14,9 +14,9 @@ import { RootState } from "../../store";
 
 import { CancelarTurno, ConcluirTurno, TomarTurno } from "../../connections/comun/TurnosConnection";
 
+import { ConsultarConfiguracionUsuario } from '../../connections/comun/UsuarioConnection';
 import { TurnoProps } from '../../interfaces/comun/TurnoInterface';
 import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
-import { ConsultarConfiguracionUsuario } from '../../connections/comun/UsuarioConnection';
 
 type ActionTurno = 'Tomar' | 'Concluir' | 'Cancelar';
 

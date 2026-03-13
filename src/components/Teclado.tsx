@@ -128,7 +128,7 @@ export const Teclado = ( {onDataChange}:ChildProps ) => {
                         value={ FormatPhoneNumber( telefonoCelular ) }
                         onChange={ (e) => {
                                             setTelefonoCelular(  e.target.value ?? ''  ); 
-                                            if (e.target.value!='' ){
+                                            if (e.target.value!=='' ){
                                                 onDataChange( numeroPais + ClearFormatPhoneNumber( e.target.value ?? '' ) ) 
                                             }else{
                                                 onDataChange( '' ) 

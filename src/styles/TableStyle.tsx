@@ -9,6 +9,22 @@ export const table_thead: CSSProperties = {
     fontWeight: 'lighter',
 }
 
+export const table_thead_pantalla: CSSProperties = {
+    backgroundColor: 'transparent',
+    color: '#ffffff',
+    textAlign: 'left',
+    fontSize: 38,
+    fontWeight: 'lighter',
+    padding: '19px 15px',
+}
+
+export const table_thead_unidad: CSSProperties = {
+    backgroundColor: 'transparent',
+    color: '#ffffff',
+    textAlign: 'left',
+    fontSize: 38,
+    fontWeight: 'lighter',
+}
 export const table_cell_blue: CSSProperties = {
     color: '#ffffff',
     textAlign: 'center',
@@ -28,7 +44,7 @@ export const table_padding: CSSProperties = {
     padding: '8px 15px',
 }
 export const table_padding_pantalla: CSSProperties = {
-    padding: '0px 15px',
+    padding: '8px 15px',
 }
 
 export const table_tbody: CSSProperties = {
