@@ -170,7 +170,7 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center',  }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#b9dcff' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '40px' : '25px'  }}>{ turno_estado.nombre }</TableCell> 
+                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center',  }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#b9dcff' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '25px'  }}>{ turno_estado.nombre }</TableCell> 
                                             </Grow>
 
                                         </TableRow>
