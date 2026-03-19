@@ -253,7 +253,7 @@ export const PantallaUnidadPage = () => {
                                 <Typography sx={{ fontSize: '6rem', lineHeight:.9, textAlign:'center' }}>{ ultimoTurno?.unidad.clave }</Typography>
                                 <Typography sx={{ fontSize: 180, lineHeight: 0.9, textAlign:'center' }}>{ ultimoTurno.turno_numero>0 && String(ultimoTurno?.turno_numero).padStart(3,'0') }</Typography>
 
-                                <hr style={{ borderColor: '#7fbeeb', borderStyle: 'solid', borderWidth: '0.5px 0 0 0' }} />
+                                <hr style={{ marginTop:'40px', marginBottom:'40px',borderColor: '#7fbeeb', borderStyle: 'solid', borderWidth: '0.5px 0 0 0' }} />
                                 
                                 <Typography sx={{ fontSize:40, color:'#fff', fontWeight:'lighter'}}>{ ultimoTurno?.turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : 'Ventanilla' }</Typography>
                                 <Typography sx={{ fontSize: 210, lineHeight: 0.9, color:'#fff' }}>
