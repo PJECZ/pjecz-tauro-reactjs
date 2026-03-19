@@ -44,6 +44,7 @@ export const table_cell_blue_light: CSSProperties = {
 }
 export const table_padding: CSSProperties = {
     padding: '3px 15px',
+     borderBottom: '0px solid #98E3FC',
 }
 export const table_padding_pantalla: CSSProperties = {
     padding: '2px 15px',
@@ -51,7 +52,8 @@ export const table_padding_pantalla: CSSProperties = {
 }
 
 export const table_tbody: CSSProperties = {
-    backgroundColor: 'transparent',
+    backgroundColor: '#234d7b',
+    borderBottom: '1px solid #1f6d88',
 }
 export const table_tbody_pantalla: CSSProperties ={
     backgroundColor:'#234d7b',
