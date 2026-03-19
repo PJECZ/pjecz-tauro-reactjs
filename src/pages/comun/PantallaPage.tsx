@@ -101,12 +101,12 @@ export const PantallaPage = () => {
 
         <Box className="pantalla">
       
-            <Grid container spacing={3} sx={{...content_table}} style={{minHeight:'85vh'}}>
+            <Grid container spacing={3} sx={{...content_table}} style={{minHeight:'84vh'}}>
 
                 {/* Espacio de Lista de Turnos */}
                 <Grid size={{ xs: 12, md: 8 }}>
 
-                    <TableContainer sx={{ borderRadius:5, backgroundColor: 'transparent', paddingLeft:'20px', boxShadow:'none !important'  }}>
+                    <TableContainer sx={{ borderRadius:5, backgroundColor: 'transparent', boxShadow:'none !important'  }}>
 
                         <Table>
 
@@ -232,7 +232,7 @@ export const PantallaPage = () => {
                                 <Typography sx={{ fontSize: '6rem', lineHeight:.9, textAlign:'center' }}>{ ultimoTurno?.unidad.clave }</Typography>
                                 <Typography sx={{ fontSize: 180, lineHeight: 0.9, textAlign:'center' }}>{ ultimoTurno.turno_numero > 0 && String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
                                 
-                                <hr style={{ borderColor: '#7fbeeb', borderStyle: 'solid', borderWidth: '0.5px 0 0 0' }} />
+                                <hr style={{ marginTop:'40px', marginBottom:'40px',borderColor: '#7fbeeb', borderStyle: 'solid', borderWidth: '0.5px 0 0 0' }} />
 
                                 <Typography sx={{ fontSize:40, color:'#fff', fontWeight:'lighter'}}> { ultimoTurno?.turno_estado.id === 6 ? 'Cubículo' : 'Ventanilla' /* 6 'ATENDIENDO EN CUBICULO' */}</Typography>
                                 <Typography sx={{ fontSize: 210, lineHeight: 0.9, color:'#fff' }}>

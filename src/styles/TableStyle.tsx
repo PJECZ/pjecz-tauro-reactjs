@@ -68,10 +68,10 @@ export const table_ubicacion: CSSProperties = {
 
 export const content_table: CSSProperties = {
     border:'0px solid #1a1b1e', 
-    borderRadius:5, 
+    borderRadius:2, 
     background: 'linear-gradient(140deg,rgba(59, 95, 135, 1) 0%, rgba(35, 77, 123, 1) 90%)',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.4)',
-    margin:'30px', 
+    margin:'30px 30px 0px 30px', 
     padding:'30px',
 }
 

@@ -105,7 +105,7 @@ export const PantallaUnidadPage = () => {
         <Box className="pantalla">
 
             {/* Barra superior con descripcion de la unidad */}
-            <Grid size={{ xs: 12, md: 12 }} sx={{ ...content_table, borderRadius: 5}} style={{ padding:8}}>               
+            <Grid size={{ xs: 12, md: 12 }} sx={{ ...content_table}} style={{ padding:8}}>               
 
                 <Box sx={{ opacity:0.8}}>
                     
@@ -118,12 +118,12 @@ export const PantallaUnidadPage = () => {
             </Grid>
 
             {/* Espacio de lista de turnos y turno actual */}
-            <Grid container spacing={3} sx={{...content_table}} style={{minHeight:'85vh'}}>
+            <Grid container spacing={3} sx={{...content_table}} style={{minHeight:'84vh'}}>
                 
                 {/* Espacio de Lista de Turnos */}
                 <Grid size={{ xs: 12, md: 8 }}>
 
-                    <TableContainer sx={{ borderRadius: 5, backgroundColor: 'transparent', paddingLeft:'20px', boxShadow:'none !important'  }}>
+                    <TableContainer sx={{ borderRadius: 5, backgroundColor: 'transparent', boxShadow:'none !important'  }}>
 
                         <Table>
 
@@ -156,7 +156,7 @@ export const PantallaUnidadPage = () => {
                                             > 
                                             
                                                 <TableCell sx={{ ...table_padding }}>
-                                                    {turno_tipo.id===2 ? <CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} /> : turno_tipo.id===3 ? <AccessibleIcon sx={{ color: '#449ede', fontSize: 30 }} /> : ''}
+                                                    {turno_tipo.id===2 ? <CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} /> : turno_tipo.id===3 ? <AccessibleIcon sx={{ color: '#fff', fontSize: 30 }} /> : ''}
                                                 </TableCell> 
                                             </Grow>
                                             
