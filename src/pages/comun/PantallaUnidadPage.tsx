@@ -145,7 +145,9 @@ export const PantallaUnidadPage = () => {
                                     .slice(0, 15)
                                     .map( ( { unidad, turno_numero, turno_estado, ubicacion, turno_tipo , turno_numero_cubiculo}, index ) => (
                                                                             
-                                        <TableRow key={ index } sx={{...table_tbody }} style={ (index % 2 === 0) ? { backgroundColor: 'rgba(35, 77, 123, 0.4)' } : { backgroundColor: '#234d7b' } }>
+                                        <TableRow key={ index } 
+                                                    sx={{...table_tbody }} 
+                                                    style={ (index % 2 === 0) ? { backgroundColor: 'rgba(35, 77, 123, 0.4)' } : { backgroundColor: '#234d7b' } }>
 
                                             <Grow 
                                                 in
@@ -163,7 +165,7 @@ export const PantallaUnidadPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 30, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>
+                                                <TableCell sx={{ ...table_padding, fontSize: 30, textAlign: 'center',color:'#fff', }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>
                                             </Grow>
 
                                             <Grow 
@@ -171,7 +173,7 @@ export const PantallaUnidadPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding,  textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }}> 
+                                                <TableCell sx={{ ...table_padding,  textAlign: 'center',color:'#fff' }}> 
                                                     <Typography sx={{ fontSize:30}}> 
                                                         { turno_estado.nombre === 'ATENDIENDO' ?  'Ventanilla' : '' }
                                                         { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : '' }
@@ -188,7 +190,7 @@ export const PantallaUnidadPage = () => {
                                                 {...( { timeout: 1000 } )}
                                             > 
                                                 <TableCell 
-                                                    sx={{ ...table_padding, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC', paddingY:0 }} 
+                                                    sx={{ ...table_padding, textAlign: 'center',color:'#fff',  paddingY:0 }} 
                                                     style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#b9dcff' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '35px' : '25px'  }}>
                                                         { turno_estado.nombre }
                                                 </TableCell> 
