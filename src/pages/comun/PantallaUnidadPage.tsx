@@ -7,12 +7,13 @@ import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, Tab
 
 
 import { useParams } from "react-router";
-import { table_cell_blue, table_padding, table_tbody, table_thead_unidad } from "../../styles/TableStyle";
+import { content_table, table_cell_blue, table_padding, table_tbody, table_thead_unidad } from "../../styles/TableStyle";
 
 import { ConsultarTurnosUnidad } from "../../connections/comun/TurnosConnection";
 import { useSocket } from "../../hooks/useSocket";
 import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInterface";
 import { UnidadProps } from "../../interfaces/comun/UnidadInterface";
+import { Manager } from "socket.io-client";
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: {id:0, nombre:''}, turno_tipo: {id:0, nombre:'', nivel:''}, unidad : { id: 0, clave : '', nombre : '' }, ubicacion: { id: 0, nombre : '', numero : 0 } };
 const defaultUnidad: UnidadProps = { id: 0, clave : '', nombre : '' };
@@ -104,7 +105,7 @@ export const PantallaUnidadPage = () => {
         <Box className="pantalla">
 
             {/* Barra superior con descripcion de la unidad */}
-            <Grid size={{ xs: 12, md: 12 }} sx={{ ...table_cell_blue, borderRadius: 5}} style={{ marginLeft:'60px', marginRight:'60px'   }}>               
+            <Grid size={{ xs: 12, md: 12 }} sx={{ ...content_table, borderRadius: 5}} style={{ padding:8}}>               
 
                 <Box sx={{ opacity:0.8}}>
                     
@@ -116,10 +117,11 @@ export const PantallaUnidadPage = () => {
 
             </Grid>
 
-            <Grid container spacing={3} style={{minHeight:'85vh',marginLeft:'60px', marginRight:'60px', marginTop:'20px', padding:'30px', border:'4px solid #2256cf', borderRadius:10, background: 'linear-gradient(180deg,rgba(27, 57, 125, .8) 0%, rgba(45, 82, 167, .5) 50%)',}}>
+            {/* Espacio de lista de turnos y turno actual */}
+            <Grid container spacing={3} sx={{...content_table}} style={{minHeight:'85vh'}}>
                 
                 {/* Espacio de Lista de Turnos */}
-                <Grid size={{ xs: 12, md: 7 }}>
+                <Grid size={{ xs: 12, md: 8 }}>
 
                     <TableContainer sx={{ borderRadius: 5, backgroundColor: 'transparent', paddingLeft:'20px', boxShadow:'none !important'  }}>
 
@@ -143,7 +145,7 @@ export const PantallaUnidadPage = () => {
                                     .slice(0, 15)
                                     .map( ( { unidad, turno_numero, turno_estado, ubicacion, turno_tipo , turno_numero_cubiculo}, index ) => (
                                                                             
-                                        <TableRow key={ index } style={{...table_tbody }}>
+                                        <TableRow key={ index } sx={{...table_tbody }} style={ (index % 2 === 0) ? { backgroundColor: 'rgba(35, 77, 123, 0.4)' } : { backgroundColor: '#234d7b' } }>
 
                                             <Grow 
                                                 in
@@ -161,7 +163,7 @@ export const PantallaUnidadPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>
+                                                <TableCell sx={{ ...table_padding, fontSize: 30, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>
                                             </Grow>
 
                                             <Grow 
@@ -169,8 +171,8 @@ export const PantallaUnidadPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }}> 
-                                                    <Typography sx={{ fontSize:22}}> 
+                                                <TableCell sx={{ ...table_padding,  textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC' }}> 
+                                                    <Typography sx={{ fontSize:30}}> 
                                                         { turno_estado.nombre === 'ATENDIENDO' ?  'Ventanilla' : '' }
                                                         { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : '' }
                                                         &nbsp;
@@ -186,8 +188,8 @@ export const PantallaUnidadPage = () => {
                                                 {...( { timeout: 1000 } )}
                                             > 
                                                 <TableCell 
-                                                    sx={{ ...table_padding, fontSize: 22, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC', paddingY:0 }} 
-                                                    style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#91f36a' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '20px'  }}>
+                                                    sx={{ ...table_padding, textAlign: 'center',color:'#fff', borderBottom: '1px solid #98E3FC', paddingY:0 }} 
+                                                    style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#b9dcff' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '35px' : '25px'  }}>
                                                         { turno_estado.nombre }
                                                 </TableCell> 
                                             </Grow>
@@ -205,12 +207,8 @@ export const PantallaUnidadPage = () => {
 
                 </Grid>
 
-                {/* Espacio de Separacion */}
-                <Grid size={{ xs: 12, md: 1 }}>
-                </Grid>
-
                 {/* Espacio de Turno Actual */}
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12, md: 4 }} style={{ paddingLeft:'80px'}}>
 
                     <Grid container>
                         <Grid size={{ xs: 12, md: 12 }} sx={{ mt: { xs: 2, md: 0 } }} style={{textAlign:'right'}}>

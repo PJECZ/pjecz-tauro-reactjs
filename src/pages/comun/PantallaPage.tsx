@@ -7,7 +7,7 @@ import WifiIcon from '@mui/icons-material/Wifi';
 import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
 
-import { table_cell_blue, table_padding_pantalla, table_tbody, table_thead_pantalla } from "../../styles/TableStyle";
+import { content_table, table_cell_blue, table_padding_pantalla, table_tbody_pantalla, table_thead_pantalla } from "../../styles/TableStyle";
 
 import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection";
 
@@ -101,12 +101,12 @@ export const PantallaPage = () => {
 
         <Box className="pantalla">
       
-            <Grid container spacing={3} style={{minHeight:'85vh',margin:'60px', padding:'30px', border:'4px solid #2256cf', borderRadius:10, background: 'linear-gradient(180deg,rgba(27, 57, 125, .8) 0%, rgba(45, 82, 167, .5) 50%)',}}>
+            <Grid container spacing={3} sx={{...content_table}} style={{minHeight:'85vh'}}>
 
                 {/* Espacio de Lista de Turnos */}
-                <Grid size={{ xs: 12, md: 7 }}>
+                <Grid size={{ xs: 12, md: 8 }}>
 
-                    <TableContainer sx={{ borderRadius: 5, backgroundColor: 'transparent', paddingLeft:'20px', boxShadow:'none !important'  }}>
+                    <TableContainer sx={{ borderRadius:5, backgroundColor: 'transparent', paddingLeft:'20px', boxShadow:'none !important'  }}>
 
                         <Table>
 
@@ -128,14 +128,14 @@ export const PantallaPage = () => {
                                     .slice(0, 15)
                                     .map( ( { unidad, turno_numero, turno_estado, ubicacion, turno_tipo , turno_numero_cubiculo}, index ) => (
                                         
-                                        <TableRow key={ index } style={{...table_tbody }}>
+                                        <TableRow key={ index } sx={{...table_tbody_pantalla }} style={ (index % 2 === 0) ? { backgroundColor: 'rgba(35, 77, 123, 0.4)' } : { backgroundColor: '#234d7b' } }>
 
                                             <Grow 
                                                 in
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 12, textAlign: 'center', fontWeight: 'bold', borderBottom: '1px solid #98E3FC' }}>
+                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 12, textAlign: 'center', fontWeight: 'bold' }}>
                                                     {turno_tipo.id===2 ? <CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} /> : turno_tipo.id===3 ? <AccessibleIcon sx={{ color: '#fff', fontSize: 30 }} /> : ''}
                                                 </TableCell> 
                                             </Grow>
@@ -145,7 +145,7 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 26, textAlign: 'center', color:'#fff', borderBottom: '1px solid #98E3FC' }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>                                             
+                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 30, textAlign: 'center', color:'#fff',  }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>                                             
                                             </Grow>
 
                                             <Grow 
@@ -153,8 +153,8 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 22, textAlign: 'center', color:'#fff', borderBottom: '1px solid #98E3FC' }}>
-                                                    <Typography sx={{ fontSize:'22px'}}> 
+                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center', color:'#fff', }}>
+                                                    <Typography sx={{ fontSize:'35px'}}> 
                                                         { turno_estado.id === 2 ?  'Ventanilla' : '' /* 2 'ATENDIENDO' */}
                                                         { turno_estado.id === 6 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' */}
                                                         &nbsp;
@@ -170,7 +170,7 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center', borderBottom: '1px solid #98E3FC' }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#91f36a' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '20px'  }}>{ turno_estado.nombre }</TableCell> 
+                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center',  }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#b9dcff' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '40px' : '25px'  }}>{ turno_estado.nombre }</TableCell> 
                                             </Grow>
 
                                         </TableRow>
@@ -186,12 +186,8 @@ export const PantallaPage = () => {
 
                 </Grid>
                 
-                {/* Espacio de Separacion */}
-                <Grid size={{ xs: 12, md: 1 }}>
-                </Grid>
-                
                 {/* Espacio de Turno Actual */}
-                <Grid size={{ xs: 12, md: 4 }}  style={{ paddingLeft:'20px'}}>
+                <Grid size={{ xs: 12, md: 4 }}  style={{ paddingLeft:'80px'}}>
                     
                     <Grid container>
                         <Grid size={{ xs: 12, md: 12 }} sx={{ mt: { xs: 2, md: 0 } }} style={{textAlign:'right'}}>
