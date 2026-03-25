@@ -1,6 +1,6 @@
 import { CSSProperties } from "react"
 
-export const login_layout: CSSProperties = {
+export const LoginLayoutStyle: CSSProperties = {
     display: "flex", 
     height: "100vh", 
     width: "100vw", 
@@ -10,7 +10,7 @@ export const login_layout: CSSProperties = {
     overflow: "hidden",
 }
 
-export const login_row: CSSProperties = {
+export const LoginRowStyle: CSSProperties = {
     width: "100%", 
     height: "100%", 
     background: "#fff", 
@@ -18,14 +18,14 @@ export const login_row: CSSProperties = {
     boxShadow: "0 4px 10px rgba(116, 16, 16, 0.1)"
 }
 
-export const login_col: CSSProperties = {
+export const LoginColumnStyle: CSSProperties = {
     width: "100%", 
     display: "flex", 
     alignItems: "center", 
     marginTop: '0em'
 }
 
-export const login_text: CSSProperties = {
+export const LoginTextStyle: CSSProperties = {
     fontSize: "0.8em", 
     textAlign: "center", 
     color: "#6c757d", 

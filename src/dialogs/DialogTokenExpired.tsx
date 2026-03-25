@@ -1,5 +1,4 @@
 
-
 import { useEffect, useState } from 'react';
 
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
@@ -7,6 +6,7 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, B
 import { useDispatch } from 'react-redux';
 
 import { logout } from '../store/slices/AuthSlice';
+
 import { ValidarToken } from '../connections/auth/AuthConnection';
 
 export const DialogTokenExpired = () => {
@@ -71,7 +71,6 @@ export const DialogTokenExpired = () => {
 
                     <Button 
                         variant='contained' 
-                        color='primary' 
                         onClick={ IniciarSesion } 
                         loading={ loading }
                     >

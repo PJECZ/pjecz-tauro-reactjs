@@ -186,7 +186,7 @@ export const Settings = ( { open, setOpen, setTurno }: Props ) => {
             onClose={ () => {} }
             disableEscapeKeyDown
         >
-            <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+            <DialogTitle sx={{ m: 0, p: 2 }}>
                 Configuración
             </DialogTitle>
             
@@ -263,7 +263,7 @@ export const Settings = ( { open, setOpen, setTurno }: Props ) => {
            
             <DialogActions>
 
-                <Button variant="text" onClick={ () => setOpen( false ) } autoFocus>
+                <Button color="secondary" variant="text" onClick={ () => setOpen( false ) } autoFocus>
                     Cancelar
                 </Button>
 
