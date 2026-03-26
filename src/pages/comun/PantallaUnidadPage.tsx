@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 
+import { useParams } from "react-router";
+
+import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+
 import AccessibleIcon from '@mui/icons-material/Accessible';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WifiIcon from '@mui/icons-material/Wifi';
-import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
+import { useSocket } from "../../hooks/useSocket";
 
-import { useParams } from "react-router";
 import { content_table, table_cell_blue, table_padding, table_tbody, table_thead_unidad } from "../../styles/TableStyle";
 
 import { ConsultarTurnosUnidad } from "../../connections/comun/TurnosConnection";
-import { useSocket } from "../../hooks/useSocket";
+
 import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInterface";
 import { UnidadProps } from "../../interfaces/comun/UnidadInterface";
-import { Manager } from "socket.io-client";
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: {id:0, nombre:''}, turno_tipo: {id:0, nombre:'', nivel:''}, unidad : { id: 0, clave : '', nombre : '' }, ubicacion: { id: 0, nombre : '', numero : 0 } };
 const defaultUnidad: UnidadProps = { id: 0, clave : '', nombre : '' };
