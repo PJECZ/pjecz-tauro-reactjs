@@ -168,9 +168,10 @@ export const CrearTurnoPage = (  ) => {
 
                 }
 
+                
                 <Grid size={{ xs: 12, md: 12 }} sx={ { display: 'flex', justifyContent: 'center', margin:'auto' } } >
 
-                    <Card sx={{ width: 400, mt: 3 }}>
+                    <Card sx={{ width: 400, mt: 3, opacity:0.9 }} >
                 
                         <CardContent>
 
@@ -267,7 +268,7 @@ export const CrearTurnoPage = (  ) => {
 
                         <CardActions sx={{ p: 3 }}>                  
 
-                            <Button fullWidth variant="contained" onClick={ handleValidateFields }> 
+                            <Button fullWidth variant="contained" onClick={ handleValidateFields } > 
                                 Crear Turno
                             </Button>   
                                                     
@@ -276,6 +277,9 @@ export const CrearTurnoPage = (  ) => {
                     </Card>
                         
                 </Grid>
+                
+                
+                 {/* Inicia espacio para crear turno nuevo */}   
 
             </Grid>   
             

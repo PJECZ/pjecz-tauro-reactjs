@@ -4,11 +4,10 @@ import AccessibleIcon from '@mui/icons-material/Accessible';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WifiIcon from '@mui/icons-material/Wifi';
 
-import { AppBar, Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
+import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
-import { Layout } from "../../components/Layout";
 
-import { table_cell_blue, table_cell_blue_light, table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
+import { content_table, table_cell_blue, table_padding_pantalla, table_tbody_pantalla, table_thead_pantalla } from "../../styles/TableStyle";
 
 import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection";
 
@@ -27,6 +26,8 @@ export const PantallaPage = () => {
 
     const { socket, online } = useSocket();
 
+    const [fecha, setFecha] = useState(new Date());
+
     useEffect( () => {
 
         socket.on('message', ( socketMessage: SocketTurnoResponse ) => {
@@ -34,7 +35,7 @@ export const PantallaPage = () => {
             const turno = socketMessage.data;
 
             if( turno.turno_id !== 0 ){
-
+                setFecha( new Date() );
                 if( turno.turno_estado.id === 1 || turno.turno_estado.id === 5 ){ /* 1 'EN ESPERA' , 5 'EN ESPERA DE CUBICULO' */
                     /*setTurnosArray( ( arrays ) => [ ...arrays, turno ]);*/
                     setLoadFetch( true );
@@ -98,23 +99,24 @@ export const PantallaPage = () => {
 
     return (
 
-        <Layout>
+        <Box className="pantalla">
       
-            <Grid container spacing={3}>
+            <Grid container spacing={3} sx={{...content_table}} style={{minHeight:'84vh'}}>
 
-                <Grid size={{ xs: 12, md: 5 }}>
+                {/* Espacio de Lista de Turnos */}
+                <Grid size={{ xs: 12, md: 8 }}>
 
-                    <TableContainer component={ Paper } variant="outlined" sx={{ borderRadius: 2 }}>
+                    <TableContainer sx={{ borderRadius:5, backgroundColor: 'transparent', boxShadow:'none !important'  }}>
 
                         <Table>
 
-                            <TableHead sx={{ ...table_thead }}>
+                            <TableHead sx={{ backgroundColor: 'transparent' }}>
 
                                 <TableRow>   
-                                    <TableCell sx={{ ...table_padding, ...table_thead, width: '2%', textAlign: 'center' }}></TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '28%', textAlign: 'center' }}>Turno</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontSize: 18, width: '20%', textAlign: 'center' }}>Ubicación</TableCell>
-                                    <TableCell sx={{ ...table_padding, ...table_thead, fontsize:18,  width: '50%', textAlign: 'center' }}></TableCell>
+                                    <TableCell sx={{  ...table_thead_pantalla, width: '2%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
+                                    <TableCell sx={{  ...table_thead_pantalla, width: '30%', textAlign: 'center',paddingBottom:'15px' }}>Turno</TableCell>
+                                    <TableCell sx={{  ...table_thead_pantalla, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>
+                                    <TableCell sx={{  ...table_thead_pantalla, width: '50%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
                                 </TableRow>
 
                             </TableHead>
@@ -123,18 +125,18 @@ export const PantallaPage = () => {
 
                                 {
                                     turnosArray
-                                    .slice(0, 20)
+                                    .slice(0, 15)
                                     .map( ( { unidad, turno_numero, turno_estado, ubicacion, turno_tipo , turno_numero_cubiculo}, index ) => (
                                         
-                                        <TableRow key={ index } style={{...table_tbody }}>
+                                        <TableRow key={ index } sx={{...table_tbody_pantalla }} style={ (index % 2 === 0) ? { backgroundColor: 'rgba(35, 77, 123, 0.4)' } : { backgroundColor: '#234d7b' } }>
 
                                             <Grow 
                                                 in
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center', fontWeight: 'bold' }}>
-                                                    {turno_tipo.id===2 ? <CalendarMonthIcon sx={{ color: '#003366', fontSize: 30 }} /> : turno_tipo.id===3 ? <AccessibleIcon sx={{ color: '#449ede', fontSize: 30 }} /> : ''}
+                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 12, textAlign: 'center', fontWeight: 'bold' }}>
+                                                    {turno_tipo.id===2 ? <CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} /> : turno_tipo.id===3 ? <AccessibleIcon sx={{ color: '#fff', fontSize: 30 }} /> : ''}
                                                 </TableCell> 
                                             </Grow>
                                             
@@ -143,7 +145,7 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>                                             
+                                                <TableCell sx={{ ...table_padding_pantalla, fontSize: 30, textAlign: 'center', color:'#fff',  }}>{ unidad.clave }-{ String( turno_numero ).padStart(3,'0') }</TableCell>                                             
                                             </Grow>
 
                                             <Grow 
@@ -151,13 +153,15 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 30, textAlign: 'center' }}>
-                                                    <Typography sx={{ fontSize:16}}> 
+                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center', color:'#fff', }}>
+                                                    <Typography sx={{ fontSize:'35px'}}> 
                                                         { turno_estado.id === 2 ?  'Ventanilla' : '' /* 2 'ATENDIENDO' */}
                                                         { turno_estado.id === 6 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' */}
+                                                        &nbsp;
+                                                        { turno_estado.id === 2 ? ubicacion.numero : '' /* 2 'ATENDIENDO' */ } 
+                                                        { turno_estado.id === 6 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' */}  
                                                     </Typography>
-                                                    { turno_estado.id === 2 ? ubicacion.numero : '' /* 2 'ATENDIENDO' */ } 
-                                                    { turno_estado.id === 6 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' */}
+                                                    
                                                 </TableCell> 
                                             </Grow>
 
@@ -166,7 +170,7 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding, fontSize: 22, textAlign: 'center' }}>{ turno_estado.nombre }</TableCell> 
+                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center',  }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#b9dcff' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '25px'  }}>{ turno_estado.nombre }</TableCell> 
                                             </Grow>
 
                                         </TableRow>
@@ -181,34 +185,57 @@ export const PantallaPage = () => {
                     </TableContainer>
 
                 </Grid>
-
-                <Grid size={{ xs: 12, md: 7 }}>
-
+                
+                {/* Espacio de Turno Actual */}
+                <Grid size={{ xs: 12, md: 4 }}  style={{ paddingLeft:'80px'}}>
+                    
                     <Grid container>
+                        <Grid size={{ xs: 12, md: 12 }} sx={{ mt: { xs: 2, md: 0 } }} style={{textAlign:'right'}}>
+                            <Typography style={{fontFamily: 'Arial', fontSize: 20, color: '#fff',paddingRight:'30px'}}><CalendarMonthIcon sx={{ color: '#fff', fontSize: 30 }} />  
+                                &nbsp;{fecha.toLocaleDateString('es-ES', { weekday: 'long' }).charAt(0).toUpperCase() + fecha.toLocaleDateString('es-ES', { weekday: 'long' }).slice(1)}, {fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                            </Typography>
+                            <Box style={{textAlign:'right', padding:'0px'}}>
 
-                        <Grid size={{ xs: 12, md: 6 }} sx={{ mt: { xs: 2, md: 0 } }}>
+                                { 
+                                    online 
+                                    ? 
+                                        <List sx={{ listStyleType: 'disc' }} style={{padding:'0px'}}>
+                                            <ListItem sx={{fontSize:'.75em', color:'#fff'}} style={{textAlign:'right', padding:'0px'}}>
+                                                <ListItemText primary="En línea " style={{paddingRight:'5px'}} /> 
+                                                <ListItemIcon>
+                                                    <WifiIcon sx={{ color: '#91f36a' }} />
+                                                </ListItemIcon>
+                                            </ListItem>
+                                        </List>
+                                    :
+                                        <List sx={{ listStyleType: 'disc' }} style={{padding:'0px'}}>
+                                            <ListItem sx={{fontSize:'.75em', color:'#fff'}} style={{textAlign:'right', padding:'0px'}}>
+                                                <ListItemText primary="Desconectado"  style={{paddingRight:'5px'}}/>
+                                                <ListItemIcon>
+                                                    <WifiIcon sx={{ color: 'red' }} />
+                                                </ListItemIcon>
+                                            </ListItem>
+                                        </List>
+                                }                    
 
-                            <Box sx={{ ...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5 }} p={1}>
-                                <Typography variant="h5" color="white" textAlign={'center'}>Turno</Typography>
                             </Box>
-
-                            <Box mt={2} py={8} sx={{ ...table_cell_blue, borderTopLeftRadius: 5, borderBottomLeftRadius: 5, height: 'calc(100% - 250px)' }}>
-                            
-                                <Typography variant="h5" color="white" textAlign={'center'} sx={{ fontSize: '6rem' }}>{ ultimoTurno?.unidad.clave }</Typography>
-                                <Typography variant="h6" color="white" textAlign={'center'} sx={{ fontSize: 180 }}>{ ultimoTurno.turno_numero > 0 && String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
-
-                            </Box>
-
                         </Grid>
+                    </Grid>
+                    
+                    <Grid container sx={{ mt: 8 }}>
 
-                        <Grid size={{ xs: 12, md: 6 }} sx={{ mt: { xs: 2, md: 0 } }}>
+                        <Grid size={{ xs: 12, md: 11 }} sx={{ mt: { xs: 2, md: 0 } }}>
 
-                            <Box sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5 }} p={1}>
-                                <Typography variant="h5" textAlign={'center'} sx={{color:'#003366'}}> { ultimoTurno?.turno_estado.id === 6 ? 'Cubículo' : 'Ventanilla' /* 6 'ATENDIENDO EN CUBICULO' */}</Typography>
-                            </Box>
+                            <Box mt={2} py={8} sx={{ ...table_cell_blue, padding:5 }}>
 
-                            <Box mt={2} py={8} sx={{...table_cell_blue_light, borderTopRightRadius: 5, borderBottomRightRadius: 5, height: 'calc(100% - 250px)' }}>
-                                <Typography variant="h6" textAlign={'center'} sx={{ fontSize: 210, color:'#003366', mt: 5 }}>
+                                <Typography style={{fontSize:40, fontWeight:'lighter'}}>Turno</Typography>
+                                <Typography sx={{ fontSize: '6rem', lineHeight:.9, textAlign:'center' }}>{ ultimoTurno?.unidad.clave }</Typography>
+                                <Typography sx={{ fontSize: 180, lineHeight: 0.9, textAlign:'center' }}>{ ultimoTurno.turno_numero > 0 && String(ultimoTurno?.turno_numero).padStart(3,'0') } </Typography>
+                                
+                                <hr style={{ marginTop:'40px', marginBottom:'40px',borderColor: '#7fbeeb', borderStyle: 'solid', borderWidth: '0.5px 0 0 0' }} />
+
+                                <Typography sx={{ fontSize:40, color:'#fff', fontWeight:'lighter'}}> { ultimoTurno?.turno_estado.id === 6 ? 'Cubículo' : 'Ventanilla' /* 6 'ATENDIENDO EN CUBICULO' */}</Typography>
+                                <Typography sx={{ fontSize: 210, lineHeight: 0.9, color:'#fff' }}>
                                     {ultimoTurno?.turno_numero_cubiculo > 0 
                                         ? ultimoTurno?.turno_numero_cubiculo
                                         : ultimoTurno?.ubicacion.numero !== 0 && ultimoTurno?.ubicacion.numero
@@ -223,42 +250,8 @@ export const PantallaPage = () => {
                 </Grid>
 
             </Grid>                      
-            
-            <AppBar position="fixed" color="primary" sx={{ borderTop:'1px solid #999', top: 'auto', bottom: 0, boxShadow: 'none', backgroundColor: '#f5f5f5', opacity: 0.8  }}>
 
-                <Toolbar>    
-                    
-                    <Box sx={{ marginLeft:'auto' }}>
-
-                        { 
-                            online 
-                            ? 
-                                <List sx={{ listStyleType: 'disc' }}>
-                                    <ListItem sx={{fontSize:'.75em', color:'#555'}}>
-                                        <ListItemIcon>
-                                            <WifiIcon sx={{ color: 'green' }} />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Conectado al servidor" />
-                                    </ListItem>
-                                </List>
-                            :
-                                <List sx={{ listStyleType: 'disc' }}>
-                                    <ListItem sx={{fontSize:'.75em', color:'#555'}}>
-                                        <ListItemIcon>
-                                            <WifiIcon sx={{ color: 'red' }} />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Desconectado" />
-                                    </ListItem>
-                                </List>
-                        }                    
-
-                    </Box>
-
-                </Toolbar>
-
-            </AppBar>  
-
-        </Layout>  
+        </Box>  
         
     )
 }
