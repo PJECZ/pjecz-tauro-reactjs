@@ -15,7 +15,7 @@ export const ConsultarUbicacionesActivas = ( ) => {
 
             const { token } = data;
         
-            HttpClientToken.get('/api_oauth2/v1/consultar_ubicaciones_activas', token)
+            HttpClientToken.get('/api_oauth2/v1/consultar_ubicaciones', token)
             .then( ( { data } : { data : UbicacionResponse }) => {           
                 resolve( data );
             })
