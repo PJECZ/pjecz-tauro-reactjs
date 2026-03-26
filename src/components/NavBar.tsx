@@ -1,83 +1,113 @@
 
+import { useEffect, useState } from "react";
+
 import { useSelector } from "react-redux";
 
 import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
 
-import { useEffect, useState } from 'react';
-import { DialogTokenExpired } from "../dialogs/DialogTokenExpired";
+import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
+
 import { RootState } from "../store";
+
+import { DialogTokenExpired } from "../dialogs/DialogTokenExpired";
 
 export const NavBar = () => {
 
-    const { token } = useSelector( ( state: RootState ) => state.auth );
+    const { token } = useSelector((state: RootState) => state.auth);
 
-    const [currentTime, setCurrentTime] = useState( new Date() );
+    const [currentTime, setCurrentTime] = useState(new Date());
 
     useEffect(() => {
 
-       const interval = setInterval(() => {
+        const interval = setInterval(() => {
+        setCurrentTime(new Date());
+        }, 1000);
 
-            setCurrentTime( new Date() );
+        return () => clearInterval(interval);
 
-       }, 1000);
-       
-       return () => clearInterval(interval); 
-
-    }, []); 
+    }, []);
 
     return (
-
         <>
-        
-            <AppBar position="relative" sx={{ boxShadow:'1px 1px 10px rgba(0, 0, 0, 0.2)', mb:3}} style={{backgroundColor:'rgba(255,255,255,0.9)'}}>
 
-                <Container maxWidth="xl" sx={{ mt: 1 }}>
+            <AppBar
+                position="fixed"
+                sx={{
+                    boxShadow: "none",
+                    backgroundColor: "white",
+                    borderBottom: "3px solid rgba(10, 25, 45, 0.8)",
+                }}
+            >
+                <Container maxWidth="xl">
 
-                    <Toolbar 
+                    <Toolbar
                         disableGutters
-                        sx={{  height: 125 }}
+                        sx={{
+                            height: 85,
+                            display: "flex",
+                            alignItems: "center",
+                        }}
                     >
-                    
-                        <Box sx={{ textAlign: 'start' }}>               
 
-                            <img 
-                                style={{ width: 350, height: 100 }}
-                                src={ process.env.PUBLIC_URL + "/assets/logo-pjecz-horizontal.png"}
-                                alt='logo'
-                            /> 
-                            
-                        </Box>  
+                        <Box sx={{ width: 200, textAlign: "center" }}>
 
-                        <Box sx={{ flex: 1 }}>
+                            <img
+                                style={{ height: 55 }}
+                                src={ process.env.PUBLIC_URL + "/assets/logo-saji.png" }
+                                alt="logo"
+                            />
 
-                            <Box sx={{ textAlign: 'center', display: { xs: 'none', md: 'block' } }}>
+                        </Box>
 
-                                <img 
-                                    style={{ width: 240, height: 80 }}
-                                    src={ process.env.PUBLIC_URL + "/assets/logo_colors.png"}
-                                    alt='logo'
-                                />      
+                        <Box sx={{ flex: 1 }} />
 
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1.2,
+                                px: 2,
+                                py: 1,
+                                borderRadius: 2,
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: 32,
+                                    height: 32,
+                                    borderRadius: "50%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    backgroundColor: "#0A192D",
+                                    color: "#fff",
+                                }}
+                            >
+                                <AccessTimeRoundedIcon sx={{ fontSize: 18 }} />
                             </Box>
 
-                        </Box>                  
+                            <Typography
+                                sx={{
+                                    fontSize: 22,
+                                    fontWeight: 600,
+                                    color: "#2b2f33",
+                                    lineHeight: 1,
+                                    letterSpacing: "0.5px",
+                                    fontVariantNumeric: "tabular-nums",
+                                }}
+                            >
 
-                        <Box sx={{ display: 'flex' }}>
-                                                    
-                            <Typography variant="h3" color="textSecondary">
-
-                                <img 
-                                    style={{ width: 40, height: 40, marginRight: 10, marginTop: 5 }}
-                                    src={ process.env.PUBLIC_URL + "/assets/reloj.png"}
-                                    alt='clock'
-                                />
-
-                                { currentTime.toLocaleTimeString() }
+                                {
+                                    currentTime.toLocaleTimeString("es-MX", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        second: "2-digit",
+                                    })
+                                }
 
                             </Typography>
-                            
 
-                        </Box>                  
+                        </Box>
 
                     </Toolbar>
 
@@ -86,7 +116,8 @@ export const NavBar = () => {
             </AppBar>
 
             { token && <DialogTokenExpired /> }
-            
+
         </>
-    )
-}
+    );
+
+};

@@ -1,11 +1,17 @@
+
+html, body, #root {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     background-color: #f5f5f5;
 }
 
 .pantalla {
-    min-height: 99.9vh;
+    min-height: 100vh;
+    box-sizing: border-box;
     background: #072A56;
     background: linear-gradient(150deg, rgba(7, 42, 86, 1) 0%, rgba(10, 58, 112, 1) 45%, rgba(13, 77, 136, 1) 100%);
     border :1px solid #0f4aca;
-    
 }

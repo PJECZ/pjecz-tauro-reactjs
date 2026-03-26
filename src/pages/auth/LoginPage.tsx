@@ -2,19 +2,19 @@ import { useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import { Alert, Box, Button, FormControl, FormLabel, Grid, IconButton, InputAdornment, OutlinedInput, Snackbar, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
 
-import { login_col, login_layout, login_row } from '../../styles/LoginStyle';
+import { LoginColumnStyle, LoginLayoutStyle, LoginRowStyle, LoginTextStyle } from '../../styles/LoginStyle';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
-import '../../css/Login.css';
-
 import { login, stateProps } from '../../store/slices/AuthSlice';
+import { openSnackbar } from "../../store/slices/SnackbarSlice";
 
 import { Login } from '../../connections/auth/AuthConnection';
-import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
+
+import '../../css/Login.css';
 
 export const LoginPage = () => {
 
@@ -26,41 +26,33 @@ export const LoginPage = () => {
     const [correoElectronico, setCorreoElectronico] = useState('recepcionista@pjecz.gob.mx');
     const [contrasena, setContrasena] = useState('Recepcionista1');
 
-    const [{ type: typeSnackbar, open: openMessage, message }, setOpenMessage] = useState<SnackbarProps>({
-        type: 'warning',
-        message: '',
-        open: false,
-    });
-
-    const handleClose = () => setOpenMessage({ type: typeSnackbar, open: false, message })
-
     const handleLogin = async ( e: React.MouseEvent<HTMLButtonElement, MouseEvent> ) => {
 
         e.preventDefault();
 
         const validEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correoElectronico);
 
-        if(!correoElectronico ){
-            setOpenMessage({ type: 'warning', open: true, message: 'Debes escribir el correo electrónico' });
+        if( !correoElectronico ){
+            dispatch( openSnackbar({ message: 'Debes escribir el correo electrónico', variant: 'warning' }));        
             return;
         }
-        else if(!validEmail){   
-            setOpenMessage({ type: 'warning', open: true, message: 'El correo electrónico no tiene un formato valido' });
+        else if( !validEmail ){   
+            dispatch( openSnackbar({ message: 'El correo electrónico no tiene un formato validó', variant: 'warning' }));     
             return;
         }
-        else if(!contrasena ){
-            setOpenMessage({ type: 'warning', open: true, message: 'Debes escribir la contraseña' });
+        else if( !contrasena ){
+            dispatch( openSnackbar({ message: 'Debes escribir la contraseña', variant: 'warning' }));     
             return;
         }
         else {
 
-            setLoading( true );        
+            setLoading( true );
 
-            await Login({ username: correoElectronico, password: contrasena }).then( resp => {
+            await Login( { username: correoElectronico, password: contrasena } ).then( resp => {
 
                 const { success, message, access_token, username, rol , unidad, ubicacion } = resp;
-                
-                if( success ){                    
+
+                if( success ){
 
                     const data: stateProps = {
                         username: username,
@@ -72,60 +64,53 @@ export const LoginPage = () => {
                     };
 
                     setTimeout(() => {
-                    
+                  
                         dispatch( login( data ) );
                         window.localStorage.setItem('data', JSON.stringify(data));
+    
+                        setLoading( false );
+                        
+                    }, 700);
+
+                }
+                else{
+
+                    setTimeout(() => {                        
+                        
+                        dispatch( openSnackbar({ message: message, variant: 'error' }));    
 
                         setLoading( false );
                         
                     }, 700);
 
                 }
-                else {
 
-                    setOpenMessage({ type: 'warning', open: true, message: message });
-                    
-                    setLoading( false );
-                }                  
-
-            });                 
-                   
+            });            
         }
     }
 
     return (
-        <Box style={ login_layout }>
-            
-            <Snackbar open={openMessage} autoHideDuration={1500} onClose={ handleClose } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-                <Alert
-                    onClose={ handleClose }
-                    severity={ typeSnackbar }
-                    variant="filled"
-                    sx={{ width: '100%' }}                   
-                >
-                    { message }
-                </Alert>
-            </Snackbar>
-           
-            <Grid container style={ login_row }>
+        <Box style={ LoginLayoutStyle }>
+                       
+            <Grid container style={ LoginRowStyle }>
                 
                 {/* Formulario */}
                 <Grid size={{ xs: 12, md: 7, lg: 5 }} style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                    
-                    <Grid container style={ login_col } >
+                   
+                    <Grid container style={ LoginColumnStyle }>
                         
                         <Grid size={{ xs: 6 }} style={{ textAlign: 'center' }}>
-                            <img src={ process.env.PUBLIC_URL + "/assets/logo-pjecz.png" } alt="Poder Judicial" style={{ height: 120 }} />        
+                            <img src={ process.env.PUBLIC_URL + "/assets/logo-pjecz.png"} alt="Poder Judicial" style={{ height: 130 }} />        
                         </Grid>
                         
                         <Grid size={{ xs: 6 }} style={{ textAlign: 'center' }}>
-                            <img src={ process.env.PUBLIC_URL + "/assets/logo.png" } alt="logo" style={{ height: 75 }} />
+                            <img src={ process.env.PUBLIC_URL + "/assets/logo.png"} alt="SAJI" style={{ height: 115 }} />
                         </Grid>
 
                     </Grid>
 
-                    <Typography variant={'h5'} sx={{ textAlign: "center", fontWeight: 'bold', mt: 2 }}>Bienvenidos</Typography>
-                    <Typography sx={{ fontSize: 16, textAlign: "center", mt: 1 }}>Ingrese con sus credenciales</Typography>
+                    <Typography variant="h5" mt={2} fontWeight={'bold'} textAlign={'center'} sx={{ mt: 5 }}>Bienvenidos</Typography>
+                    <Typography variant="subtitle1" color='secondary' fontSize={14} mt={3}>Ingrese con sus credenciales</Typography>
 
                     <form>
 
@@ -140,27 +125,37 @@ export const LoginPage = () => {
                             }}
                         >
 
-                            <FormControl sx={{ mt: 2 }} required>
-                                <FormLabel sx={{ fontWeight: '700', fontSize: 14, color: 'rgba(0, 0, 0, 0.8)', mb: 1}}>Correo electrónico</FormLabel>
+                            <FormControl sx={{ mt: 2 }}>
+                              
                                 <TextField
                                     fullWidth
+                                    label='Correo electrónico'
                                     type="email"
                                     placeholder="persona@pjecz.gob.mx"
                                     autoComplete="off"                             
-                                    variant="outlined"     
-                                    value={ correoElectronico }            
+                                    variant="outlined"                
+                                    slotProps={{
+                                        input: {
+                                            autoComplete: 'off'
+                                        },
+                                        inputLabel: {
+                                            shrink: true,
+                                        }
+                                    }}                           
+                                    value={ correoElectronico }                   
                                     onChange={ (e) => setCorreoElectronico( e.target.value ) }
                                 />
                             </FormControl>
 
-                            <FormControl sx={{ mt: 2 }} required>
-                                <FormLabel sx={{ fontWeight: '700', fontSize: 14, color: 'rgba(0, 0, 0, 0.8)', mb: 1 }}>Contraseña</FormLabel>
+                            <FormControl sx={{ mt: 2 }}>
+                                <InputLabel shrink>Contraseña</InputLabel>
                                 <OutlinedInput
+                                    notched
                                     fullWidth    
-                                    placeholder="****************"                                
-                                    autoComplete="current-password"    
+                                    label='Contraseña'
+                                    placeholder="****************"                                                                                                     
                                     type={ showPassword ? 'text' : 'password' }
-                                    value={ contrasena }            
+                                    value={ contrasena }                   
                                     onChange={ (e) => setContrasena( e.target.value ) }
                                     endAdornment={
                                         <InputAdornment position="end">
@@ -181,9 +176,9 @@ export const LoginPage = () => {
                                 fullWidth
                                 variant="contained"    
                                 type='submit'
-                                sx={{ mt: 1 }}        
-                                onClick={ handleLogin }      
-                                loading={ loading }          
+                                sx={{ my: 3 }}        
+                                onClick={ handleLogin }                
+                                loading={ loading }
                             >
                                 Ingresar
                             </Button>
@@ -191,6 +186,10 @@ export const LoginPage = () => {
                         </Box>
 
                     </form>           
+
+                    <Typography style={ LoginTextStyle }>
+                        <strong>SAJI</strong> es una plataforma de gestión judicial de última generación, la cual permite optimizar los procesos enfocados en ofrecer a la ciudadanía una justicia pronta, expedita, innovadora, transparente y abierta.
+                    </Typography>
 
                 </Grid>
 
@@ -201,6 +200,7 @@ export const LoginPage = () => {
                 </Grid>
 
             </Grid>
+
         </Box>
     );
 };

@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 
+import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+
 import AccessibleIcon from '@mui/icons-material/Accessible';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WifiIcon from '@mui/icons-material/Wifi';
 
-import { Box, Grid, Grow, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-
+import { useSocket } from "../../hooks/useSocket";
 
 import { content_table, table_cell_blue, table_padding_pantalla, table_tbody_pantalla, table_thead_pantalla } from "../../styles/TableStyle";
 
 import { ConsultarTodosTurnos } from "../../connections/comun/TurnosConnection";
 
-import { useSocket } from "../../hooks/useSocket";
 import { SocketTurnoResponse, TurnoProps } from "../../interfaces/comun/TurnoInterface";
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: {id:0, nombre:''} ,turno_tipo: {id:0, nombre:'', nivel:'' }, unidad : { id: 0, clave : '', nombre : '' }, ubicacion: { id: 0, nombre : '', numero : 0 } };
@@ -101,7 +101,7 @@ export const PantallaPage = () => {
 
         <Box className="pantalla">
       
-            <Grid container spacing={3} sx={{...content_table}} style={{minHeight:'84vh'}}>
+            <Grid container spacing={3} sx={{...content_table}} style={{ minHeight:'84vh' }}>
 
                 {/* Espacio de Lista de Turnos */}
                 <Grid size={{ xs: 12, md: 8 }}>

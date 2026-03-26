@@ -1,11 +1,8 @@
 import { JSX, useState } from 'react';
 
-
 import { Box, Grid, MenuItem, Select, TextField, Typography } from '@mui/material';
 
-
 import Flag from 'react-country-icons';
-
 
 import { ClearFormatPhoneNumber, FormatPhoneNumber } from '../helpers/FormatPhoneNumber';
 
@@ -19,8 +16,6 @@ interface CountryOption {
     phone:  string;
     flag:   JSX.Element;
 }
-
-type KeyValue = number | 'del';
 
 const countries: CountryOption[] = [
     {
@@ -37,41 +32,21 @@ const countries: CountryOption[] = [
     },
 ];
 
-const keyStyle = {
-    height: 90,
-    width: 90,
-    borderRadius: '50%',
-    fontSize: 26,
-    fontWeight: 600,
-    backgroundColor: '#f5f5f5',
-    color: '#212121',
-    boxShadow: '0px 5px 5px #bdbdbd',
-    '&:hover': {
-        backgroundColor: '#eeeeee',
-    },
-    '&:active': {
-        boxShadow: '0 3px 0 #9e9e9e',
-        transform: 'translateY(3px)',
-    },
-};
-
-
-export const Teclado = ( {onDataChange}:ChildProps ) => {
-
-    const [loading, setLoading] = useState( false );
+export const Teclado = ( { onDataChange }:ChildProps ) => {
 
     const [telefonoCelular, setTelefonoCelular] = useState( '' );
-    const [codigoPais, setCodigoPais] = useState( 'MX' );
-    const [numeroPais, setNumeroPais] = useState( '+52' );
-    
-  
 
+    const [codigoPais, setCodigoPais] = useState( 'MX' );
+
+    const [numeroPais, setNumeroPais] = useState( '+52' );   
+  
     return (  
         <Box display='flex' flexDirection='column' gap={2} mt={2}>
 
             <Grid container spacing={1} mb={1}>
 
                 <Grid size={{ md: 4, xs: 12 }}>
+
                     <Select
                         sx={{ py: 0 }}
                         fullWidth
@@ -117,6 +92,7 @@ export const Teclado = ( {onDataChange}:ChildProps ) => {
                             ))
                         }
                     </Select>
+
                 </Grid>
             
                 <Grid size={{ md: 8, xs: 12 }}>
@@ -127,15 +103,15 @@ export const Teclado = ( {onDataChange}:ChildProps ) => {
                         placeholder="(000) 000-0000"                                                        
                         value={ FormatPhoneNumber( telefonoCelular ) }
                         onChange={ (e) => {
-                                            setTelefonoCelular(  e.target.value ?? ''  ); 
-                                            if (e.target.value!=='' ){
-                                                onDataChange( numeroPais + ClearFormatPhoneNumber( e.target.value ?? '' ) ) 
-                                            }else{
-                                                onDataChange( '' ) 
-                                            }
-                                            
-                                        } 
+                                setTelefonoCelular(  e.target.value ?? ''  ); 
+                                if (e.target.value !== '' ){
+                                    onDataChange( numeroPais + ClearFormatPhoneNumber( e.target.value ?? '' ) ) 
+                                }else{
+                                    onDataChange( '' ) 
                                 }
+                                
+                            } 
+                        }
                         slotProps={{
                             input: {
                                 sx: {

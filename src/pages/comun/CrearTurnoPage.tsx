@@ -1,33 +1,28 @@
 
 import { useEffect, useState } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Alert, Box, Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, MenuItem, Snackbar, TextField, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, MenuItem, TextField, Typography } from "@mui/material";
 
-import { ConsultarTiposTurno } from "../../connections/comun/TiposTurnoConnection";
-import { CrearTurno } from "../../connections/comun/TurnosConnection";
 import { RootState } from "../../store";
+import { openSnackbar } from "../../store/slices/SnackbarSlice";
 
-
+import { CrearTurno } from "../../connections/comun/TurnosConnection";
 import { ConsultarUnidades } from "../../connections/comun/UnidadConnection";
+import { ConsultarTiposTurno } from "../../connections/comun/TiposTurnoConnection";
 
-import { TurnoProps } from "../../interfaces/comun/TurnoInterface";
 import { Unidades } from "../../interfaces/comun/UnidadInterface";
-import { SnackbarProps } from "../../interfaces/ui/SnackbarInterface";
+import { CrearTurnoParams, TurnoProps } from "../../interfaces/comun/TurnoInterface";
 
 import { Teclado } from "../../components/Teclado";
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: { id:0, nombre:''},turno_tipo: {id:0, nombre:'', nivel:''}, unidad : { id: 0, clave : '', nombre : '' }, ubicacion: { id: 0, nombre : '', numero : 0 } };
 
-export interface ErrorsProps {
-    tipoTurno?:         string;
-    unidad?:            string;
-    observaciones?:     string;
-}
-
 export const CrearTurnoPage = (  ) => { 
     
+    const dispatch = useDispatch();
+
     const [openConfirmacion, setOpenConfirmacion] = useState( false );
     const [openTurnoConfirmacion, setOpenTurnoConfirmacion] = useState( false );
 
@@ -46,45 +41,28 @@ export const CrearTurnoPage = (  ) => {
     const [tiposTurnoArray, setTiposTurnoArray] = useState<any[]>( [] );
 
     const [turno, setTurno] = useState<TurnoProps>( defaultTurno ); 
-
-    const [errors, setErrors] = useState<ErrorsProps>( {} );
-
-    const [{ type: typeSnackbar, open: openMessage, message }, setOpenMessage] = useState<SnackbarProps>({
-        type: 'warning',
-        message: '',
-        open: false,
-    });
     
     const [telefonoCelular, setTelefonoCelular] = useState<string>('');
     
-    const handleCloseSnackbar = () => setOpenMessage({ type: typeSnackbar, open: false, message }) 
-
     const handleValidateFields = () => {
 
-        setErrors( {} );
-
         let valid = true;
-        let errors: ErrorsProps = {};
 
-        if( !unidadRedux && unidad === 0 ){
-            errors = { unidad: 'Debe seleccionar una unidad' };        
+        if( !unidadRedux && unidad === 0 ){  
+            dispatch( openSnackbar({ message: 'Debe seleccionar una unidad', variant: 'warning' }));        
             valid = false;   
         }
         else if( tipoturno === 0 ) {   
-            errors = { tipoTurno: 'Debe seleccionar el tipo de turno' };
+            dispatch( openSnackbar({ message: 'Debe seleccionar el tipo de turno', variant: 'warning' }));        
             valid = false;           
         }
-        else if( observaciones === '' && tipoturno === 3 ){   
-            errors = { observaciones: 'Escribe las observaciones' };          
+        else if( observaciones === '' && tipoturno === 3 ){          
+            dispatch( openSnackbar({ message: 'Escribe las observaciones', variant: 'warning' }));        
             valid = false;
         }
 
-
         if( valid ){
             setOpenConfirmacion( true ); 
-        }
-        else {
-            setErrors( errors );
         }
 
     }
@@ -93,8 +71,14 @@ export const CrearTurnoPage = (  ) => {
 
         setLoading( true );
         
-        await CrearTurno({ turno_tipo_id: tipoturno, unidad_id: unidadRedux?.id===1 ? unidad : unidadRedux?.id ?? 0, comentarios: observaciones, turno_telefono: telefonoCelular!=='' ? telefonoCelular : null })
-        .then(resp => {
+        const params: CrearTurnoParams = {
+            turno_tipo_id: tipoturno, 
+            unidad_id: unidadRedux?.id === 1 ? unidad : unidadRedux?.id ?? 0, 
+            turno_telefono: telefonoCelular !== '' ? telefonoCelular : null,
+            comentarios: observaciones, 
+        };
+
+        await CrearTurno( params ).then(resp => {
 
             const { success, message, data } = resp;
 
@@ -108,21 +92,20 @@ export const CrearTurnoPage = (  ) => {
                             
                         setOpenTurnoConfirmacion( true );   
                         setOpenConfirmacion( false ); 
-                        setLoading( false );     
+                        setLoading( false );  
+
+                        dispatch( openSnackbar({ message: message, variant: 'success' }));    
     
                     }, 500);                
 
                 }
             }
             else {
+
                 setLoading( false );
                 setOpenConfirmacion( false ); 
-
-                setOpenMessage({
-                    type: 'warning',
-                    open: true,
-                    message,
-                });
+                
+                dispatch( openSnackbar({ message: message, variant: 'error' }));    
             }
 
         });
@@ -170,31 +153,16 @@ export const CrearTurnoPage = (  ) => {
 
         <>   
 
-            <Snackbar open={openMessage} autoHideDuration={1500} onClose={ handleCloseSnackbar } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-                <Alert
-                    onClose={ handleCloseSnackbar }
-                    severity={ typeSnackbar }
-                    variant="filled"
-                    sx={{ width: '100%' }}                   
-                >
-                    { message }
-                </Alert>
-            </Snackbar> 
-
             <Grid container spacing={3}>
 
                 {
-                    unidadRedux?.id!==1
+                    unidadRedux?.id !==1
                     &&
-                        <Grid size={{ xs: 12, md: 12 }}>               
-
-                            <Box bgcolor={'#003366'} sx={{ opacity:0.8}}>
-                        
-                                <Typography variant="h4" color="white" textAlign={'center'} p={1}>
-                                    { unidadRedux?.nombre } 
-                                </Typography>
-                                    
-                            </Box>                      
+                        <Grid size={{ xs: 12, md: 12 }}>       
+                                
+                            <Typography variant="h4" color="white" textAlign={'center'} p={1} sx={{ bgcolor: '#0A192D', borderRadius: 3 }}>
+                                { unidadRedux?.nombre } 
+                            </Typography>     
 
                         </Grid>
 
@@ -208,7 +176,7 @@ export const CrearTurnoPage = (  ) => {
                         <CardContent>
 
                             {
-                                unidadRedux?.id===1
+                                unidadRedux?.id ===1
                                 &&
                                     <Grid size={{ xs: 12, md: 12 }} sx={{ mt: 3 }}>
 
@@ -236,8 +204,6 @@ export const CrearTurnoPage = (  ) => {
                                             </TextField>
 
                                         </FormControl>   
-
-                                        { errors.unidad && <Alert variant="standard" color="warning" sx={{ mt: 1 }}>{ errors.unidad }</Alert> }
 
                                     </Grid>
                             }                            
@@ -270,11 +236,9 @@ export const CrearTurnoPage = (  ) => {
                                   
                                 </FormControl>   
 
-                                { errors.tipoTurno && <Alert variant="standard" color="warning" sx={{ mt: 1 }}>{ errors.tipoTurno }</Alert> }
-
                             </Grid>
 
-                            <Teclado onDataChange={setTelefonoCelular} /> 
+                            <Teclado onDataChange={ setTelefonoCelular } /> 
    
                             <Grid size={{ xs: 12, md: 12 }} sx={{ mt: 3 }}>
                                 
@@ -298,13 +262,11 @@ export const CrearTurnoPage = (  ) => {
 
                                 </FormControl>   
 
-                                { errors.observaciones && <Alert variant="standard" color="warning" sx={{ mt: 1 }}>{ errors.observaciones }</Alert> }
-
                             </Grid>
 
                         </CardContent>              
 
-                        <CardActions sx={{  p: 3 }}>                  
+                        <CardActions sx={{ p: 3 }}>                  
 
                             <Button fullWidth variant="contained" onClick={ handleValidateFields } > 
                                 Crear Turno
@@ -322,12 +284,14 @@ export const CrearTurnoPage = (  ) => {
             </Grid>   
             
             <Dialog
+                fullWidth
+                maxWidth='xs'
                 open={ openConfirmacion }
                 onClose={ () => {} }
             >
                 <DialogTitle>Confirmación</DialogTitle>
 
-                <DialogContent sx={{ width: 300 }}>
+                <DialogContent>
 
                     <DialogContentText>
                        ¿Desea crear un nuevo turno?
@@ -336,7 +300,8 @@ export const CrearTurnoPage = (  ) => {
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={ handleCloseNuevoTurno }>Cancelar</Button>
+
+                    <Button disabled={ loading } color="secondary" onClick={ handleCloseNuevoTurno }>Cancelar</Button>
                     <Button 
                         variant='contained' 
                         onClick={  handleCrearTurno } 
@@ -344,17 +309,18 @@ export const CrearTurnoPage = (  ) => {
                     >
                         Aceptar
                     </Button>
+
                 </DialogActions>
 
             </Dialog>     
 
             <Dialog
+                fullWidth
+                maxWidth='xs'
                 open={ openTurnoConfirmacion }
                 onClose={ () => {} }
             >
-                <DialogTitle sx={{ backgroundColor:'#efeff1'}}>Información</DialogTitle>
-
-                <DialogContent sx={{ width: 300 }}>
+                <DialogContent>
 
                     <DialogContentText sx={{ textAlign: 'center', mt: 5 }} >
 
@@ -374,9 +340,11 @@ export const CrearTurnoPage = (  ) => {
                 </DialogContent>
 
                 <DialogActions>
+
                     <Button variant='contained' onClick={ handleCloseNuevoTurno  } >
                         Aceptar
                     </Button>
+
                 </DialogActions>
 
             </Dialog> 
