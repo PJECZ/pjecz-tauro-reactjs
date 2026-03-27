@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
@@ -10,6 +10,7 @@ import { table_padding, table_tbody, table_thead } from "../../styles/TableStyle
 import { Settings } from "../../components/Settings";
 import { RootState } from "../../store";
 
+import { openSnackbar } from '../../store/slices/SnackbarSlice';
 
 
 import { CancelarTurno, ConcluirTurno, TomarTurno } from "../../connections/comun/TurnosConnection";
@@ -23,6 +24,7 @@ type ActionTurno = 'Tomar' | 'Concluir' | 'Cancelar';
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: { id:0, nombre:''},turno_tipo: {id:0, nombre:'', nivel:''} , unidad : { id: 0, clave : '', nombre : '' }, ubicacion: { id: 0, nombre : '', numero : 0 } };
 
 export const AtenderTurnoPage = () => {  
+    const dispatch = useDispatch();
 
     const { ubicacion } = useSelector( ( state: RootState ) => state.auth );
 
@@ -72,11 +74,7 @@ export const AtenderTurnoPage = () => {
 
                 setTimeout(() => {        
 
-                    setOpenMessage({
-                        type: 'warning',
-                        open: true,
-                        message,
-                    });
+                    dispatch( openSnackbar({ message: message, variant: 'warning' })); 
     
                     setLoading( false );
     
@@ -116,11 +114,7 @@ export const AtenderTurnoPage = () => {
                     setLoading( false );
                     setOpenConfirmacion( false );
 
-                    setOpenMessage({
-                        type: 'warning',
-                        open: true,
-                        message,
-                    });
+                    dispatch( openSnackbar({ message: message, variant: 'warning' }));
 
                 }, 500);
             }
@@ -154,11 +148,7 @@ export const AtenderTurnoPage = () => {
                     setLoading( false );
                     setOpenConfirmacion( false );
 
-                    setOpenMessage({
-                        type: 'warning',
-                        open: true,
-                        message,
-                    });
+                    dispatch( openSnackbar({ message: message, variant: 'warning' }));
                     
                 }, 500);
             }
@@ -215,14 +205,10 @@ export const AtenderTurnoPage = () => {
 
                 {/* Barra superior con descripcion de la unidad */}
                 <Grid size={{ xs: 12, md: 12 }}>               
-
-                            <Box bgcolor={'#003366'} sx={{ opacity:0.8}}>
-                        
-                                <Typography variant="h4" color="white" textAlign={'center'} p={1}>
-                            {unidadRedux?.nombre}
-                        </Typography>
-                            
-                    </Box>                      
+                    
+                    <Typography variant="h4" color="white" textAlign={'center'} p={1} sx={{ bgcolor: '#0A192D', borderRadius: 3 }}>
+                        {unidadRedux?.nombre}
+                    </Typography>
     
                 </Grid>
 

@@ -2,7 +2,7 @@
 import { CSSProperties } from "@mui/material";
 
 export const table_thead: CSSProperties = {
-    backgroundColor: '#1B397D',
+    backgroundColor: '#0A192D',
     color: '#ffffff',
     textAlign: 'left',
     fontSize: 38,
@@ -52,7 +52,7 @@ export const table_padding_pantalla: CSSProperties = {
 }
 
 export const table_tbody: CSSProperties = {
-    backgroundColor: '#234d7b',
+    backgroundColor: '#fff',
     borderBottom: '1px solid #1f6d88',
 }
 export const table_tbody_pantalla: CSSProperties ={
