@@ -15,6 +15,7 @@ import { PublicRoute } from "./PublicRoute"
 import { AuthRoutes } from "./AuthRoutes "
 import { SistemaTurnosRoutes } from "./SistemaTurnosRoutes"
 
+import { PantallaOCP } from "../pages/comun/PantallaOCP"
 import { PantallaPage } from "../pages/comun/PantallaPage"
 import { PantallaUnidadPage } from "../pages/comun/PantallaUnidadPage"
 
@@ -64,6 +65,8 @@ export const AppRouter = () => {
                 <Route path="/pantalla" element={ <PublicRoute token={ token.current } children={ <PantallaPage /> } /> } />   
 
                 <Route path="/pantalla/:id" element={ <PublicRoute token={ token.current } children={ <PantallaUnidadPage /> } /> } />                
+
+                <Route path="/pantallaOCP" element={ <PublicRoute token={ token.current } children={ <PantallaOCP /> } /> } />                
 
                 <Route path="/*" element={ <PrivateRoute token={ token.current } children={ <SistemaTurnosRoutes /> } /> } />       
             
