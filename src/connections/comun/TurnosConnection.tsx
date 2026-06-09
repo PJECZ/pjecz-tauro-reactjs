@@ -7,7 +7,7 @@ import { AxiosError } from 'axios';
 import { PantallaResponse } from '../../interfaces/comun/PantallaInterface';
 import { PantallaUnidadResponse } from '../../interfaces/comun/PantallaUnidadInterface';
 
-import { CancelarTurnoParams, CancelarTurnoResponse, ConcluirTurnoParams, ConcluirTurnoResponse, CrearTurnoParams, CrearTurnoResponse, TomarTurnoResponse } from '../../interfaces/comun/TurnoInterface';
+import { AtenderTurnoParams, AtenderTurnoResponse, CancelarTurnoParams, CancelarTurnoResponse, ConcluirTurnoParams, ConcluirTurnoResponse, CrearTurnoParams, CrearTurnoResponse, TomarTurnoResponse } from '../../interfaces/comun/TurnoInterface';
 
 export const ConsultarTodosTurnos = ( ) => {
     
@@ -208,6 +208,57 @@ export const CancelarTurno = ( params : CancelarTurnoParams ) => {
                 });
             });
         }       
+                
+    });    
+
+}
+
+export const AtenderTurno = ( params : AtenderTurnoParams ) => {
+    
+    return new Promise<AtenderTurnoResponse>( (resolve, eject) => {
+        
+        const data = JSON.parse( window.localStorage.getItem('data') ?? '{}' );
+
+        if( data ){
+
+            const { token } = data;
+
+            HttpClientToken.post('/api_oauth2/v1/actualizar_turno_estado', params, token)
+            .then( ( { data } : { data : AtenderTurnoResponse }) => {           
+                resolve( data );
+            })
+            .catch( ( error: AxiosError ) => {
+                resolve( { 
+                    success: false, 
+                    message: error.message, 
+                    data: {
+                        turno_id: 0,
+                        turno_numero: 0,
+                        turno_estado: {
+                            id:0, 
+                            nombre:''
+                        },
+                        turno_tipo: {
+                            id:0, 
+                            nombre:'', 
+                            nivel:''
+                        } ,
+                        turno_comentarios: '',
+                        turno_numero_cubiculo: 0,
+                        ubicacion: {
+                            id: 0,
+                            nombre: '',
+                            numero: 0,
+                        },
+                        unidad: {
+                            id: 0,
+                            clave: '',
+                            nombre: '',
+                        }                          
+                    }
+                });
+            });
+        }         
                 
     });    
 

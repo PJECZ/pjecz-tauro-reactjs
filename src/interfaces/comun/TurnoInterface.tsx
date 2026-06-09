@@ -40,9 +40,17 @@ export interface CancelarTurnoResponse extends HttpResponse {
     data :  TurnoProps
 }
 
+export interface AtenderTurnoParams {
+    turno_id:               number;
+    turno_estado_id:        number;
+}
 export interface ConcluirTurnoParams {
     turno_id:               number;
     turno_estado_id:        number;
+}
+
+export interface AtenderTurnoResponse extends HttpResponse {
+    data :  TurnoProps
 }
 
 export interface ConcluirTurnoResponse extends HttpResponse {

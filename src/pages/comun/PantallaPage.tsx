@@ -40,7 +40,7 @@ export const PantallaPage = () => {
                     /*setTurnosArray( ( arrays ) => [ ...arrays, turno ]);*/
                     setLoadFetch( true );
                 }
-                else if( turno.turno_estado.id === 2 || turno.turno_estado.id === 6  ){ /* 2 'ATENDIENDO' , 6 'ATENDIENDO EN CUBICULO'*/
+                else if( turno.turno_estado.id === 7 || turno.turno_estado.id === 6  ){ /* 2 'PASE A VENTANILLA' , 6 'ATENDIENDO EN CUBICULO'*/
 
                     setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
                         if( elem.turno_id === turno.turno_id){
@@ -115,8 +115,8 @@ export const PantallaPage = () => {
                                 <TableRow>   
                                     <TableCell sx={{  ...table_thead_pantalla, width: '2%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
                                     <TableCell sx={{  ...table_thead_pantalla, width: '30%', textAlign: 'center',paddingBottom:'15px' }}>Turno</TableCell>
-                                    <TableCell sx={{  ...table_thead_pantalla, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>
                                     <TableCell sx={{  ...table_thead_pantalla, width: '50%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
+                                    <TableCell sx={{  ...table_thead_pantalla, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>
                                 </TableRow>
 
                             </TableHead>
@@ -153,16 +153,7 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center', color:'#fff', }}>
-                                                    <Typography sx={{ fontSize:'35px'}}> 
-                                                        { turno_estado.id === 2 ?  'Ventanilla' : '' /* 2 'ATENDIENDO' */}
-                                                        { turno_estado.id === 6 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' */}
-                                                        &nbsp;
-                                                        { turno_estado.id === 2 ? ubicacion.numero : '' /* 2 'ATENDIENDO' */ } 
-                                                        { turno_estado.id === 6 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' */}  
-                                                    </Typography>
-                                                    
-                                                </TableCell> 
+                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center',  }} style={{ color: (turno_estado.id===2 || turno_estado.id===6 || turno_estado.id===7) ? '#b9dcff' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6 || turno_estado.id===7) ? '30px' : '25px'  }}>{ turno_estado.nombre }</TableCell> 
                                             </Grow>
 
                                             <Grow 
@@ -170,8 +161,19 @@ export const PantallaPage = () => {
                                                 style={{ transformOrigin: '0 0 0' }}
                                                 {...( { timeout: 1000 } )}
                                             > 
-                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center',  }} style={{ color: (turno_estado.id===2 || turno_estado.id===6) ? '#b9dcff' : 'white', fontSize: (turno_estado.id===2 || turno_estado.id===6) ? '30px' : '25px'  }}>{ turno_estado.nombre }</TableCell> 
+                                                <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center', color:'#fff', }}>
+                                                    <Typography sx={{ fontSize:'35px'}}> 
+                                                        { turno_estado.id === 2 || turno_estado.id === 7 ?  'Ventanilla' : '' /* 2 'ATENDIENDO' */}
+                                                        { turno_estado.id === 6 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' */}
+                                                        &nbsp;
+                                                        { turno_estado.id === 2 || turno_estado.id === 7 ? ubicacion.numero : '' /* 2 'ATENDIENDO' */ } 
+                                                        { turno_estado.id === 6 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' */}  
+                                                    </Typography>
+                                                    
+                                                </TableCell> 
                                             </Grow>
+
+                                           
 
                                         </TableRow>
                                         
