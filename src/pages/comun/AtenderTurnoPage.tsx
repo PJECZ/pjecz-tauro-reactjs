@@ -1,28 +1,30 @@
 
 import { useEffect, useState } from 'react';
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
 import { table_padding, table_tbody, table_thead } from "../../styles/TableStyle";
 
 import { Settings } from "../../components/Settings";
 import { RootState } from "../../store";
 
+import { openSnackbar } from '../../store/slices/SnackbarSlice';
 
 
-import { CancelarTurno, ConcluirTurno, TomarTurno } from "../../connections/comun/TurnosConnection";
+import { AtenderTurno, CancelarTurno, ConcluirTurno, TomarTurno } from "../../connections/comun/TurnosConnection";
 
 import { ConsultarConfiguracionUsuario } from '../../connections/comun/UsuarioConnection';
 import { TurnoProps } from '../../interfaces/comun/TurnoInterface';
 import { SnackbarProps } from '../../interfaces/ui/SnackbarInterface';
 
-type ActionTurno = 'Tomar' | 'Concluir' | 'Cancelar';
+type ActionTurno = 'Tomar' | 'Atender' | 'Concluir' | 'Cancelar';
 
 const defaultTurno: TurnoProps = { turno_id: 0, turno_numero: 0, turno_comentarios: '', turno_numero_cubiculo: 0, turno_estado: { id:0, nombre:''},turno_tipo: {id:0, nombre:'', nivel:''} , unidad : { id: 0, clave : '', nombre : '' }, ubicacion: { id: 0, nombre : '', numero : 0 } };
 
 export const AtenderTurnoPage = () => {  
+    const dispatch = useDispatch();
 
     const { ubicacion } = useSelector( ( state: RootState ) => state.auth );
 
@@ -41,7 +43,27 @@ export const AtenderTurnoPage = () => {
         type: 'warning',
         message: '',
         open: false,
-    });    
+    });
+    
+    const [texto, setTexto] = useState('Turno 6, pase a ventanilla 7.');
+
+    const reproducirAudio = () => {
+        if ('speechSynthesis' in window) {
+        // Detener cualquier audio que se esté reproduciendo antes de iniciar uno nuevo
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(texto);
+        
+        // Opcional: Configurar la voz, velocidad o tono
+        utterance.lang = 'es-MX'; // Idioma (español)
+        utterance.rate = 1;       // Velocidad (de 0.1 a 10)
+        utterance.pitch = 1;      // Tono (de 0 to 2)
+
+        window.speechSynthesis.speak(utterance);
+        } else {
+        alert('Tu navegador no soporta la función de Texto a Voz');
+        }
+    };
 
     const handleCloseSnackbar = () => setOpenMessage({ type: typeSnackbar, open: false, message }) 
 
@@ -72,11 +94,7 @@ export const AtenderTurnoPage = () => {
 
                 setTimeout(() => {        
 
-                    setOpenMessage({
-                        type: 'warning',
-                        open: true,
-                        message,
-                    });
+                    dispatch( openSnackbar({ message: message, variant: 'warning' })); 
     
                     setLoading( false );
     
@@ -116,16 +134,48 @@ export const AtenderTurnoPage = () => {
                     setLoading( false );
                     setOpenConfirmacion( false );
 
-                    setOpenMessage({
-                        type: 'warning',
-                        open: true,
-                        message,
-                    });
+                    dispatch( openSnackbar({ message: message, variant: 'warning' }));
 
                 }, 500);
             }
 
         });                
+    }
+
+    const handleAtenderTurno = async () => {
+
+        setLoading( true );
+        
+        await AtenderTurno({ turno_id: turno.turno_id, turno_estado_id: 2 })
+        .then(resp => {
+
+            const { success, message, data } = resp;
+        
+            if( success ){
+
+                setTimeout(() => {         
+
+                    setTurno({ ...data });
+                    
+                    setLoading( false );
+
+                    setOpenConfirmacion( false );
+
+                }, 500);
+            }
+            else {
+                setTimeout(() => {            
+
+                    setLoading( false );
+                    setOpenConfirmacion( false );
+
+                    dispatch( openSnackbar({ message: message, variant: 'warning' }));
+                    
+                }, 500);
+            }
+
+        });  
+        
     }
 
     const handleConcluirTurno = async () => {
@@ -154,11 +204,7 @@ export const AtenderTurnoPage = () => {
                     setLoading( false );
                     setOpenConfirmacion( false );
 
-                    setOpenMessage({
-                        type: 'warning',
-                        open: true,
-                        message,
-                    });
+                    dispatch( openSnackbar({ message: message, variant: 'warning' }));
                     
                 }, 500);
             }
@@ -215,14 +261,10 @@ export const AtenderTurnoPage = () => {
 
                 {/* Barra superior con descripcion de la unidad */}
                 <Grid size={{ xs: 12, md: 12 }}>               
-
-                            <Box bgcolor={'#003366'} sx={{ opacity:0.8}}>
-                        
-                                <Typography variant="h4" color="white" textAlign={'center'} p={1}>
-                            {unidadRedux?.nombre}
-                        </Typography>
-                            
-                    </Box>                      
+                    
+                    <Typography variant="h4" color="white" textAlign={'center'} p={1} sx={{ bgcolor: '#0A192D', borderRadius: 3 }}>
+                        {unidadRedux?.nombre}
+                    </Typography>
     
                 </Grid>
 
@@ -275,11 +317,32 @@ export const AtenderTurnoPage = () => {
                                                             </Button>
                                                         </TableCell>
 
+                                                        {
+                                                            turno.turno_estado.id==7
+                                                            &&
+                                                        <TableCell sx={{textAlign: 'center'}}>
+                                                            <Button variant="contained" size='large' style={{backgroundColor:'#0A192D'}}  onClick={ () => { setActionTurno( 'Atender' ); setOpenConfirmacion( true ); } }> 
+                                                                Iniciar atención
+                                                            </Button>
+                                                        </TableCell>
+                                                        }
+
+                                                        {
+                                                            turno.turno_estado.id==2
+                                                            &&
                                                         <TableCell sx={{textAlign: 'center'}}>
                                                             <Button variant="contained" size='large' color='success' onClick={ () => { setActionTurno( 'Concluir' ); setOpenConfirmacion( true ); } }> 
                                                                 Concluir
                                                             </Button>
                                                         </TableCell>
+                                                        }
+                                                        {/*  
+                                                        <TableCell>
+                                                            <Button onClick={reproducirAudio} style={{ padding: '10px 20px', cursor: 'pointer' }}>
+                                                                🔊 Reproducir Audio
+                                                            </Button>
+                                                        </TableCell>
+                                                        */}
 
                                                     </TableRow>
 
@@ -310,6 +373,7 @@ export const AtenderTurnoPage = () => {
 
                     <DialogContentText>
                         { actionTurno === 'Tomar' && '¿Desea tomar un nuevo turno?' }
+                        { actionTurno === 'Atender' && '¿Desea iniciar atención del turno actual?' }
                         { actionTurno === 'Cancelar' && '¿Desea cancelar el turno seleccionado?' }
                         { actionTurno === 'Concluir' && '¿Desea concluir el turno seleccionado?' }
                     </DialogContentText>
@@ -327,6 +391,9 @@ export const AtenderTurnoPage = () => {
                                 }
                                 else if( actionTurno === 'Cancelar' ){
                                     handleCancelarTurno()
+                                }
+                                else if( actionTurno === 'Atender' ){
+                                    handleAtenderTurno()
                                 }
                                 else if( actionTurno === 'Concluir' ){
                                     handleConcluirTurno()
