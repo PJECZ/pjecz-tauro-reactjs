@@ -93,7 +93,7 @@ export const Footer = () => {
                                     color: '#7a8594',
                                 }}
                             >
-                                { ubicacion }
+                                { String(ubicacion).charAt(0).toUpperCase() + String(ubicacion).slice(1).toLowerCase()  }
                             </Typography>
 
                         </Box>

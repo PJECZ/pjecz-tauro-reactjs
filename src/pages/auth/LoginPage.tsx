@@ -60,7 +60,7 @@ export const LoginPage = () => {
                         correoElectronico: correoElectronico,
                         rol: rol,
                         unidad: unidad,
-                        ubicacion: ( ubicacion && ubicacion?.id !== 1 ) ? `Ventanilla ${ ubicacion.numero }` : '',
+                        ubicacion: ( ubicacion && ubicacion?.id !== 1 ) ? ` ${ ubicacion.nombre +' '+ ubicacion.numero }` : '',
                     };
 
                     setTimeout(() => {
