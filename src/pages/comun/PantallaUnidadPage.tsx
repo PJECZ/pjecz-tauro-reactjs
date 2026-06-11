@@ -259,7 +259,7 @@ export const PantallaUnidadPage = () => {
 
                                 <hr style={{ marginTop:'40px', marginBottom:'40px',borderColor: '#7fbeeb', borderStyle: 'solid', borderWidth: '0.5px 0 0 0' }} />
                                 
-                                <Typography sx={{ fontSize:40, color:'#fff', fontWeight:'lighter'}}>{ ultimoTurno?.turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : 'Ventanilla' }</Typography>
+                                <Typography sx={{ fontSize:40, color:'#fff', fontWeight:'lighter'}}>{ ultimoTurno?.turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : ultimoTurno?.ubicacion.nombre }</Typography>
                                 <Typography sx={{ fontSize: 210, lineHeight: 0.9, color:'#fff' }}>
                                     {ultimoTurno?.turno_numero_cubiculo > 0 
                                         ? ultimoTurno?.turno_numero_cubiculo
