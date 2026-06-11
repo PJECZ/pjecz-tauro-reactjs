@@ -40,7 +40,7 @@ export const PantallaPage = () => {
                     /*setTurnosArray( ( arrays ) => [ ...arrays, turno ]);*/
                     setLoadFetch( true );
                 }
-                else if( turno.turno_estado.id === 7 || turno.turno_estado.id === 6  ){ /* 2 'PASE A VENTANILLA' , 6 'ATENDIENDO EN CUBICULO'*/
+                else if( turno.turno_estado.id === 7 || turno.turno_estado.id === 6 || turno.turno_estado.id === 2  ){ /* 2 'PASE A VENTANILLA' , 6 'ATENDIENDO EN CUBICULO'*/
 
                     setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
                         if( elem.turno_id === turno.turno_id){
