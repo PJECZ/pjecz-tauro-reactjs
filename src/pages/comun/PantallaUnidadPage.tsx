@@ -135,7 +135,7 @@ export const PantallaUnidadPage = () => {
                                     <TableCell sx={{  ...table_thead_unidad, width: '2%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
                                     <TableCell sx={{  ...table_thead_unidad, width: '30%', textAlign: 'center',paddingBottom:'15px' }}>Turno</TableCell>
                                     <TableCell sx={{  ...table_thead_unidad, width: '50%', textAlign: 'center',paddingBottom:'15px' }}></TableCell>
-                                    <TableCell sx={{  ...table_thead_unidad, width: '20%', textAlign: 'center',paddingBottom:'15px' }}>Ubicación</TableCell>                                    
+                                    <TableCell sx={{  ...table_thead_unidad, width: '20%', textAlign: 'center',paddingBottom:'15px'}}>Ubicación</TableCell>                                    
                                 </TableRow>
 
                             </TableHead>
@@ -189,11 +189,11 @@ export const PantallaUnidadPage = () => {
                                             > 
                                                 <TableCell sx={{ ...table_padding,  textAlign: 'center',color:'#fff' }}> 
                                                     <Typography sx={{ fontSize:30}}> 
-                                                        { turno_estado.nombre === 'ATENDIENDO' ?  ubicacion.nombre : '' }
-                                                        { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : '' }
+                                                          { turno_estado.id === 2 || turno_estado.id === 7 ?  ubicacion.nombre : '' /* 2 'ATENDIENDO' */}
+                                                        { turno_estado.id === 6 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' */}
                                                         &nbsp;
-                                                        { turno_estado.nombre === 'ATENDIENDO' ? ubicacion.numero : '' }
-                                                        { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? turno_numero_cubiculo : '' }
+                                                        { turno_estado.id === 2 || turno_estado.id === 7 ? ubicacion.numero : '' /* 2 'ATENDIENDO' */ } 
+                                                        { turno_estado.id === 6 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' */}  
                                                     </Typography>
                                                 </TableCell> 
                                             </Grow>
