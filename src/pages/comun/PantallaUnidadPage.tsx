@@ -189,7 +189,7 @@ export const PantallaUnidadPage = () => {
                                             > 
                                                 <TableCell sx={{ ...table_padding,  textAlign: 'center',color:'#fff' }}> 
                                                     <Typography sx={{ fontSize:30}}> 
-                                                        { turno_estado.nombre === 'ATENDIENDO' ?  'Ventanilla' : '' }
+                                                        { turno_estado.nombre === 'ATENDIENDO' ?  ubicacion.nombre : '' }
                                                         { turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : '' }
                                                         &nbsp;
                                                         { turno_estado.nombre === 'ATENDIENDO' ? ubicacion.numero : '' }

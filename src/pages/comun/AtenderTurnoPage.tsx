@@ -318,7 +318,7 @@ export const AtenderTurnoPage = () => {
                                                         </TableCell>
 
                                                         {
-                                                            turno.turno_estado.id==7
+                                                            turno.turno_estado.id===7
                                                             &&
                                                         <TableCell sx={{textAlign: 'center'}}>
                                                             <Button variant="contained" size='large' style={{backgroundColor:'#0A192D'}}  onClick={ () => { setActionTurno( 'Atender' ); setOpenConfirmacion( true ); } }> 
@@ -328,7 +328,7 @@ export const AtenderTurnoPage = () => {
                                                         }
 
                                                         {
-                                                            turno.turno_estado.id==2
+                                                            turno.turno_estado.id===2
                                                             &&
                                                         <TableCell sx={{textAlign: 'center'}}>
                                                             <Button variant="contained" size='large' color='success' onClick={ () => { setActionTurno( 'Concluir' ); setOpenConfirmacion( true ); } }> 
