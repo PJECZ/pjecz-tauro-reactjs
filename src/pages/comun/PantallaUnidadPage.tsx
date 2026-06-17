@@ -189,11 +189,11 @@ export const PantallaUnidadPage = () => {
                                             > 
                                                 <TableCell sx={{ ...table_padding,  textAlign: 'center',color:'#fff' }}> 
                                                     <Typography sx={{ fontSize:30}}> 
-                                                          { turno_estado.id === 2 || turno_estado.id === 7 ?  ubicacion.nombre : '' /* 2 'ATENDIENDO' */}
-                                                        { turno_estado.id === 6 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' */}
+                                                        { turno_estado.id === 2 || turno_estado.id === 7 ?  ubicacion.nombre : '' /* 2 'ATENDIENDO' */}
+                                                        { turno_estado.id === 6 || turno_estado.id === 8 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' 8  'PASE A CUBICULO' */}
                                                         &nbsp;
                                                         { turno_estado.id === 2 || turno_estado.id === 7 ? ubicacion.numero : '' /* 2 'ATENDIENDO' */ } 
-                                                        { turno_estado.id === 6 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' */}  
+                                                        { turno_estado.id === 6 || turno_estado.id === 8 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' */}  
                                                     </Typography>
                                                 </TableCell> 
                                             </Grow>
@@ -261,7 +261,7 @@ export const PantallaUnidadPage = () => {
                                 
                                 <Typography sx={{ fontSize:40, color:'#fff', fontWeight:'lighter'}}>{ ultimoTurno?.turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : ultimoTurno?.ubicacion.nombre }</Typography>
                                 <Typography sx={{ fontSize: 210, lineHeight: 0.9, color:'#fff' }}>
-                                    {ultimoTurno?.turno_numero_cubiculo > 0 
+                                    {ultimoTurno?.turno_estado.id == 6
                                         ? ultimoTurno?.turno_numero_cubiculo
                                         : ultimoTurno?.ubicacion.numero !== 0 && ultimoTurno?.ubicacion.numero
                                     }    
