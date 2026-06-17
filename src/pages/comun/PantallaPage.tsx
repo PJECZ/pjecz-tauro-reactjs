@@ -164,10 +164,10 @@ export const PantallaPage = () => {
                                                 <TableCell sx={{ ...table_padding_pantalla, textAlign: 'center', color:'#fff', }}>
                                                     <Typography sx={{ fontSize:'35px'}}> 
                                                         { turno_estado.id === 2 || turno_estado.id === 7 ?  ubicacion.nombre : '' /* 2 'ATENDIENDO' */}
-                                                        { turno_estado.id === 6 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' */}
+                                                        { turno_estado.id === 6 || turno_estado.id === 8 ? 'Cubículo' : '' /* 6 'ATENDIENDO EN CUBICULO' 8  'PASE A CUBICULO' */}
                                                         &nbsp;
                                                         { turno_estado.id === 2 || turno_estado.id === 7 ? ubicacion.numero : '' /* 2 'ATENDIENDO' */ } 
-                                                        { turno_estado.id === 6 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' */}  
+                                                        { turno_estado.id === 6 || turno_estado.id === 8 ? turno_numero_cubiculo : '' /* 6 'ATENDIENDO EN CUBICULO' 8  'PASE A CUBICULO' */}  
                                                     </Typography>
                                                     
                                                 </TableCell> 
