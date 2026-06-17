@@ -239,7 +239,7 @@ export const PantallaPage = () => {
 
                                 <Typography sx={{ fontSize:40, color:'#fff', fontWeight:'lighter'}}> { ultimoTurno?.turno_estado.id === 6 || ultimoTurno?.turno_estado.id === 8 ? 'Cubículo' : ultimoTurno?.ubicacion.nombre /* 6 'ATENDIENDO EN CUBICULO' */}</Typography>
                                 <Typography sx={{ fontSize: 210, lineHeight: 0.9, color:'#fff' }}>
-                                    {ultimoTurno?.turno_numero_cubiculo > 0 
+                                    {ultimoTurno?.turno_estado.id == 6 || ultimoTurno?.turno_estado.id === 8
                                         ? ultimoTurno?.turno_numero_cubiculo
                                         : ultimoTurno?.ubicacion.numero !== 0 && ultimoTurno?.ubicacion.numero
                                     }
