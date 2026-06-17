@@ -43,11 +43,12 @@ export const PantallaUnidadPage = () => {
 
             if( turno.turno_id !== 0 && turno.unidad.id === parseInt( id ?? '0' ) ){
                 setFecha( new Date() );
-                if( turno.turno_estado.id === 1 ){ /* 1 'EN ESPERA' */
+                if( turno.turno_estado.id === 1 || turno.turno_estado.id === 5 ){ /* 1 'EN ESPERA' , 5 'EN ESPERA EN CUBICULO' */
                     /*setTurnosArray( ( arrays ) => [ ...arrays, turno ]);*/
                     setLoadFetch( true );
                 }
-                else if( turno.turno_estado.id === 7 || turno.turno_estado.id === 6 || turno.turno_estado.id === 2  ){/* 2 'PASE A VENTANILLA' , 6 'ATENDIENDO EN CUBICULO'*/
+                else if( turno.turno_estado.id === 7 || turno.turno_estado.id === 6 || turno.turno_estado.id === 2 || turno.turno_estado.id === 8 ){
+                    /* 2 'PASE A VENTANILLA' , 6 'ATENDIENDO EN CUBICULO' , 8 'PASE A CUBICULO' , 7 'PASE A UBICACION' */
 
                     setTurnosArray( ( arrays ) => arrays.map( ( elem ) => {
                         if( elem.turno_id === turno.turno_id){
@@ -259,7 +260,7 @@ export const PantallaUnidadPage = () => {
 
                                 <hr style={{ marginTop:'40px', marginBottom:'40px',borderColor: '#7fbeeb', borderStyle: 'solid', borderWidth: '0.5px 0 0 0' }} />
                                 
-                                <Typography sx={{ fontSize:40, color:'#fff', fontWeight:'lighter'}}>{ ultimoTurno?.turno_estado.nombre === 'ATENDIENDO EN CUBICULO' ? 'Cubículo' : ultimoTurno?.ubicacion.nombre }</Typography>
+                                <Typography sx={{ fontSize:40, color:'#fff', fontWeight:'lighter'}}>{ ultimoTurno?.turno_estado.id === 6 || ultimoTurno?.turno_estado.id === 8 ? 'Cubículo' : ultimoTurno?.ubicacion.nombre }</Typography>
                                 <Typography sx={{ fontSize: 210, lineHeight: 0.9, color:'#fff' }}>
                                     {ultimoTurno?.turno_estado.id == 6
                                         ? ultimoTurno?.turno_numero_cubiculo
